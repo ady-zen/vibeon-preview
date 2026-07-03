@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1200" viewBox="0 0 1500 1200">
+  <!-- Mood v2: Bokeh-Nacht — unscharfe Lichter der Stadt, Tiefe statt Motiv. Ein Licht ist an (Gelb). -->
+  <defs>
+    <linearGradient id="nacht6" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#090908"/>
+      <stop offset="55%" stop-color="#0e0d0b"/>
+      <stop offset="100%" stop-color="#151310"/>
+    </linearGradient>
+    <filter id="b6a"><feGaussianBlur stdDeviation="34"/></filter>
+    <filter id="b6b"><feGaussianBlur stdDeviation="20"/></filter>
+    <filter id="b6c"><feGaussianBlur stdDeviation="10"/></filter>
+    <filter id="b6d"><feGaussianBlur stdDeviation="4"/></filter>
+    <filter id="grain6">
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="23" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 .98  0 0 0 0 .92  0 0 0 .05 0"/>
+    </filter>
+    <radialGradient id="vig6" cx="50%" cy="46%" r="76%">
+      <stop offset="50%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity=".58"/>
+    </radialGradient>
+    <radialGradient id="disc6" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f5f1ea" stop-opacity=".75"/>
+      <stop offset="72%" stop-color="#f5f1ea" stop-opacity=".5"/>
+      <stop offset="96%" stop-color="#f5f1ea" stop-opacity=".85"/>
+      <stop offset="100%" stop-color="#f5f1ea" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="disc6w" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e6ddcc" stop-opacity=".6"/>
+      <stop offset="80%" stop-color="#e6ddcc" stop-opacity=".35"/>
+      <stop offset="100%" stop-color="#e6ddcc" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="disc6g" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E9F42F" stop-opacity=".9"/>
+      <stop offset="70%" stop-color="#E9F42F" stop-opacity=".55"/>
+      <stop offset="97%" stop-color="#E9F42F" stop-opacity=".9"/>
+      <stop offset="100%" stop-color="#E9F42F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1500" height="1200" fill="url(#nacht6)"/>
+
+  <!-- hinterste Ebene: grosse, sehr weiche Scheiben -->
+  <g filter="url(#b6a)">
+    <circle cx="220" cy="920" r="150" fill="url(#disc6w)" opacity=".26"/>
+    <circle cx="1310" cy="1010" r="185" fill="url(#disc6w)" opacity=".22"/>
+    <circle cx="1090" cy="880" r="120" fill="url(#disc6w)" opacity=".18"/>
+    <circle cx="480" cy="1050" r="140" fill="url(#disc6w)" opacity=".2"/>
+  </g>
+
+  <!-- Mittelgrund -->
+  <g filter="url(#b6b)">
+    <circle cx="360" cy="700" r="78" fill="url(#disc6)" opacity=".32"/>
+    <circle cx="880" cy="800" r="95" fill="url(#disc6)" opacity=".28"/>
+    <circle cx="1230" cy="640" r="62" fill="url(#disc6w)" opacity=".3"/>
+    <circle cx="640" cy="905" r="70" fill="url(#disc6w)" opacity=".26"/>
+    <circle cx="120" cy="560" r="50" fill="url(#disc6w)" opacity=".22"/>
+  </g>
+
+  <!-- vordere Ebene: kleiner, definierter (Bokeh-Ringe) -->
+  <g filter="url(#b6c)">
+    <circle cx="540" cy="470" r="40" fill="url(#disc6)" opacity=".45"/>
+    <circle cx="1050" cy="420" r="34" fill="url(#disc6)" opacity=".4"/>
+    <circle cx="760" cy="560" r="28" fill="url(#disc6w)" opacity=".42"/>
+    <circle cx="1360" cy="330" r="24" fill="url(#disc6w)" opacity=".3"/>
+    <circle cx="240" cy="380" r="26" fill="url(#disc6w)" opacity=".28"/>
+  </g>
+
+  <!-- Das eine Licht, das an ist -->
+  <circle cx="905" cy="330" r="58" fill="url(#disc6g)" opacity=".34" filter="url(#b6b)"/>
+  <circle cx="905" cy="330" r="30" fill="url(#disc6g)" filter="url(#b6d)"/>
+  <circle cx="905" cy="330" r="10" fill="#f4fb8f" opacity=".95" filter="url(#b6d)"/>
+
+  <!-- zwei hellere, definierte Lichter fuer Punch -->
+  <circle cx="540" cy="470" r="22" fill="#fffdf6" opacity=".55" filter="url(#b6c)"/>
+  <circle cx="1230" cy="640" r="16" fill="#fffdf6" opacity=".5" filter="url(#b6c)"/>
+
+  <!-- ganz feine, fast scharfe Punkte -->
+  <g filter="url(#b6d)" fill="#fffdf6">
+    <circle cx="430" cy="250" r="5" opacity=".7"/>
+    <circle cx="690" cy="180" r="4" opacity=".55"/>
+    <circle cx="1180" cy="210" r="4.5" opacity=".6"/>
+    <circle cx="960" cy="140" r="3.5" opacity=".5"/>
+    <circle cx="1420" cy="520" r="5" opacity=".55"/>
+    <circle cx="80" cy="240" r="3.5" opacity=".45"/>
+  </g>
+
+  <rect width="1500" height="1200" fill="url(#vig6)"/>
+  <rect width="1500" height="1200" filter="url(#grain6)"/>
+</svg>

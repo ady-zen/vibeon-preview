@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <!-- Mood v2: Nebelkegel — ein Lichtkegel schneidet diagonal durch Dunst. Die Buehne vor dem Moment. -->
+  <defs>
+    <radialGradient id="raum7" cx="30%" cy="12%" r="120%">
+      <stop offset="0%" stop-color="#131211"/>
+      <stop offset="55%" stop-color="#0d0c0b"/>
+      <stop offset="100%" stop-color="#080808"/>
+    </radialGradient>
+    <linearGradient id="kegelfade7" x1="0" y1="0" x2=".72" y2="1">
+      <stop offset="0%" stop-color="#f0e9db" stop-opacity=".5"/>
+      <stop offset="55%" stop-color="#ded5c2" stop-opacity=".16"/>
+      <stop offset="100%" stop-color="#cfc6b3" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="fog7" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency=".009 .014" numOctaves="4" seed="31" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 .94  0 0 0 0 .9  0 0 0 0 .82  .5 .4 0 0 -.16"/>
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+    <filter id="blurL7"><feGaussianBlur stdDeviation="22"/></filter>
+    <filter id="blurM7"><feGaussianBlur stdDeviation="9"/></filter>
+    <filter id="blurS7"><feGaussianBlur stdDeviation="2.2"/></filter>
+    <filter id="grain7">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="41" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 .98  0 0 0 0 .92  0 0 0 .055 0"/>
+    </filter>
+    <radialGradient id="vig7" cx="42%" cy="52%" r="80%">
+      <stop offset="46%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity=".64"/>
+    </radialGradient>
+    <clipPath id="kegelclip7">
+      <polygon points="118,-40 400,-40 1050,1500 330,1500"/>
+    </clipPath>
+  </defs>
+
+  <rect width="1200" height="1500" fill="url(#raum7)"/>
+
+  <!-- Quelle oben links -->
+  <circle cx="250" cy="-10" r="150" fill="#f5f1ea" opacity=".14" filter="url(#blurL7)"/>
+  <circle cx="252" cy="-16" r="60" fill="#f5f1ea" opacity=".5" filter="url(#blurM7)"/>
+
+  <!-- Kegel: weiche Aura + Kern -->
+  <polygon points="60,-40 460,-40 1130,1500 250,1500" fill="url(#kegelfade7)" opacity=".4" filter="url(#blurL7)"/>
+  <polygon points="118,-40 400,-40 1050,1500 330,1500" fill="url(#kegelfade7)" opacity=".8" filter="url(#blurM7)"/>
+
+  <!-- Nebel NUR im Kegel sichtbar -->
+  <g clip-path="url(#kegelclip7)" opacity=".62">
+    <rect x="-60" y="-60" width="1320" height="1620" filter="url(#fog7)"/>
+  </g>
+
+  <!-- Staub im Licht -->
+  <g clip-path="url(#kegelclip7)" fill="#f5f1ea" filter="url(#blurS7)">
+    <circle cx="330" cy="330" r="2.6" opacity=".55"/>
+    <circle cx="420" cy="520" r="1.8" opacity=".4"/>
+    <circle cx="380" cy="700" r="2.2" opacity=".45"/>
+    <circle cx="520" cy="860" r="1.6" opacity=".35"/>
+    <circle cx="480" cy="1050" r="2.4" opacity=".4"/>
+    <circle cx="620" cy="1180" r="1.8" opacity=".3"/>
+    <circle cx="560" cy="1320" r="2" opacity=".32"/>
+    <circle cx="300" cy="450" r="1.4" opacity=".38"/>
+    <circle cx="450" cy="620" r="1.2" opacity=".3"/>
+    <circle cx="680" cy="1290" r="1.4" opacity=".26"/>
+  </g>
+
+  <!-- Lichtlache unten -->
+  <ellipse cx="620" cy="1430" rx="440" ry="90" fill="#e8e0d2" opacity=".12" filter="url(#blurL7)"/>
+
+  <rect width="1200" height="1500" fill="url(#vig7)"/>
+  <rect width="1200" height="1500" filter="url(#grain7)"/>
+</svg>
