@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <!-- Mood: Treppenhaus — Licht von oben faellt auf Stufenkanten. Der Weg nach oben zum Abend. -->
+  <defs>
+    <radialGradient id="quelle9" cx="26%" cy="6%" r="95%">
+      <stop offset="0%" stop-color="#3b352b"/>
+      <stop offset="45%" stop-color="#18150f"/>
+      <stop offset="100%" stop-color="#0a0a09"/>
+    </radialGradient>
+    <linearGradient id="kante9" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#fffdf4" stop-opacity=".95"/>
+      <stop offset="70%" stop-color="#f5f1ea" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#f5f1ea" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="tritt9" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cfc6b5" stop-opacity=".2"/>
+      <stop offset="100%" stop-color="#cfc6b5" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="blurL9"><feGaussianBlur stdDeviation="24"/></filter>
+    <filter id="blurS9"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="grain9">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="47" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 .98  0 0 0 0 .92  0 0 0 .055 0"/>
+    </filter>
+    <radialGradient id="vig9" cx="40%" cy="42%" r="82%">
+      <stop offset="46%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity=".64"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="1500" fill="url(#quelle9)"/>
+
+  <!-- Lichtschacht von oben links -->
+  <polygon points="120,-40 520,-40 780,1500 240,1500" fill="#efe8d8" opacity=".09" filter="url(#blurL9)"/>
+
+  <!-- Stufen: jede Kante faengt Licht (weiche Aura + harte Kante), Tritte schimmern schwach -->
+  <g>
+    <rect x="150" y="438" width="640" height="9" fill="url(#kante9)" filter="url(#blurS9)"/>
+    <rect x="150" y="442" width="620" height="2.4" fill="url(#kante9)"/>
+    <polygon points="150,445 790,445 760,560 120,560" fill="url(#tritt9)" opacity=".55"/>
+    <rect x="185" y="638" width="620" height="8" fill="url(#kante9)" filter="url(#blurS9)" opacity=".85"/>
+    <rect x="185" y="642" width="600" height="2.2" fill="url(#kante9)" opacity=".85"/>
+    <polygon points="185,645 805,645 775,765 155,765" fill="url(#tritt9)" opacity=".44"/>
+    <rect x="225" y="848" width="590" height="7" fill="url(#kante9)" filter="url(#blurS9)" opacity=".7"/>
+    <rect x="225" y="852" width="570" height="2" fill="url(#kante9)" opacity=".7"/>
+    <polygon points="225,855 815,855 790,975 195,975" fill="url(#tritt9)" opacity=".34"/>
+    <rect x="265" y="1063" width="560" height="6" fill="url(#kante9)" filter="url(#blurS9)" opacity=".55"/>
+    <rect x="265" y="1067" width="540" height="1.8" fill="url(#kante9)" opacity=".55"/>
+    <polygon points="265,1070 825,1070 800,1190 235,1190" fill="url(#tritt9)" opacity=".26"/>
+    <rect x="300" y="1279" width="530" height="5" fill="url(#kante9)" filter="url(#blurS9)" opacity=".42"/>
+    <rect x="300" y="1282" width="510" height="1.6" fill="url(#kante9)" opacity=".4"/>
+  </g>
+
+  <!-- Handlauf: eine ruhige Diagonale im Licht -->
+  <line x1="920" y1="330" x2="1060" y2="1500" stroke="#f5f1ea" stroke-width="3" opacity=".14" filter="url(#blurS9)"/>
+  <line x1="924" y1="330" x2="1064" y2="1500" stroke="#f5f1ea" stroke-width="1" opacity=".22"/>
+
+  <rect width="1200" height="1500" fill="url(#vig9)"/>
+  <rect width="1200" height="1500" filter="url(#grain9)"/>
+</svg>

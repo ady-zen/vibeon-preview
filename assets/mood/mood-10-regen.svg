@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1200" viewBox="0 0 1500 1200">
+  <!-- Mood: Regen auf Glas — die Stadt dahinter unscharf, Tropfen fangen das Licht. Drinnen beginnt es. -->
+  <defs>
+    <linearGradient id="nacht10" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0a09"/>
+      <stop offset="60%" stop-color="#100e0c"/>
+      <stop offset="100%" stop-color="#161310"/>
+    </linearGradient>
+    <filter id="b10a"><feGaussianBlur stdDeviation="38"/></filter>
+    <filter id="b10b"><feGaussianBlur stdDeviation="16"/></filter>
+    <filter id="b10c"><feGaussianBlur stdDeviation="1.1"/></filter>
+    <radialGradient id="stadtlicht10" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e8e0d0" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#e8e0d0" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Tropfen: dunkler Kern, heller Rand oben links -->
+    <radialGradient id="tropfen10" cx="36%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#f5f1ea" stop-opacity=".34"/>
+      <stop offset="34%" stop-color="#f5f1ea" stop-opacity=".05"/>
+      <stop offset="82%" stop-color="#000" stop-opacity=".12"/>
+      <stop offset="100%" stop-color="#f5f1ea" stop-opacity=".2"/>
+    </radialGradient>
+    <filter id="grain10">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="53" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 .98  0 0 0 0 .92  0 0 0 .05 0"/>
+    </filter>
+    <radialGradient id="vig10" cx="52%" cy="46%" r="78%">
+      <stop offset="48%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity=".6"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1500" height="1200" fill="url(#nacht10)"/>
+
+  <!-- Stadt dahinter: warme Lichter, stark unscharf -->
+  <g filter="url(#b10a)">
+    <circle cx="330" cy="720" r="130" fill="url(#stadtlicht10)" opacity=".5"/>
+    <circle cx="1120" cy="560" r="170" fill="url(#stadtlicht10)" opacity=".42"/>
+    <circle cx="760" cy="880" r="100" fill="url(#stadtlicht10)" opacity=".38"/>
+    <circle cx="1380" cy="920" r="120" fill="url(#stadtlicht10)" opacity=".3"/>
+    <circle cx="120" cy="420" r="90" fill="url(#stadtlicht10)" opacity=".26"/>
+  </g>
+  <g filter="url(#b10b)">
+    <circle cx="540" cy="500" r="46" fill="#fffdf4" opacity=".5"/>
+    <circle cx="960" cy="760" r="38" fill="#fffdf4" opacity=".44"/>
+    <circle cx="1240" cy="360" r="26" fill="#fffdf4" opacity=".36"/>
+  </g>
+
+  <!-- Tropfen auf der Scheibe -->
+  <g filter="url(#b10c)">
+    <ellipse cx="240" cy="180" rx="17" ry="21" fill="url(#tropfen10)"/>
+    <ellipse cx="470" cy="320" rx="12" ry="15" fill="url(#tropfen10)"/>
+    <ellipse cx="700" cy="150" rx="20" ry="24" fill="url(#tropfen10)"/>
+    <ellipse cx="920" cy="360" rx="10" ry="13" fill="url(#tropfen10)"/>
+    <ellipse cx="1180" cy="200" rx="15" ry="19" fill="url(#tropfen10)"/>
+    <ellipse cx="1390" cy="420" rx="12" ry="15" fill="url(#tropfen10)"/>
+    <ellipse cx="150" cy="540" rx="11" ry="14" fill="url(#tropfen10)"/>
+    <ellipse cx="380" cy="700" rx="16" ry="20" fill="url(#tropfen10)"/>
+    <ellipse cx="640" cy="560" rx="9" ry="12" fill="url(#tropfen10)"/>
+    <ellipse cx="880" cy="640" rx="14" ry="17" fill="url(#tropfen10)"/>
+    <ellipse cx="1090" cy="820" rx="11" ry="14" fill="url(#tropfen10)"/>
+    <ellipse cx="1300" cy="680" rx="18" ry="22" fill="url(#tropfen10)"/>
+    <ellipse cx="220" cy="920" rx="13" ry="16" fill="url(#tropfen10)"/>
+    <ellipse cx="530" cy="1020" rx="10" ry="13" fill="url(#tropfen10)"/>
+    <ellipse cx="820" cy="1080" rx="15" ry="18" fill="url(#tropfen10)"/>
+    <ellipse cx="1200" cy="1040" rx="12" ry="15" fill="url(#tropfen10)"/>
+    <ellipse cx="1440" cy="150" rx="9" ry="11" fill="url(#tropfen10)"/>
+    <ellipse cx="60" cy="760" rx="10" ry="13" fill="url(#tropfen10)"/>
+  </g>
+
+  <!-- Glanzpunkte: jeder Tropfen faengt das Licht -->
+  <g fill="#fffdf6">
+    <circle cx="234" cy="172" r="3" opacity=".75"/>
+    <circle cx="465" cy="314" r="2.2" opacity=".65"/>
+    <circle cx="693" cy="141" r="3.4" opacity=".8"/>
+    <circle cx="916" cy="355" r="1.9" opacity=".6"/>
+    <circle cx="1174" cy="193" r="2.7" opacity=".7"/>
+    <circle cx="1385" cy="414" r="2.2" opacity=".6"/>
+    <circle cx="146" cy="534" r="2" opacity=".6"/>
+    <circle cx="374" cy="692" r="2.8" opacity=".7"/>
+    <circle cx="636" cy="555" r="1.7" opacity=".55"/>
+    <circle cx="875" cy="633" r="2.5" opacity=".65"/>
+    <circle cx="1085" cy="814" r="2" opacity=".6"/>
+    <circle cx="1293" cy="671" r="3.1" opacity=".72"/>
+    <circle cx="215" cy="913" r="2.3" opacity=".6"/>
+    <circle cx="526" cy="1014" r="1.8" opacity=".55"/>
+    <circle cx="814" cy="1073" r="2.6" opacity=".62"/>
+    <circle cx="1195" cy="1033" r="2.1" opacity=".55"/>
+  </g>
+
+  <!-- Laufspuren: Tropfen, die schon gefallen sind -->
+  <g stroke="#f5f1ea" filter="url(#b10c)">
+    <line x1="700" y1="174" x2="704" y2="330" stroke-width="2.5" opacity=".1"/>
+    <line x1="1300" y1="702" x2="1306" y2="900" stroke-width="2" opacity=".09"/>
+    <line x1="380" y1="720" x2="384" y2="860" stroke-width="2" opacity=".08"/>
+  </g>
+
+  <rect width="1500" height="1200" fill="url(#vig10)"/>
+  <rect width="1500" height="1200" filter="url(#grain10)"/>
+</svg>

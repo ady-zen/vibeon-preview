@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  VIBEON One-Pager Mockup — Richtung G (Welle 3) = F-Puls veredelt mit Beer_Beats.at-Raffinessen, Version 6, 2026-07-04
+  VIBEON One-Pager Mockup — Richtung G (Welle 3) = F-Puls veredelt mit Beer_Beats.at-Raffinessen, Version 7, 2026-07-04
   Basis: Kopie von welle2-richtung-f-puls.html (Version 1). F's Substanz unveraendert:
   atmender Puls-Kern, Sonar-Ringe, zwei Mono-Ticker, warme Schwarz-Abstufungen mit Grain,
   gestaffelte Setzung, Lichtfeld-Gallery, Kontur-Anker je Format.
@@ -50,6 +50,16 @@
        Terminen), (6) Herkunfts-Zeile im Footer (Aus Bregenz. Fuer den Bodenseeraum.).
        Copy-SSOT entsprechend ergaenzt. Nicht gewaehlt: "Weitere Formate folgen",
        Anti-Positionierung + Sound-Zeile (Backlog-Kandidaten Checkpoint 4).
+  v7 — Bildwelt + Motion, mobile-first (70% Handy-Traffic, alle 7 Bausteine von Sascha
+       gewaehlt): M1 Licht-an-Reveal (schwarzes Overlay hebt sich beim Scroll-Eintritt —
+       Bilder "schalten sich ein"), M2 Scroll-Licht (gelbe Licht-Mulde wandert mit
+       Scrollposition, nur pointer:coarse — mobile Antwort auf den Cursor-Spotlight),
+       M3 Touch-Warmlauf (:active-Fuellung der CTAs), M4 Bild-Atmen (Scale 1→1.035,
+       Primzahl-Dauern, gegenlaeufig), B1 Full-Bleed mobil (Mood randlos), B2 Bild im
+       Beer-&-Beats-Block (mood-02 Fenster, "Blick in den Abend"; Secret X bleibt
+       bildlos), B3 Bildsatz +2 (mood-09 Treppenhaus, mood-10 Regen auf Glas — nach
+       Pixel-Statistik-Fix: Kanten/Glanzpunkte). Gallery jetzt 6 Bilder in 2 Spalten.
+       Reduced-motion: Overlays sofort offen, Atmen/Scroll-Licht aus.
 -->
 <html lang="de">
 <head>
@@ -187,6 +197,9 @@
     }
     .btn:hover,.btn:focus-visible{color:var(--schwarz);transition-delay:.28s}
     .btn:hover::before,.btn:focus-visible::before{transform:scaleX(1)}
+    /* M3: Touch-Warmlauf — am Handy feuert die Fuellung beim Antippen */
+    .btn:active{color:var(--schwarz);transition-delay:0s}
+    .btn:active::before{transform:scaleX(1);transition-duration:.25s}
     .btn--gelb{border-color:var(--gelb);color:var(--gelb)}
     .btn--gelb:hover,.btn--gelb:focus-visible{border-color:var(--weiss);color:var(--schwarz)}
     .btn .dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
@@ -571,6 +584,49 @@
       letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);
     }
 
+    /* ============ Bildwelt + Motion v7 (mobile-first) ============ */
+    a,button{-webkit-tap-highlight-color:transparent}
+    /* M1: Licht-an-Reveal — das Bild liegt im Dunkeln und schaltet sich ein (nur mit JS) */
+    .js .lichtan{position:relative}
+    .js .lichtan::after{
+      content:"";position:absolute;inset:0;background:var(--schwarz);
+      opacity:1;pointer-events:none;
+      transition:opacity 1.3s ease .15s;
+    }
+    .js .lichtan.is-in::after{opacity:0}
+    /* M4: Bild-Atmen — nach dem Reveal driften die Bilder im Puls-Rhythmus, gegenlaeufig */
+    @keyframes bildAtmen{from{transform:scale(1)}to{transform:scale(1.035)}}
+    .js .mood-bild.is-in img{animation:bildAtmen calc(var(--puls-dauer) * 4.3) ease-in-out infinite alternate}
+    .mood-spalte .mood-bild:nth-child(2) img{animation-duration:calc(var(--puls-dauer) * 5.1);animation-delay:-9s;transform-origin:64% 36%}
+    .mood-spalte .mood-bild:nth-child(3) img{animation-duration:calc(var(--puls-dauer) * 3.7);animation-delay:-5s;transform-origin:30% 70%}
+    .mood-spalte--b .mood-bild:nth-child(1) img{animation-delay:-3s;transform-origin:70% 30%}
+    .mood-spalte--b .mood-bild:nth-child(3) img{animation-duration:calc(var(--puls-dauer) * 4.7);animation-delay:-11s}
+    /* B2: Format-Bild (Beer & Beats — Blick in den Abend) */
+    .format-bild{margin:clamp(24px,4vh,36px) 0 0;max-width:min(380px,86%)}
+    .format-bild img{display:block;width:100%;height:auto}
+    /* M2: Scroll-Licht — die mobile Antwort auf den Cursor-Spotlight */
+    .scroll-licht{
+      display:none;
+      position:fixed;left:0;top:0;z-index:40;
+      width:min(92vw,420px);aspect-ratio:1;border-radius:50%;
+      pointer-events:none;
+      background:radial-gradient(closest-side, rgba(233,244,47,.055), rgba(233,244,47,0) 72%);
+      mix-blend-mode:screen;
+      transform:translate3d(calc(8vw + var(--sp,0) * 60vw - 50%), calc(12vh + var(--sp,0) * 66vh - 50%), 0);
+      opacity:0;transition:opacity .8s ease;
+    }
+    .scroll-licht.wach{opacity:1}
+    @media (pointer:coarse) and (prefers-reduced-motion:no-preference){
+      .scroll-licht{display:block}
+    }
+    /* B1: Full-Bleed mobil — die Bildwelt wird zum Kino */
+    @media (max-width:820px){
+      .mood .innen{padding-left:0;padding-right:0}
+      .mood-grid{gap:10px}
+      .mood-spalte{gap:10px}
+      .format-bild{max-width:100%}
+    }
+
     /* ============ Die Liste ============ */
     .liste{background:var(--schwarz-warm)}
     .liste h2{
@@ -668,8 +724,11 @@
       /* Puls-Ringe ohne Animation ausblenden, Kerne bleiben als ruhiges Licht */
       .puls::before,.puls::after,
       .hero-licht .r1,.hero-licht .r2,.hero-licht .r3{display:none}
-      /* Spotlight aus */
+      /* Spotlight + Scroll-Licht aus */
       .spot{display:none !important}
+      .scroll-licht{display:none !important}
+      /* Licht-an-Overlays sofort offen (Blanket-transition:none wuerde sie sonst festhalten) */
+      .js .lichtan::after{opacity:0}
     }
     @media (prefers-reduced-motion: reduce) and (max-width:820px){
       .hero-licht{transform:translateX(-50%)}
@@ -786,6 +845,8 @@
               <div><span>Orte</span><span class="g">Galerie · Werkstatt · Dachboden</span></div>
               <div><span>Drinks</span><span class="g">aufs Haus</span></div>
             </div>
+            <!-- B2 (v7): Blick in den Abend — Secret X bleibt bewusst bildlos -->
+            <figure class="format-bild beat d3 lichtan"><img src="assets/mood/mood-02-fenster.svg" alt="" width="800" height="640" loading="lazy" decoding="async"></figure>
             <p class="format-cta beat d4"><a class="btn" href="https://beerbeats.at" target="_blank" rel="noopener">Mehr erfahren</a></p>
             <p class="format-by beat d4">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
           </div>
@@ -815,12 +876,14 @@
       <div class="innen">
         <div class="mood-grid">
           <div class="mood-spalte">
-            <figure class="mood-bild beat d1"><img src="assets/mood/mood-05-tuerspalt.svg" alt="" width="1200" height="1500" loading="lazy" decoding="async"></figure>
-            <figure class="mood-bild beat d3"><img src="assets/mood/mood-06-bokeh.svg" alt="" width="1500" height="1200" loading="lazy" decoding="async"></figure>
+            <figure class="mood-bild beat d1 lichtan"><img src="assets/mood/mood-05-tuerspalt.svg" alt="" width="1200" height="1500" loading="lazy" decoding="async"></figure>
+            <figure class="mood-bild beat d3 lichtan"><img src="assets/mood/mood-06-bokeh.svg" alt="" width="1500" height="1200" loading="lazy" decoding="async"></figure>
+            <figure class="mood-bild beat d1 lichtan"><img src="assets/mood/mood-09-treppenhaus.svg" alt="" width="1200" height="1500" loading="lazy" decoding="async"></figure>
           </div>
           <div class="mood-spalte mood-spalte--b">
-            <figure class="mood-bild beat d2"><img src="assets/mood/mood-08-beton.svg" alt="" width="1500" height="1200" loading="lazy" decoding="async"></figure>
-            <figure class="mood-bild beat d4"><img src="assets/mood/mood-07-nebelkegel.svg" alt="" width="1200" height="1500" loading="lazy" decoding="async"></figure>
+            <figure class="mood-bild beat d2 lichtan"><img src="assets/mood/mood-08-beton.svg" alt="" width="1500" height="1200" loading="lazy" decoding="async"></figure>
+            <figure class="mood-bild beat d4 lichtan"><img src="assets/mood/mood-07-nebelkegel.svg" alt="" width="1200" height="1500" loading="lazy" decoding="async"></figure>
+            <figure class="mood-bild beat d2 lichtan"><img src="assets/mood/mood-10-regen.svg" alt="" width="1500" height="1200" loading="lazy" decoding="async"></figure>
           </div>
         </div>
       </div>
@@ -894,6 +957,8 @@
 
   <!-- Cursor-Spotlight (nur Desktop, per CSS auf pointer:fine begrenzt) -->
   <div class="spot" aria-hidden="true"></div>
+  <!-- M2: Scroll-Licht (nur pointer:coarse, per CSS begrenzt) -->
+  <div class="scroll-licht" aria-hidden="true"></div>
 
   <script>
     // Progressive Enhancement: ohne JS ist alles sichtbar, der Schaltmoment steht auf "an".
@@ -935,6 +1000,22 @@
           });
         }
       }, { passive: true });
+    }
+
+    // 4) Scroll-Licht: die mobile Antwort auf den Spotlight — Licht wandert mit dem Scrollen.
+    var slicht = document.querySelector('.scroll-licht');
+    if (slicht && !reduziert && window.matchMedia('(pointer: coarse)').matches) {
+      var sfrei = true;
+      var setzLicht = function () {
+        var m = document.documentElement.scrollHeight - window.innerHeight;
+        slicht.style.setProperty('--sp', m > 0 ? (window.scrollY / m) : 0);
+        slicht.classList.add('wach');
+        sfrei = true;
+      };
+      window.addEventListener('scroll', function () {
+        if (sfrei) { sfrei = false; window.requestAnimationFrame(setzLicht); }
+      }, { passive: true });
+      setzLicht();
     }
   </script>
 </body>
