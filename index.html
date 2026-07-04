@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  VIBEON One-Pager Mockup — Richtung G (Welle 3) = F-Puls veredelt mit Beer_Beats.at-Raffinessen, Version 5, 2026-07-03
+  VIBEON One-Pager Mockup — Richtung G (Welle 3) = F-Puls veredelt mit Beer_Beats.at-Raffinessen, Version 6, 2026-07-04
   Basis: Kopie von welle2-richtung-f-puls.html (Version 1). F's Substanz unveraendert:
   atmender Puls-Kern, Sonar-Ringe, zwei Mono-Ticker, warme Schwarz-Abstufungen mit Grain,
   gestaffelte Setzung, Lichtfeld-Gallery, Kontur-Anker je Format.
@@ -40,6 +40,16 @@
        Textur via feDiffuseLighting). Alter Bildsatz mood-01..04 bleibt als Referenz.
        Qualitaet objektiv verifiziert (Pixel-Statistik: Kontrastumfang, Hellzonen,
        Gelb nur in mood-06); Screenshot-Capture in Session defekt, Urteil bei Sascha.
+  v6 — Content-Elemente aus Konzept-Reflexion (VIBEON Gesamtkonzept.docx, von Sascha
+       gewaehlt + freigegeben): (1) "A FORMAT BY VIBEON"-Zeile an beiden Format-Bloecken,
+       (2) Gastgeber-Zeile im About ("Hinter VIBEON stehen Gastgeber, keine Veranstalter."),
+       (3) Zwischen-Band nach About (Konzept-Sprache woertlich: Wohnzimmer/Club,
+       Galerie/Gastronomie, Kultur/Lifestyle), (4) Orte-Typen-Band nach Mood
+       (Location-Typen aus Konzept Abschnitt 12), (5) Manifest V1 vor der Liste
+       (Menschen vor Programm / Atmosphaere vor Show / Orte vor Hallen / Momente vor
+       Terminen), (6) Herkunfts-Zeile im Footer (Aus Bregenz. Fuer den Bodenseeraum.).
+       Copy-SSOT entsprechend ergaenzt. Nicht gewaehlt: "Weitere Formate folgen",
+       Anti-Positionierung + Sound-Zeile (Backlog-Kandidaten Checkpoint 4).
 -->
 <html lang="de">
 <head>
@@ -523,6 +533,44 @@
       .mood-spalte--b{margin-top:0}
     }
 
+    /* ============ Content-Elemente v6 (Konzept-Reflexion) ============ */
+    .zwischen{padding:clamp(70px,11vh,140px) var(--rand)}
+    .zwischen p{
+      margin:0;font-weight:300;
+      font-size:clamp(22px,3vw,44px);line-height:1.35;
+    }
+    .zwischen p + p{margin-top:.3em}
+    .zwischen .u{color:var(--text-dim)}
+    .format-by{
+      margin-top:clamp(18px,3vh,28px);
+      font-family:var(--mono);font-weight:500;font-size:clamp(10px,.72vw,12px);
+      letter-spacing:.22em;text-transform:uppercase;color:var(--text-dim);
+    }
+    .format-by .marke{
+      font-family:var(--archivo);font-weight:900;font-stretch:125%;
+      font-size:1.2em;letter-spacing:.02em;color:var(--weiss);
+    }
+    .format-by .marke .on{color:var(--gelb)}
+    .orte-band{
+      padding:clamp(26px,4vh,42px) var(--rand);
+      border-bottom:1px solid var(--hairline);
+      font-family:var(--mono);font-weight:500;font-size:clamp(11px,.85vw,14px);
+      letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);
+      text-align:center;
+    }
+    .manifest{padding:clamp(80px,13vh,170px) var(--rand)}
+    .manifest p{
+      margin:0;font-weight:300;
+      font-size:clamp(24px,3.4vw,52px);line-height:1.3;
+    }
+    .manifest p + p{margin-top:.25em}
+    .manifest .vor{color:var(--text-dim)}
+    .herkunft{
+      width:100%;margin:0 0 4px;
+      font-family:var(--mono);font-weight:500;font-size:clamp(11px,.8vw,13px);
+      letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);
+    }
+
     /* ============ Die Liste ============ */
     .liste{background:var(--schwarz-warm)}
     .liste h2{
@@ -692,10 +740,19 @@
             <p class="beat d1">Es gibt Abende, die <span class="gelb">bleiben</span>.<br>
             Nicht wie eine Veranstaltung – wie ein Moment, der genau so <span class="gelb">passieren musste.</span></p>
             <p class="steht beat d2">Dafür steht <span class="marke">VIBE<span class="on">ON</span></span>: Eventformate rund um Musik, Menschen und Orte, die man sonst nicht erlebt.</p>
+            <!-- Content-Element v6: Gastgeber-Signal (Konzept Abschnitt 11, ohne Namen) -->
+            <p class="steht beat d3">Hinter VIBEON stehen Gastgeber, keine Veranstalter.</p>
           </div>
           <div class="about-spalte" aria-hidden="true">VIBE<b>ON</b> VIBE<b>ON</b> VIBE<b>ON</b> VIBE<b>ON</b> VIBE<b>ON</b></div>
         </div>
       </div>
+    </section>
+
+    <!-- ============ Content-Element v6: Zwischen-Band (Konzept Abschnitt 2, woertlich) ============ -->
+    <section class="zwischen" aria-label="Wofür VIBEON steht">
+      <p class="beat d1"><span class="u">Zwischen</span> Wohnzimmer <span class="u">und</span> Club.</p>
+      <p class="beat d2"><span class="u">Zwischen</span> Galerie <span class="u">und</span> Gastronomie.</p>
+      <p class="beat d3"><span class="u">Zwischen</span> Kultur <span class="u">und</span> Lifestyle.</p>
     </section>
 
     <!-- ============ 3 · Formate ============ -->
@@ -730,6 +787,7 @@
               <div><span>Drinks</span><span class="g">aufs Haus</span></div>
             </div>
             <p class="format-cta beat d4"><a class="btn" href="https://beerbeats.at" target="_blank" rel="noopener">Mehr erfahren</a></p>
+            <p class="format-by beat d4">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
           </div>
         </div>
       </article>
@@ -744,6 +802,7 @@
             <p class="format-copy beat d2"><span class="laut">Datum steht. <span class="gelb">Location nicht.</span></span> Wo es stattfindet, erfährst du am <span class="gelb">Tag X</span> – aber nur, wenn du auf der Liste bist.</p>
             <!-- TODO: echte WhatsApp-Kanal-URL eintragen -->
             <p class="format-cta beat d3"><a class="btn btn--gelb" href="https://whatsapp.com/channel/PLATZHALTER"><span class="dot" aria-hidden="true"></span>Auf die Liste</a></p>
+            <p class="format-by beat d4">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
           </div>
         </div>
       </article>
@@ -767,6 +826,11 @@
       </div>
     </section>
 
+    <!-- ============ Content-Element v6: Orte-Typen (Konzept Abschnitt 12) ============ -->
+    <section class="orte-band beat d1" aria-label="Orte">
+      <p style="margin:0">Galerie · Dachterrasse · Hafen · Industriefläche · Historisches Haus · Leerstand</p>
+    </section>
+
     <!-- ============ Ticker 2 ============ -->
     <section class="ticker ticker--langsam" aria-label="Laufzeile" tabindex="0">
       <p class="sr-only">Die Liste. Nur Termine, Drops und Locations. Der Vibe ist an.</p>
@@ -774,6 +838,14 @@
         <div class="ticker-teil"><span>Die Liste</span><span>·</span><span>Nur Termine, Drops und Locations</span><span>·</span><span>Der Vibe ist an</span><span>·</span><span>Bregenz</span><span>·</span><span>Die Liste</span><span>·</span><span>Nur Termine, Drops und Locations</span><span>·</span></div>
         <div class="ticker-teil"><span>Die Liste</span><span>·</span><span>Nur Termine, Drops und Locations</span><span>·</span><span>Der Vibe ist an</span><span>·</span><span>Bregenz</span><span>·</span><span>Die Liste</span><span>·</span><span>Nur Termine, Drops und Locations</span><span>·</span></div>
       </div>
+    </section>
+
+    <!-- ============ Content-Element v6: Manifest (Variante V1, von Sascha freigegeben) ============ -->
+    <section class="manifest" aria-label="Haltung">
+      <p class="beat d1">Menschen <span class="vor">vor</span> Programm.</p>
+      <p class="beat d2">Atmosphäre <span class="vor">vor</span> Show.</p>
+      <p class="beat d3">Orte <span class="vor">vor</span> Hallen.</p>
+      <p class="beat d4">Momente <span class="vor">vor</span> Terminen.</p>
     </section>
 
     <!-- ============ 5 · Community-CTA ============ -->
@@ -804,6 +876,8 @@
 
   <!-- ============ 7 · Footer ============ -->
   <footer>
+    <!-- Content-Element v6: Herkunft (Konzept Abschnitte 4/22) -->
+    <p class="herkunft">Aus Bregenz. Für den Bodenseeraum.</p>
     <span class="wortmarke footer-marke" aria-hidden="true">VIBE<span class="on">ON</span></span>
     <nav aria-label="Footer">
       <ul>
