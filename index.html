@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  VIBEON One-Pager Mockup — Richtung G (Welle 3) = F-Puls veredelt mit Beer_Beats.at-Raffinessen, Version 8, 2026-07-04
+  VIBEON One-Pager Mockup — Richtung G (Welle 3) = F-Puls veredelt mit Beer_Beats.at-Raffinessen, Version 9, 2026-07-04
   Basis: Kopie von welle2-richtung-f-puls.html (Version 1). F's Substanz unveraendert:
   atmender Puls-Kern, Sonar-Ringe, zwei Mono-Ticker, warme Schwarz-Abstufungen mit Grain,
   gestaffelte Setzung, Lichtfeld-Gallery, Kontur-Anker je Format.
@@ -67,17 +67,27 @@
        bleibt (einziges Bild der Seite, ebenfalls Platzhalter). Bild-Atmen wandert
        vom Mood-Grid auf das Format-Bild. Orte-Band bekommt border-top (neue Naht
        Secret X → Orte). Seite ist damit wieder konsequent Typo-first.
+  v9 — Drittes Format EXODUS (@exodus.aiff, laut Sascha laufendes eigenes Format wie
+       Beer & Beats): eigener Block zwischen B&B und Secret X (Format 02, Secret X → 03),
+       clubnah/dunkler (#0d0b0a), Kontur-Anker "→" (Aufbruch). ACHTUNG INTERIMS-COPY:
+       Instagram-Account nicht zugaenglich (Login-Wand, Websuche leer, kein Chrome
+       verbunden) — Copy + Meta-Zeile sind Platzhalter bis Sascha Screenshots liefert.
+       2-KLICK-INSTAGRAM-VIDEOS (Entscheidung Sascha): 3 Reel-Slots als 9:16-Band mit
+       Scroll-Snap; VOR dem Klick null Meta-Requests, Klick laedt iframe
+       instagram.com/reel/<id>/embed (Reel-IDs = TODO-Platzhalter). Datenschutz-Hinweis
+       an jeder Kachel; ohne JS ist das Band ausgeblendet (Account-Link bleibt).
+       Ticker + Meta-Description um Exodus ergaenzt.
 -->
 <html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VIBEON – Eventformate mit eigener Identität | Bregenz &amp; Bodenseeraum</title>
-  <meta name="description" content="VIBEON entwickelt Eventformate rund um Musik, Menschen und besondere Orte: Beer &amp; Beats und Secret X. Der Vibe ist an.">
+  <meta name="description" content="VIBEON entwickelt Eventformate rund um Musik, Menschen und besondere Orte: Beer &amp; Beats, Exodus und Secret X. Der Vibe ist an.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="de_AT">
   <meta property="og:title" content="VIBEON – Eventformate mit eigener Identität | Bregenz &amp; Bodenseeraum">
-  <meta property="og:description" content="VIBEON entwickelt Eventformate rund um Musik, Menschen und besondere Orte: Beer &amp; Beats und Secret X. Der Vibe ist an.">
+  <meta property="og:description" content="VIBEON entwickelt Eventformate rund um Musik, Menschen und besondere Orte: Beer &amp; Beats, Exodus und Secret X. Der Vibe ist an.">
   <!-- TODO: og-image-v1.jpg erstellen (staerkstes Mood-Bild, Logo dezent) -->
   <meta property="og:image" content="/assets/og-image-v1.jpg">
   <link rel="icon" type="image/svg+xml" href="assets/vibeon-icon-gelb.svg">
@@ -503,6 +513,45 @@
     }
     .format--beer .mono-zeilen .g{color:var(--gelb)}
 
+    /* Exodus — clubnah, dunkler als Beer & Beats (INTERIMS-COPY bis Instagram-Destillat) */
+    .format--exodus{background:#0d0b0a}
+    .format--exodus .innen{padding-top:clamp(90px,13vh,160px);padding-bottom:clamp(90px,13vh,160px)}
+    .format--exodus .format-anker{
+      right:calc(-1 * clamp(6px,1.5vw,30px));top:clamp(20px,5vh,70px);
+      font-size:clamp(180px,30vw,480px);
+      color:transparent;-webkit-text-stroke:1.5px rgba(245,241,234,.22);
+    }
+    /* 2-Klick-Instagram (Entscheidung 2026-07-04): VOR dem Klick kein Request an Meta */
+    .ig-band{
+      margin-top:clamp(24px,4vh,40px);
+      display:grid;grid-auto-flow:column;grid-auto-columns:clamp(200px,24vw,260px);
+      gap:14px;overflow-x:auto;padding-bottom:8px;
+      scroll-snap-type:x mandatory;touch-action:pan-x pan-y;
+      scrollbar-width:none;
+    }
+    .ig-band::-webkit-scrollbar{display:none}
+    .ig-video{
+      aspect-ratio:9/16;scroll-snap-align:start;
+      background:#0a0908;border:1px solid var(--hairline);
+      position:relative;overflow:hidden;
+    }
+    .ig-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    .ig-laden{
+      position:absolute;inset:0;width:100%;height:100%;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+      background:transparent;border:0;cursor:pointer;color:var(--weiss);
+      font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+      padding:16px;
+    }
+    .ig-play{width:44px;height:44px;border:1px solid var(--gelb);border-radius:50%;position:relative;flex:none}
+    .ig-play::after{
+      content:"";position:absolute;left:55%;top:50%;transform:translate(-50%,-50%);
+      border-left:12px solid var(--gelb);border-top:8px solid transparent;border-bottom:8px solid transparent;
+    }
+    .ig-laden:hover .ig-play,.ig-laden:focus-visible .ig-play,.ig-laden:active .ig-play{background:rgba(233,244,47,.12)}
+    .ig-hinweis{font-size:10px;letter-spacing:.08em;text-transform:none;color:var(--text-dim);max-width:24ch;line-height:1.5}
+    @media (max-width:820px){.ig-band{grid-auto-columns:min(62vw,240px)}}
+
     /* Secret X — tiefstes Schwarz, minimal, nur Typo, Gelb zuendet dosiert */
     .format--secret{background:var(--schwarz-tief);text-align:center}
     .format--secret .innen{
@@ -715,7 +764,7 @@
       .hero-licht{transform:translateX(-50%)}
     }
   </style>
-  <noscript><style>.beat{opacity:1 !important;transform:none !important}</style></noscript>
+  <noscript><style>.beat{opacity:1 !important;transform:none !important}.ig-band{display:none}</style></noscript>
 </head>
 <body>
   <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
@@ -759,10 +808,10 @@
 
     <!-- ============ Ticker 1 ============ -->
     <section class="ticker ticker--gelb" aria-label="Laufzeile" tabindex="0">
-      <p class="sr-only">Der Vibe ist an. Bregenz. Beer &amp; Beats. Secret X.</p>
+      <p class="sr-only">Der Vibe ist an. Bregenz. Beer &amp; Beats. Exodus. Secret X.</p>
       <div class="ticker-spur" aria-hidden="true">
-        <div class="ticker-teil"><span>Der Vibe ist an</span><span>·</span><span>Bregenz</span><span>·</span><span>Beer &amp; Beats</span><span>·</span><span>Secret X</span><span>·</span><span>Der Vibe ist an</span><span>·</span><span>Bregenz</span><span>·</span><span>Du weißt, wenn du dabei warst</span><span>·</span></div>
-        <div class="ticker-teil"><span>Der Vibe ist an</span><span>·</span><span>Bregenz</span><span>·</span><span>Beer &amp; Beats</span><span>·</span><span>Secret X</span><span>·</span><span>Der Vibe ist an</span><span>·</span><span>Bregenz</span><span>·</span><span>Du weißt, wenn du dabei warst</span><span>·</span></div>
+        <div class="ticker-teil"><span>Der Vibe ist an</span><span>·</span><span>Bregenz</span><span>·</span><span>Beer &amp; Beats</span><span>·</span><span>Exodus</span><span>·</span><span>Secret X</span><span>·</span><span>Der Vibe ist an</span><span>·</span><span>Bregenz</span><span>·</span><span>Du weißt, wenn du dabei warst</span><span>·</span></div>
+        <div class="ticker-teil"><span>Der Vibe ist an</span><span>·</span><span>Bregenz</span><span>·</span><span>Beer &amp; Beats</span><span>·</span><span>Exodus</span><span>·</span><span>Secret X</span><span>·</span><span>Der Vibe ist an</span><span>·</span><span>Bregenz</span><span>·</span><span>Du weißt, wenn du dabei warst</span><span>·</span></div>
       </div>
     </section>
 
@@ -834,12 +883,55 @@
         </div>
       </article>
 
+      <!-- Exodus: clubnah, dunkel — INTERIMS-COPY bis Instagram-Destillat (Screenshots Sascha) -->
+      <article class="format format--exodus" aria-labelledby="f-exodus">
+        <div class="innen">
+          <div class="format-anker" aria-hidden="true">&#8594;</div>
+          <div class="format-inhalt">
+            <p class="format-nr mono">Format 02</p>
+            <h3 class="formatname beat d1" id="f-exodus" style="font-size:clamp(28px,4vw,58px)">Exodus</h3>
+            <!-- TODO: Meta-Zeile (Rhythmus · Zeit) nach Instagram-Destillat ergaenzen -->
+            <p class="format-meta beat d2">@exodus.aiff · Bregenz</p>
+            <!-- TODO INTERIMS-COPY (nicht freigegeben): ersetzen, sobald das Destillat aus dem
+                 Instagram-Account vorliegt — Sascha liefert Screenshots (Bio + 2-3 Posts) -->
+            <p class="format-copy beat d2"><span class="laut">Die Nacht, konzentriert.</span> Elektronische Musik, dunkle Räume, keine Ablenkung.</p>
+            <!-- 2-Klick-Instagram-Videos: vor dem Klick kein Request an Meta -->
+            <div class="ig-band beat d3" role="group" aria-label="Instagram-Videos von Exodus">
+              <!-- TODO: echte Reel-IDs eintragen (instagram.com/reel/<ID>/) -->
+              <div class="ig-video">
+                <button class="ig-laden" type="button" data-reel="PLATZHALTER_REEL_1">
+                  <span class="ig-play" aria-hidden="true"></span>
+                  <span>Video laden</span>
+                  <span class="ig-hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
+                </button>
+              </div>
+              <div class="ig-video">
+                <button class="ig-laden" type="button" data-reel="PLATZHALTER_REEL_2">
+                  <span class="ig-play" aria-hidden="true"></span>
+                  <span>Video laden</span>
+                  <span class="ig-hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
+                </button>
+              </div>
+              <div class="ig-video">
+                <button class="ig-laden" type="button" data-reel="PLATZHALTER_REEL_3">
+                  <span class="ig-play" aria-hidden="true"></span>
+                  <span>Video laden</span>
+                  <span class="ig-hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
+                </button>
+              </div>
+            </div>
+            <p class="format-cta beat d4"><a class="btn" href="https://www.instagram.com/exodus.aiff" target="_blank" rel="noopener">Mehr erfahren</a></p>
+            <p class="format-by beat d4">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
+          </div>
+        </div>
+      </article>
+
       <!-- Secret X: tiefstes Schwarz, nur Typo, Gelb zuendet dosiert -->
       <article class="format format--secret" aria-labelledby="f-secret">
         <div class="innen">
           <div class="format-inhalt">
             <div class="x" aria-hidden="true">X</div>
-            <p class="format-nr mono">Format 02</p>
+            <p class="format-nr mono">Format 03</p>
             <h3 class="formatname beat d1" id="f-secret" style="font-size:clamp(28px,4vw,58px)">Secret X</h3>
             <p class="format-copy beat d2"><span class="laut">Datum steht. <span class="gelb">Location nicht.</span></span> Wo es stattfindet, erfährst du am <span class="gelb">Tag X</span> – aber nur, wenn du auf der Liste bist.</p>
             <!-- TODO: echte WhatsApp-Kanal-URL eintragen -->
@@ -981,6 +1073,19 @@
       }, { passive: true });
       setzLicht();
     }
+
+    // 5) 2-Klick-Instagram: VOR dem Klick geht kein Request an Meta (Entscheidung, tech-notizen).
+    document.querySelectorAll('.ig-laden').forEach(function (knopf) {
+      knopf.addEventListener('click', function () {
+        var halter = knopf.parentElement;
+        var frame = document.createElement('iframe');
+        frame.src = 'https://www.instagram.com/reel/' + knopf.getAttribute('data-reel') + '/embed/';
+        frame.loading = 'lazy';
+        frame.setAttribute('allowfullscreen', '');
+        frame.title = 'Instagram-Video (Exodus)';
+        halter.replaceChild(frame, knopf);
+      });
+    });
   </script>
 </body>
 </html>
