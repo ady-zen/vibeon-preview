@@ -97,6 +97,13 @@
        Ambient-Licht am unteren Rand, NIE Gelb hinter Text — screen-blend). (5) STROM: duennes
        Licht-Filament links, laedt sich beim Scrollen mit Gelb auf (Leitmotiv). Reduced-motion +
        noscript fuer alle neuen Elemente abgesichert; Gelb bleibt ausschliesslich auf Schwarz.
+  v12 — Detail-/Raffinesse-Pass (ui-ux-pro-max-Skill, Sascha-Auftrag), Markenkern unveraendert:
+       touch-action:manipulation auf Links/Buttons (tap-delay weg); scroll-padding-top fuer
+       Anker-Spruenge; Micro-Press-Scale .98 auf .btn (scale-feedback); Ticker mit weichen
+       Rand-Fades (mask-image); text-wrap balance/pretty (Headlines/poetische Zeilen/Copy);
+       Secret-X-Redaction-"Decrypt"-Shimmer jetzt in-view auf ALLEN Geraeten (statt nur Desktop-
+       Hover — 70% Handy), langsamer/faint; overscroll-behavior am Reel-Band (gesture-conflicts).
+       Alles progressive Enhancement, reduced-motion + Gelb-auf-Schwarz-Regel unangetastet.
 -->
 <html lang="de">
 <head>
@@ -138,7 +145,7 @@
     }
 
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    html{scroll-behavior:smooth;scroll-padding-top:clamp(20px,6vh,64px)}
     body{
       background:var(--schwarz);
       color:var(--weiss);
@@ -146,6 +153,7 @@
       font-weight:500;
       font-size:clamp(16px, 1.05vw + 12px, 19px);
       line-height:1.6;
+      text-wrap:pretty;
       overflow-x:hidden;
     }
     ::selection{background:var(--gelb);color:var(--schwarz)}
@@ -200,7 +208,10 @@
       line-height:.96;
       letter-spacing:-.01em;
       text-transform:uppercase;
+      text-wrap:balance;
     }
+    /* v12: ausgewogene Umbrueche auch bei den poetischen Kurzzeilen */
+    .manifest p,.zwischen p{text-wrap:balance}
     .mono{font-family:var(--mono);font-weight:400;font-size:clamp(12px,.8vw,14px);letter-spacing:.08em;text-transform:uppercase}
     .mono-500{font-weight:500}
     /* Tabellenziffern auf allen Mono-Meta-Ziffern (Zeiten, Daten) */
@@ -224,7 +235,7 @@
       letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
       border:1px solid var(--weiss);color:var(--weiss);background:transparent;
       position:relative;isolation:isolate;overflow:hidden;
-      transition:color .25s ease,border-color .25s ease;
+      transition:color .25s ease,border-color .25s ease,transform .12s ease;
     }
     .btn::before{
       content:"";position:absolute;inset:-1px;z-index:-1;
@@ -235,7 +246,7 @@
     .btn:hover,.btn:focus-visible{color:var(--schwarz);transition-delay:.28s}
     .btn:hover::before,.btn:focus-visible::before{transform:scaleX(1)}
     /* M3: Touch-Warmlauf — am Handy feuert die Fuellung beim Antippen */
-    .btn:active{color:var(--schwarz);transition-delay:0s}
+    .btn:active{color:var(--schwarz);transition-delay:0s;transform:scale(.98)}
     .btn:active::before{transform:scaleX(1);transition-duration:.25s}
     .btn--gelb{border-color:var(--gelb);color:var(--gelb)}
     .btn--gelb:hover,.btn--gelb:focus-visible{border-color:var(--weiss);color:var(--schwarz)}
@@ -439,6 +450,8 @@
       border-bottom:1px solid var(--hairline);
       overflow:hidden;
       padding:18px 0;
+      -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+      mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
     }
     .ticker--gelb{border-color:var(--hairline-gelb)}
     .ticker-spur{
@@ -561,7 +574,7 @@
     .ig-band{
       margin-top:clamp(24px,4vh,40px);
       display:grid;grid-auto-flow:column;grid-auto-columns:clamp(200px,24vw,260px);
-      gap:14px;overflow-x:auto;padding-bottom:8px;
+      gap:14px;overflow-x:auto;overscroll-behavior-x:contain;padding-bottom:8px;
       scroll-snap-type:x mandatory;touch-action:pan-x pan-y;
       scrollbar-width:none;
     }
@@ -632,10 +645,9 @@
       background:linear-gradient(90deg,transparent,rgba(233,244,47,.16),transparent);
       transform:translateX(-130%);
     }
-    @media (pointer:fine) and (prefers-reduced-motion:no-preference){
-      .format--secret:hover .geheim .balken::after{animation:scan 2.6s ease-in-out infinite}
-    }
-    @keyframes scan{0%{transform:translateX(-130%)}60%,100%{transform:translateX(330%)}}
+    /* Decrypt-Shimmer v12: laeuft, sobald der Balken im Blick ist (alle Geraete, langsam/faint) */
+    .js .geheim.is-in .balken::after{animation:scan 4.6s ease-in-out infinite}
+    @keyframes scan{0%,8%{transform:translateX(-130%)}55%,100%{transform:translateX(330%)}}
 
     /* Mood/Gallery in v8 entfernt (Kuenstler-Bild-Block raus, Sascha 2026-07-04).
        Wiederaufnahme mit ECHTEN Eventfotos nach Event 1 — Referenz: v7-Datei.
@@ -719,7 +731,7 @@
     }
 
     /* ============ Bildwelt + Motion v7 (mobile-first) ============ */
-    a,button{-webkit-tap-highlight-color:transparent}
+    a,button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
     /* M1: Licht-an-Reveal — das Bild liegt im Dunkeln und schaltet sich ein (nur mit JS) */
     .js .lichtan{position:relative}
     .js .lichtan::after{
