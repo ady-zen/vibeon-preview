@@ -454,34 +454,9 @@
     .manifest p + p{margin-top:.3em}
     .manifest .vor{color:var(--ueberdruck)}
 
-    /* ============ Bogen 10 · Die Liste (Tinte-Vollton, Abriss-Coupon) ============ */
-    .liste h2{font-size:clamp(56px,16vw,180px);line-height:.84}
-    .liste .text{margin-top:clamp(22px,4vh,36px);font-size:clamp(17px,4.3vw,21px);line-height:1.5;max-width:38ch}
-    .coupon{
-      margin-top:clamp(32px,5.5vh,54px);
-      border:2px dashed var(--papier);
-      padding:clamp(20px,4.5vw,32px);
-      position:relative;
-      display:grid;gap:14px;
-    }
-    /* Perforations-Kerben links und rechts — der Abschnitt zum Abreissen */
-    .coupon::before,.coupon::after{
-      content:"";position:absolute;top:50%;width:26px;height:26px;
-      margin-top:-13px;border-radius:50%;background:var(--tinte);
-      border:2px dashed var(--papier);
-    }
-    .coupon::before{left:-15px}
-    .coupon::after{right:-15px}
-    .coupon .kopfzeile{
-      font-family:var(--display);font-weight:700;text-transform:uppercase;
-      font-size:clamp(14px,3.4vw,17px);opacity:.7;
-      display:flex;justify-content:space-between;gap:12px;
-    }
-    .coupon .knopf{width:100%}
-
     /* ============ B2B + Fuss ============ */
     .b2b{
-      padding:clamp(22px,4vh,34px) var(--satz);
+      padding:clamp(26px,4.5vh,40px) var(--satz);
       border-top:2px solid var(--tinte);
       display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;
       font-size:clamp(14px,3.4vw,16px);
@@ -492,25 +467,32 @@
     }
     .b2b a:hover{background:var(--tinte);color:var(--papier);text-decoration-color:transparent}
     footer{
-      padding:clamp(26px,4.5vh,44px) var(--satz) clamp(36px,6vh,60px);
-      border-top:2px solid var(--tinte);
-      display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 28px;
+      padding:clamp(40px,7vh,80px) var(--satz) clamp(40px,6vh,64px);
+      display:grid;gap:clamp(26px,4.5vh,44px);
+    }
+    .fuss-oben{
+      display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
+      gap:22px 32px;
     }
     footer .herkunft{
       font-family:var(--display);font-weight:700;text-transform:uppercase;
-      font-size:clamp(17px,4.4vw,24px);line-height:1;
+      font-size:clamp(19px,5vw,30px);line-height:1;margin:0;
     }
-    footer nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:2px 20px}
+    /* Die Wortmarke ist das Letzte, was stehen bleibt — entsprechend gross */
+    footer .fuss-marke{
+      font-size:clamp(46px,15vw,140px);letter-spacing:0;
+      border-top:2px solid var(--papier);padding-top:clamp(16px,3vh,26px);
+      display:block;
+    }
+    footer nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:2px 24px}
     footer nav a{
       color:inherit;
       display:inline-flex;align-items:center;min-height:44px;
       font-size:clamp(14px,3.4vw,16px);
-      text-decoration:underline;text-decoration-color:rgba(22,21,15,.4);
+      text-decoration:underline;text-decoration-color:rgba(216,213,197,.45);
       text-underline-offset:.22em;
     }
-    footer nav a:hover{text-decoration-color:var(--tinte)}
-    footer .fuss-marke-zeile{margin-top:10px}
-    footer .fuss-marke{font-size:clamp(17px,4.4vw,22px);opacity:.9}
+    footer nav a:hover{text-decoration-color:var(--papier)}
 
     /* ============ noscript ============ */
     .kein-js .reel-band{display:none}
@@ -537,8 +519,8 @@
     <a class="wortmarke" href="#inhalt" aria-label="VIBEON – zum Seitenanfang">VIBE<span class="on">ON</span></a>
     <p class="ausgabe">
       <span class="ort">Bregenz &amp; Bodensee</span>
-      <!-- TODO: echte WhatsApp-Kanal-URL — bis dahin Anker auf die Listen-Sektion -->
-      <a class="ausgabe-link" href="#liste">Die Liste</a>
+      <!-- TODO: echtes Instagram-Profil eintragen -->
+      <a class="ausgabe-link" href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram</a>
     </p>
   </div>
 
@@ -557,8 +539,8 @@
         <p class="sub"><span class="marke">VIBE<span class="on">ON</span></span>. Eventformate, über die man am nächsten Tag spricht.</p>
         <div class="knopf-reihe">
           <a class="knopf" href="#formate">Formate entdecken</a>
-          <!-- TODO: echte WhatsApp-Kanal-URL eintragen -->
-          <a class="knopf knopf--voll" href="https://whatsapp.com/channel/PLATZHALTER">Auf die Liste</a>
+          <!-- TODO: echtes Instagram-Profil eintragen -->
+          <a class="knopf knopf--voll" href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram folgen</a>
         </div>
         <!-- Der Schaltmoment aus v11, ins Handwerk uebersetzt: kein Lichtschalter,
              sondern ein Stempel, der beim Laden aufgedrueckt wird. -->
@@ -579,8 +561,8 @@
             <p class="gastgeber">Hinter VIBEON stehen Gastgeber, keine Veranstalter.</p>
           </div>
           <figure class="rasterfeld">
-            <canvas data-szene="raum" role="img" aria-label="Gedrucktes Rasterbild: Licht fällt durch einen Türspalt in einen dunklen Raum"></canvas>
-            <figcaption>Platzhalter · Raster</figcaption>
+            <canvas data-szene="raum" role="img" aria-label="Gedrucktes Rasterbild: leerer Raum mit hohen Fenstern und Licht auf dem Boden"></canvas>
+            <figcaption>Platzhalter · Foto folgt</figcaption>
           </figure>
         </div>
       </div>
@@ -622,8 +604,8 @@
             <div><dt>Drinks</dt><dd>aufs Haus</dd></div>
           </dl>
           <figure class="rasterfeld">
-            <canvas data-szene="fenster" role="img" aria-label="Gedrucktes Rasterbild: erleuchtetes Fenster in der Nacht"></canvas>
-            <figcaption>Platzhalter · Raster</figcaption>
+            <canvas data-szene="abend" role="img" aria-label="Gedrucktes Rasterbild: Leute unter einer Hängelampe, erhobene Flaschen"></canvas>
+            <figcaption>Platzhalter · Foto folgt</figcaption>
           </figure>
           <p class="aktion"><a class="knopf" href="https://beerbeats.at" target="_blank" rel="noopener">Mehr erfahren</a></p>
           <p class="format-by">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
@@ -644,8 +626,8 @@
           Elektronische Musik, dunkle Räume, keine Ablenkung.
         </p>
         <figure class="rasterfeld">
-          <canvas data-szene="nebel" data-negativ="1" role="img" aria-label="Gedrucktes Rasterbild: Lichtkegel im Nebel"></canvas>
-          <figcaption>Platzhalter · Raster</figcaption>
+          <canvas data-szene="nacht" data-negativ="1" role="img" aria-label="Gedrucktes Rasterbild: Lichtkegel über einer Menge im Club"></canvas>
+          <figcaption>Platzhalter · Foto folgt</figcaption>
         </figure>
         <!-- 2-Klick-Instagram: VOR dem Klick geht kein Request an Meta -->
         <div class="reel-band" role="group" aria-label="Instagram-Videos von Exodus">
@@ -684,15 +666,15 @@
         <h3 id="f-secret">Secret X</h3>
         <p class="copy">
           <span class="laut">Datum steht. <span class="mark">Location nicht.</span></span>
-          Wo es stattfindet, erfährst du am Tag X – aber nur, wenn du auf der Liste bist.
+          Wo es stattfindet, erfährst du am Tag X.
         </p>
         <p class="schwaerzung">
           <span class="frage">Wo?</span>
           <span class="balken" role="img" aria-label="Die Location ist geschwärzt – sie wird am Tag X bekanntgegeben"></span>
         </p>
         <p class="aktion">
-          <!-- TODO: echte WhatsApp-Kanal-URL eintragen -->
-          <a class="knopf knopf--voll" href="https://whatsapp.com/channel/PLATZHALTER">Auf die Liste</a>
+          <!-- TODO: echtes Instagram-Profil eintragen -->
+          <a class="knopf knopf--voll" href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram folgen</a>
         </p>
         <p class="format-by">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
       </div>
@@ -707,8 +689,8 @@
           <figure class="rasterfeld">
             <!-- TODO: entsaettigtes Nima-Portrait (Bringschuld Sascha) ersetzt die
                  gerechnete Szene — rastern() zieht das Foto durch dasselbe Raster -->
-            <canvas data-szene="portrait" role="img" aria-label="Gedrucktes Rasterbild: Platzhalter-Porträt im Gegenlicht"></canvas>
-            <figcaption>Platzhalter · Raster</figcaption>
+            <canvas data-szene="act" role="img" aria-label="Gedrucktes Rasterbild: Platzhalter — Figur mit Violine im Gegenlicht"></canvas>
+            <figcaption>Platzhalter · Foto folgt</figcaption>
           </figure>
           <div>
             <p class="takt takt--leise">Live-Act</p>
@@ -746,32 +728,22 @@
       </div>
     </section>
 
-    <!-- ============ Bogen 10 · Die Liste (Tinte-Vollton, Abriss-Coupon) ============ -->
-    <section id="liste" class="bogen b-tinte liste" aria-labelledby="liste-h">
-      <div class="innen">
-        <h2 id="liste-h">Die Liste.</h2>
-        <p class="text">Wer drauf steht, erfährt <span class="mark">zuerst</span>, was passiert – und bei Secret X als Einziger, <span class="mark">wo</span>. Keine Newsletter-Flut. Nur Termine, Drops und Locations.</p>
-        <div class="coupon">
-          <p class="kopfzeile"><span>Abschnitt</span><span>VIBEON · Bregenz</span></p>
-          <!-- TODO: echte WhatsApp-Kanal-URL eintragen -->
-          <a class="knopf knopf--voll" href="https://whatsapp.com/channel/PLATZHALTER">WhatsApp-Kanal beitreten</a>
-          <!-- TODO: echtes Instagram-Profil eintragen -->
-          <a class="knopf" href="https://instagram.com/PLATZHALTER">Instagram folgen</a>
-        </div>
-      </div>
-    </section>
-
     <!-- ============ B2B-Zeile ============ -->
     <p class="b2b">Für Locations, Partner &amp; Kooperationen: <a href="mailto:hallo@vibe-on.at">hallo@vibe-on.at</a></p>
 
   </main>
 
-  <!-- ============ Fuss ============ -->
-  <footer>
-    <div>
-      <p class="herkunft">Aus Bregenz.<br>Für den Bodenseeraum.</p>
-      <p class="fuss-marke-zeile"><span class="wortmarke fuss-marke" aria-hidden="true">VIBE<span class="on">ON</span></span></p>
+  <!-- ============ Fuss (Tinte-Vollton) ============
+       Traegt seit dem Wegfall der Liste den Abschluss der Seite: der letzte Bogen
+       ist wieder Tinte, die Wortmarke steht gross, und die eine verbliebene
+       Handlung (Instagram) sitzt hier. Bewusst KEINE neue Marken-Copy erfunden. -->
+  <footer class="bogen b-tinte">
+    <div class="fuss-oben">
+      <p class="herkunft">Aus Bregenz.<br>F&uuml;r den Bodenseeraum.</p>
+      <!-- TODO: echtes Instagram-Profil eintragen -->
+      <a class="knopf" href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram folgen</a>
     </div>
+    <span class="wortmarke fuss-marke" aria-hidden="true">VIBE<span class="on">ON</span></span>
     <nav aria-label="Footer">
       <ul>
         <!-- TODO: Impressum (ECG) vor Launch verlinken -->
@@ -779,7 +751,7 @@
         <!-- TODO: Datenschutzerklaerung (DSGVO) vor Launch verlinken -->
         <li><a href="#">Datenschutz</a></li>
         <!-- TODO: echtes Instagram-Profil eintragen -->
-        <li><a href="https://instagram.com/PLATZHALTER">Instagram</a></li>
+        <li><a href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram</a></li>
         <li><a href="mailto:hallo@vibe-on.at">hallo@vibe-on.at</a></li>
       </ul>
     </nav>
@@ -802,142 +774,243 @@
        echte Fotos bekommen exakt denselben Druck-Look.
        ================================================================== */
 
+    /* Deterministischer Zufall: dieselbe Szene muss nach jedem Neuzeichnen
+       (Drehen des Geraets, Resize) exakt gleich aussehen. */
+    function streu(saat) {
+      var z = saat;
+      return function () { z = (z * 1664525 + 1013904223) % 4294967296; return z / 4294967296; };
+    }
+
+    var TAU = 6.2832;
+
+    /* Kopf-Schulter-Silhouette, ueber die KOPFHOEHE gesetzt (nicht ueber den
+       Fusspunkt): nur so laesst sich zuverlaessig steuern, wo im Bild die Figur
+       sitzt und wieviel davon unten angeschnitten wird. */
+    function figur(o, x, kopfY, b, ton) {
+      var boden = kopfY + b * 2.5;
+      o.fillStyle = ton;
+      o.beginPath();
+      o.ellipse(x, kopfY, b * 0.45, b * 0.55, 0, 0, TAU);
+      o.fill();
+      o.beginPath();
+      o.moveTo(x - b * 1.2, boden);
+      o.quadraticCurveTo(x - b * 0.95, boden - b * 1.7, x - b * 0.32, boden - b * 1.98);
+      o.lineTo(x + b * 0.32, boden - b * 1.98);
+      o.quadraticCurveTo(x + b * 0.95, boden - b * 1.7, x + b * 1.2, boden);
+      o.closePath();
+      o.fill();
+    }
+
+    /* Erhobener Arm — das Zeichen, an dem eine Menge als Menge lesbar wird */
+    function arm(o, x, y, laenge, neigung, dicke, ton) {
+      o.strokeStyle = ton;
+      o.lineWidth = dicke;
+      o.lineCap = 'round';
+      o.beginPath();
+      o.moveTo(x, y);
+      o.quadraticCurveTo(x + neigung * laenge * 0.5, y - laenge * 0.62,
+                         x + neigung * laenge, y - laenge);
+      o.stroke();
+    }
+
+    /* GRUNDREGEL aller Szenen: eine Silhouette ist nur lesbar, wenn hinter ihr
+       Licht steht. Jede Szene baut deshalb zuerst die helle Flaeche und setzt die
+       Figuren dann davor — nicht umgekehrt. */
     function szene(o, W, H, art) {
-      var g;
-      o.fillStyle = '#232323';
-      o.fillRect(0, 0, W, H);
+      var g, i, r = streu(art === 'abend' ? 7 : art === 'nacht' ? 23 : art === 'raum' ? 41 : 59);
 
-      if (art === 'raum') {
-        /* Licht faellt durch einen Tuerspalt in einen dunklen Raum */
-        g = o.createLinearGradient(W * 0.34, 0, W * 0.86, 0);
-        g.addColorStop(0, 'rgba(255,255,255,0)');
-        g.addColorStop(0.52, 'rgba(255,255,255,.16)');
-        g.addColorStop(0.62, 'rgba(255,255,255,.95)');
-        g.addColorStop(0.70, 'rgba(255,255,255,.20)');
-        g.addColorStop(1, 'rgba(255,255,255,0)');
+      if (art === 'abend') {
+        /* BEER & BEATS — Leute vor der erleuchteten Rueckwand, Haengelampe,
+           erhobene Flaschen. Motiv aus der eigenen Copy: "House-Party im
+           erweiterten Freundeskreis". */
+        g = o.createLinearGradient(0, 0, 0, H);
+        g.addColorStop(0, '#1a1a1a');            /* Decke */
+        g.addColorStop(0.22, '#4a4a4a');
+        g.addColorStop(0.40, '#e4e4e4');         /* erleuchtete Rueckwand */
+        g.addColorStop(0.62, '#f2f2f2');
+        g.addColorStop(0.80, '#9a9a9a');
+        g.addColorStop(1, '#3a3a3a');
         o.fillStyle = g;
         o.fillRect(0, 0, W, H);
-        /* der Lichtkeil auf dem Boden */
+        /* warmer Hof um die Lampe */
+        var lx = W * 0.60, ly = H * 0.17;
+        g = o.createRadialGradient(lx, ly, 0, lx, ly, W * 0.42);
+        g.addColorStop(0, 'rgba(255,255,255,.95)');
+        g.addColorStop(0.35, 'rgba(255,255,255,.35)');
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        o.fillStyle = g;
+        o.fillRect(0, 0, W, H * 0.6);
+        o.strokeStyle = '#1a1a1a'; o.lineWidth = W * 0.007;
+        o.beginPath(); o.moveTo(lx, 0); o.lineTo(lx, ly - H * 0.03); o.stroke();
+        o.fillStyle = '#ffffff';
+        o.beginPath(); o.arc(lx, ly, W * 0.038, 0, TAU); o.fill();
+
+        /* hintere Reihe: kleiner, hoeher, heller — daraus entsteht die Tiefe */
+        for (i = 0; i < 8; i++) {
+          figur(o, W * (0.02 + i * 0.14 + r() * 0.04), H * (0.52 + r() * 0.03),
+                W * (0.055 + r() * 0.014), '#4d4d4d');
+        }
+        /* vordere Reihe: Vollton, unten angeschnitten */
+        var vorne = [0.02, 0.21, 0.40, 0.60, 0.80, 0.97];
+        for (i = 0; i < vorne.length; i++) {
+          var x = W * (vorne[i] + r() * 0.025);
+          var b = W * (0.088 + r() * 0.022);
+          var ky = H * (0.64 + r() * 0.05);
+          figur(o, x, ky, b, '#111111');
+          if (i === 1 || i === 4) {
+            /* erhobene Hand mit Flasche — macht aus Koepfen einen Abend */
+            var ax = x + b * (i === 1 ? 1.0 : -1.0), ay = ky + b * 0.9;
+            var nz = i === 1 ? 0.3 : -0.3, ln = b * 2.6;
+            arm(o, ax, ay, ln, nz, b * 0.4, '#111111');
+            var fx = ax + nz * ln, fy = ay - ln;
+            o.fillStyle = '#111111';
+            o.fillRect(fx - b * 0.19, fy - b * 0.7, b * 0.38, b * 0.8);
+            o.fillRect(fx - b * 0.08, fy - b * 1.08, b * 0.16, b * 0.42);
+          }
+        }
+
+      } else if (art === 'nacht') {
+        /* EXODUS — Lichtkegel durch Dunst, die Menge von hinten dagegen.
+           Laeuft negativ: Papierpunkte auf Tinte. */
+        o.fillStyle = '#0f0f0f';
+        o.fillRect(0, 0, W, H);
         o.save();
         o.beginPath();
-        o.moveTo(W * 0.56, H * 0.62);
-        o.lineTo(W * 0.70, H * 0.62);
-        o.lineTo(W * 1.02, H);
-        o.lineTo(W * 0.24, H);
+        o.moveTo(W * 0.84, -H * 0.08);
+        o.lineTo(W * 1.06, H * 0.16);
+        o.lineTo(W * 0.30, H * 1.1);
+        o.lineTo(W * -0.12, H * 0.62);
         o.closePath();
-        g = o.createLinearGradient(0, H * 0.62, 0, H);
-        g.addColorStop(0, 'rgba(255,255,255,.55)');
-        g.addColorStop(1, 'rgba(255,255,255,.04)');
+        g = o.createLinearGradient(W * 0.95, 0, W * 0.05, H);
+        g.addColorStop(0, '#ffffff');
+        g.addColorStop(0.30, '#d8d8d8');
+        g.addColorStop(0.72, '#6a6a6a');
+        g.addColorStop(1, '#1b1b1b');
         o.fillStyle = g;
         o.fill();
         o.restore();
-
-      } else if (art === 'fenster') {
-        /* Erleuchtetes Fenster in der Nacht — "Blick in den Abend".
-           Leicht aus der Achse gedreht und aus der Mitte gerueckt, sonst liest
-           sich das Rechteck als Piktogramm statt als Aufnahme. */
-        var fx = W * 0.17, fy = H * 0.14, fb = W * 0.44, fh = H * 0.48;
-        g = o.createRadialGradient(fx + fb * 0.5, fy + fh * 0.5, 0, fx + fb * 0.5, fy + fh * 0.5, W * 0.85);
-        g.addColorStop(0, 'rgba(255,255,255,.34)');
-        g.addColorStop(0.30, 'rgba(255,255,255,.11)');
-        g.addColorStop(1, 'rgba(255,255,255,0)');
-        o.fillStyle = g;
-        o.fillRect(0, 0, W, H);
-
-        o.save();
-        o.translate(fx + fb * 0.5, fy + fh * 0.5);
-        o.rotate(-0.055);
-        o.translate(-(fx + fb * 0.5), -(fy + fh * 0.5));
-        /* Die Scheibe ist nicht flaechig hell — oben heller, zum Sims hin abfallend */
-        g = o.createLinearGradient(fx, fy, fx + fb * 0.35, fy + fh);
-        g.addColorStop(0, 'rgba(255,255,255,1)');
-        g.addColorStop(0.55, 'rgba(255,255,255,.82)');
-        g.addColorStop(1, 'rgba(255,255,255,.52)');
-        o.fillStyle = g;
-        o.fillRect(fx, fy, fb, fh);
-        /* Sprossen: duenn, leicht ausserhalb der Mitte */
-        o.fillStyle = '#0d0d0d';
-        o.fillRect(fx + fb * 0.38, fy, W * 0.011, fh);
-        o.fillRect(fx, fy + fh * 0.43, fb, H * 0.01);
-        /* Sims */
-        o.fillStyle = 'rgba(13,13,13,.9)';
-        o.fillRect(fx - W * 0.02, fy + fh, fb + W * 0.04, H * 0.022);
-        o.restore();
-
-        /* Lichtfall auf die Wand darunter, seitlich versetzt */
-        g = o.createLinearGradient(0, fy + fh, 0, H);
-        g.addColorStop(0, 'rgba(255,255,255,.26)');
-        g.addColorStop(1, 'rgba(255,255,255,0)');
-        o.fillStyle = g;
-        o.fillRect(fx - W * 0.06, fy + fh, fb + W * 0.2, H - (fy + fh));
-        /* Ecken abdunkeln — die Aufnahme bekommt Tiefe */
-        g = o.createRadialGradient(W * 0.5, H * 0.44, W * 0.2, W * 0.5, H * 0.5, W * 0.82);
-        g.addColorStop(0, 'rgba(0,0,0,0)');
-        g.addColorStop(1, 'rgba(0,0,0,.5)');
-        o.fillStyle = g;
-        o.fillRect(0, 0, W, H);
-
-      } else if (art === 'nebel') {
-        /* Lichtkegel durch Dunst — der Club-Raum */
-        o.save();
-        o.beginPath();
-        o.moveTo(W * 0.80, -H * 0.05);
-        o.lineTo(W * 1.02, H * 0.06);
-        o.lineTo(W * 0.30, H * 1.05);
-        o.lineTo(W * -0.06, H * 0.74);
-        o.closePath();
-        g = o.createLinearGradient(W * 0.92, 0, W * 0.12, H);
-        g.addColorStop(0, 'rgba(255,255,255,.92)');
-        g.addColorStop(0.38, 'rgba(255,255,255,.34)');
-        g.addColorStop(1, 'rgba(255,255,255,.02)');
-        o.fillStyle = g;
-        o.fill();
-        o.restore();
-        /* Dunstschwaden quer durch den Kegel */
-        for (var i = 0; i < 7; i++) {
-          var sy = H * (0.10 + i * 0.13);
-          g = o.createLinearGradient(0, sy, W, sy + H * 0.06);
+        for (i = 0; i < 8; i++) {
+          var sy = H * (0.05 + i * 0.12);
+          g = o.createLinearGradient(0, sy, W, sy + H * 0.05);
           g.addColorStop(0, 'rgba(255,255,255,0)');
-          g.addColorStop(0.5, 'rgba(255,255,255,.09)');
+          g.addColorStop(0.5, 'rgba(255,255,255,.16)');
           g.addColorStop(1, 'rgba(255,255,255,0)');
           o.fillStyle = g;
           o.fillRect(0, sy, W, H * 0.05);
         }
-        /* die Lichtquelle selbst */
-        g = o.createRadialGradient(W * 0.92, 0, 0, W * 0.92, 0, W * 0.34);
-        g.addColorStop(0, 'rgba(255,255,255,1)');
+        g = o.createRadialGradient(W * 0.95, 0, 0, W * 0.95, 0, W * 0.26);
+        g.addColorStop(0, '#ffffff'); g.addColorStop(1, 'rgba(255,255,255,0)');
+        o.fillStyle = g; o.fillRect(W * 0.66, 0, W * 0.34, H * 0.5);
+        /* Das Licht bricht sich im Dunst auf Kopfhoehe. Ohne dieses Band traegt
+           die Silhouette nur dort, wo der Kegel zufaellig hinfaellt. */
+        g = o.createLinearGradient(0, H * 0.34, 0, H * 0.88);
+        g.addColorStop(0, 'rgba(255,255,255,0)');
+        g.addColorStop(0.45, 'rgba(255,255,255,.5)');
+        g.addColorStop(0.72, 'rgba(255,255,255,.34)');
         g.addColorStop(1, 'rgba(255,255,255,0)');
         o.fillStyle = g;
-        o.fillRect(W * 0.55, 0, W * 0.45, H * 0.4);
+        o.fillRect(0, H * 0.34, W, H * 0.54);
+        /* die Menge, gegen das Licht */
+        var kopf = [0.04, 0.19, 0.33, 0.48, 0.63, 0.78, 0.93];
+        for (i = 0; i < kopf.length; i++) {
+          var kx = W * (kopf[i] + r() * 0.02);
+          var kb = W * (0.062 + r() * 0.02);
+          var kky = H * (0.66 + r() * 0.07);
+          figur(o, kx, kky, kb, '#080808');
+          if (i === 1 || i === 3 || i === 5) {
+            arm(o, kx + kb * (i === 3 ? -1.0 : 1.0), kky + kb * 0.9,
+                kb * (2.4 + r() * 1.0), i === 3 ? -0.26 : 0.28, kb * 0.36, '#080808');
+          }
+        }
 
-      } else {
-        /* portrait — Platzhalter im Gegenlicht (bis Nimas Foto da ist) */
-        g = o.createRadialGradient(W * 0.52, H * 0.32, 0, W * 0.52, H * 0.32, W * 0.86);
-        g.addColorStop(0, 'rgba(255,255,255,.72)');
-        g.addColorStop(0.42, 'rgba(255,255,255,.20)');
-        g.addColorStop(1, 'rgba(255,255,255,0)');
+      } else if (art === 'raum') {
+        /* UEBER VIBEON — leerer Raum mit hohen Fenstern: Leerstand, Galerie,
+           Dachboden. Der Ort, bevor jemand da ist. */
+        g = o.createLinearGradient(0, 0, 0, H);
+        g.addColorStop(0, '#141414');
+        g.addColorStop(0.30, '#3f3f3f');
+        g.addColorStop(0.62, '#4a4a4a');
+        g.addColorStop(1, '#1d1d1d');
         o.fillStyle = g;
         o.fillRect(0, 0, W, H);
-        o.fillStyle = '#0b0b0b';
-        o.beginPath();
-        o.ellipse(W * 0.5, H * 0.40, W * 0.20, H * 0.17, 0, 0, 6.2832);
-        o.fill();
-        o.beginPath();
-        o.moveTo(W * 0.16, H);
-        o.quadraticCurveTo(W * 0.26, H * 0.60, W * 0.5, H * 0.58);
-        o.quadraticCurveTo(W * 0.74, H * 0.60, W * 0.84, H);
-        o.closePath();
-        o.fill();
-        /* Kantenlicht rechts — trennt die Silhouette vom Grund */
-        o.save();
-        o.globalCompositeOperation = 'lighter';
-        g = o.createLinearGradient(W * 0.60, 0, W * 0.74, 0);
-        g.addColorStop(0, 'rgba(255,255,255,0)');
-        g.addColorStop(0.6, 'rgba(255,255,255,.5)');
-        g.addColorStop(1, 'rgba(255,255,255,0)');
+        var by = H * 0.66;
+        var fen = [[0.12, 0.30], [0.52, 0.34]];
+        for (i = 0; i < fen.length; i++) {
+          var x0 = W * fen[i][0], bw = W * fen[i][1];
+          var y0 = H * (0.1 + i * 0.02), fh = by - y0 - H * 0.06;
+          g = o.createLinearGradient(x0, y0, x0 + bw * 0.4, y0 + fh);
+          g.addColorStop(0, '#ffffff');
+          g.addColorStop(0.7, '#dcdcdc');
+          g.addColorStop(1, '#b0b0b0');
+          o.fillStyle = g;
+          o.fillRect(x0, y0, bw, fh);
+          o.fillStyle = '#191919';
+          o.fillRect(x0 + bw * 0.47, y0, W * 0.011, fh);
+          o.fillRect(x0, y0 + fh * 0.38, bw, H * 0.009);
+          o.fillRect(x0 - W * 0.012, y0 - H * 0.012, bw + W * 0.024, H * 0.014);
+        }
+        for (i = 0; i < fen.length; i++) {
+          o.beginPath();
+          o.moveTo(W * fen[i][0], by);
+          o.lineTo(W * (fen[i][0] + fen[i][1]), by);
+          o.lineTo(W * (fen[i][0] + fen[i][1] + 0.16), H * 1.02);
+          o.lineTo(W * (fen[i][0] - 0.1), H * 1.02);
+          o.closePath();
+          g = o.createLinearGradient(0, by, 0, H);
+          g.addColorStop(0, 'rgba(255,255,255,.62)');
+          g.addColorStop(1, 'rgba(255,255,255,.05)');
+          o.fillStyle = g;
+          o.fill();
+        }
+        o.fillStyle = 'rgba(10,10,10,.5)';
+        o.fillRect(0, by, W, H * 0.006);
+        /* Ein einzelner Stuhl, bewusst IM Lichtfeld — gegen den dunklen Grund
+           waere er unsichtbar, und er gibt dem Raum erst den Massstab. */
+        var sw = W * 0.135, sx = W * 0.58, sb = H * 0.82;
+        o.fillStyle = '#131313';
+        o.fillRect(sx, sb - sw * 1.5, sw * 0.15, sw * 1.5);            /* Lehne  */
+        o.fillRect(sx + sw * 0.02, sb - sw * 1.5, sw * 0.62, sw * 0.13);
+        o.fillRect(sx, sb - sw * 0.72, sw * 0.95, sw * 0.14);          /* Sitz   */
+        o.fillRect(sx + sw * 0.06, sb - sw * 0.72, sw * 0.12, sw * 0.72);
+        o.fillRect(sx + sw * 0.78, sb - sw * 0.72, sw * 0.12, sw * 0.72);
+
+      } else {
+        /* NIMA LOVARIO — Figur im Gegenlicht mit erhobenem Bogen.
+           PLATZHALTER: bewusst Silhouette ohne Gesicht — eine Zeichnung, kein
+           Bildnis. Die Violine unter dem Kinn wurde verworfen: in der Silhouette
+           verschmilzt sie mit dem Kopf. Der erhobene Arm mit dem Bogen traegt das
+           Motiv allein, weil er echten Weissraum zum Koerper hat.
+           Wird 1:1 durch das echte Portrait ersetzt (Bringschuld Sascha). */
+        o.fillStyle = '#1c1c1c';
+        o.fillRect(0, 0, W, H);
+        g = o.createRadialGradient(W * 0.46, H * 0.4, 0, W * 0.46, H * 0.4, W * 0.72);
+        g.addColorStop(0, '#ffffff');
+        g.addColorStop(0.32, '#e2e2e2');
+        g.addColorStop(0.72, '#7d7d7d');
+        g.addColorStop(1, '#1c1c1c');
         o.fillStyle = g;
-        o.fillRect(W * 0.56, H * 0.22, W * 0.22, H * 0.62);
-        o.restore();
+        o.fillRect(0, 0, W, H);
+
+        var fb = W * 0.2, fky = H * 0.5, fx2 = W * 0.4;
+        figur(o, fx2, fky, fb, '#0f0f0f');
+
+        /* Der Bogenarm: weit nach aussen, damit Licht zwischen Arm und Kopf bleibt */
+        var hx = fx2 + fb * 1.85, hy = fky - fb * 0.55;   /* Hand */
+        o.strokeStyle = '#0f0f0f';
+        o.lineWidth = fb * 0.16;
+        o.lineCap = 'round';
+        o.beginPath();
+        o.moveTo(fx2 + fb * 0.95, fky + fb * 1.15);
+        o.quadraticCurveTo(fx2 + fb * 1.75, fky + fb * 0.5, hx, hy);
+        o.stroke();
+
+        /* Der Bogen, quer durch die Hand — die lange duenne Gerade ist das,
+           was die Figur als Musiker lesbar macht */
+        o.lineWidth = fb * 0.062;
+        o.beginPath();
+        o.moveTo(hx - fb * 0.95, hy - fb * 1.2);
+        o.lineTo(hx + fb * 0.72, hy + fb * 0.88);
+        o.stroke();
       }
     }
 
@@ -958,7 +1031,7 @@
       /* Szene klein rechnen und weich hochziehen: die Interpolation erzeugt die
          Tonwertuebergaenge, die eine gerechnete Grafik sonst nicht hat. Ohne das
          liest sich das Raster als Piktogramm statt als gedrucktes Foto. */
-      var teiler = 3;
+      var teiler = 2;
       var kw = Math.max(4, Math.round(W / teiler)), kh = Math.max(4, Math.round(H / teiler));
       var klein = document.createElement('canvas');
       klein.width = kw; klein.height = kh;
