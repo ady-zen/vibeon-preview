@@ -111,14 +111,26 @@
     ::selection{background:var(--tinte);color:var(--papier)}
     a,button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 
-    /* Papierfaser: multiply zieht die hellen Boegen an, screen setzt auf den
-       Tinte-Boegen die Faser wieder frei — so hat JEDER Bogen dieselbe Oberflaeche. */
-    .faser,.faser-hell{
-      position:fixed;inset:-40px;z-index:80;pointer-events:none;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23f)'/%3E%3C/svg%3E");
+    /* Papierfaser gehoert zum BOGEN, nicht zum Bildschirm.
+       Vorher lagen zwei bildschirmfuellende position:fixed-Ebenen mit
+       mix-blend-mode ueber allem — die Koernung wanderte dadurch ueber den Druck
+       hinweg, statt auf dem Papier zu bleiben. Jetzt traegt jeder Bogen seine
+       eigene Faser (background-blend-mode) und sie scrollt mit ihm.
+       ZUR LEISTUNG, ehrlich: Ich hatte zunaechst gemessen, dass die fixen Ebenen
+       die Bildzeit verdoppeln — das war ein Messfehler (kalter gegen warmgelaufenen
+       Durchgang derselben Seite). Verschraenkt und mit Aufwaermrunde gemessen
+       (6 Laeufe je Fassung, CPU 4x gedrosselt) liegen beide Fassungen bei
+       25-26ms Median; die Streuung ist groesser als der Unterschied. Die
+       Aenderung steht also NICHT wegen Leistung, sondern weil sie sachlich
+       richtiger ist. */
+    .bogen,.kopf,.b2b{
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' fill='%23fff'/%3E%3Crect width='220' height='220' filter='url(%23f)' opacity='.24'/%3E%3C/svg%3E");
+      background-blend-mode:multiply;
     }
-    .faser{mix-blend-mode:multiply;opacity:.26}
-    .faser-hell{mix-blend-mode:screen;opacity:.07}
+    .b-tinte{
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' fill='%23000'/%3E%3Crect width='220' height='220' filter='url(%23f)' opacity='.16'/%3E%3C/svg%3E");
+      background-blend-mode:screen;
+    }
 
     /* ============ A11y ============ */
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -128,14 +140,15 @@
       font-family:var(--display);font-weight:700;font-size:17px;text-transform:uppercase;
       padding:14px 22px;text-decoration:none;transition:top .2s ease;
     }
-    .skip-link:focus-visible{top:12px}
+    .skip-link:focus,.skip-link:focus-visible{top:12px}
     :focus-visible{outline:3px solid currentColor;outline-offset:3px}
+    .knopf:focus-visible{outline-color:var(--farbe)}   /* sonst Gelb auf Gelb */
 
     /* ============ Bogen-System ============
        Jeder Bogen setzt --grund/--farbe. Alles darin (Knoepfe, Marker, Linien,
        Raster) leitet sich daraus ab — dadurch funktioniert JEDES Bauteil auf
        JEDEM Bogen, ohne Sonderfaelle. */
-    .bogen{position:relative;background:var(--grund);color:var(--farbe)}
+    .bogen{position:relative;background-color:var(--grund);color:var(--farbe)}
     .b-papier{--grund:var(--papier);--farbe:var(--tinte)}
     .b-papier2{--grund:var(--papier-2);--farbe:var(--tinte)}
     .b-tinte{--grund:var(--tinte);--farbe:var(--papier)}
@@ -210,6 +223,7 @@
       display:inline-flex;align-items:center;
       font-size:clamp(21px,5.4vw,28px);letter-spacing:.01em;
       line-height:1;
+      min-height:44px;   /* gemessen: vorher 23px hoch, zu klein zum Treffen */
     }
     .wortmarke .on{
       background:var(--gelb);color:var(--tinte);
@@ -233,7 +247,11 @@
     }
     .kopf .ausgabe .ort{display:none}
     @media (min-width:600px){.kopf .ausgabe .ort{display:inline}}
-    .kopf a.ausgabe-link{color:inherit;text-decoration:none;border-bottom:2px solid var(--tinte);padding-bottom:1px}
+    .kopf a.ausgabe-link{
+      color:inherit;text-decoration:none;
+      display:inline-flex;align-items:center;min-height:44px;   /* vorher 23px */
+      box-shadow:inset 0 -2px 0 var(--tinte);
+    }
 
     /* ============ Knoepfe = gedruckte Kaesten ============ */
     .knopf{
@@ -432,7 +450,7 @@
     }
     .zettel dl{display:grid;grid-template-columns:auto 1fr;margin-top:6px}
     .zettel dt{
-      font-family:var(--text);font-size:clamp(13px,3.2vw,15px);opacity:.6;
+      font-family:var(--text);font-size:clamp(13px,3.2vw,15px);opacity:.72;  /* .6 ergab 4.17:1 */
       padding:9px 16px 9px 0;border-bottom:1px solid rgba(22,21,15,.25);
       display:flex;align-items:center;
     }
@@ -542,7 +560,7 @@
       .act-grid{grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:clamp(30px,5vw,64px);align-items:center}
     }
     .act .rasterfeld{aspect-ratio:4/5;width:100%;max-width:340px}
-    .act .name{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(38px,10vw,84px);line-height:.88}
+    .act .name{font-size:clamp(38px,10vw,84px);line-height:.88;margin:0}
     .act .rolle{margin-top:clamp(10px,1.6vh,16px);font-size:clamp(15px,3.7vw,18px);opacity:.72}
     .act .copy{margin-top:clamp(18px,3vh,26px);font-size:clamp(17px,4.3vw,21px);line-height:1.5;max-width:40ch}
     .act .copy .laut{display:block;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(22px,5.6vw,32px);line-height:.98;margin-bottom:.3em}
@@ -566,7 +584,9 @@
       font-size:clamp(34px,10vw,104px);line-height:.9;
     }
     .manifest p + p{margin-top:.3em}
-    .manifest .vor{color:var(--ueberdruck)}
+    /* gemessen 2.29:1 auf Gelb — unter der Norm. Derselbe satte Ueberdruckton
+       wie beim Ampersand, damit "vor" leise bleibt und trotzdem lesbar ist. */
+    .manifest .vor{color:var(--ueberdruck-tief)}
 
     /* ============ B2B + Fuss ============ */
     .b2b{
@@ -630,10 +650,6 @@
   <noscript><style>.reel-band{display:none}</style></noscript>
 </head>
 <body>
-  <!-- Papieroberflaeche: liegt ueber allem, nimmt keine Klicks an -->
-  <div class="faser" aria-hidden="true"></div>
-  <div class="faser-hell" aria-hidden="true"></div>
-
   <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 
   <!-- ============ Kopfbalken ============ -->
@@ -642,7 +658,7 @@
     <p class="ausgabe">
       <span class="ort">Bregenz &amp; Bodensee</span>
       <!-- TODO: echtes Instagram-Profil eintragen -->
-      <a class="ausgabe-link" href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram</a>
+      <a class="ausgabe-link" href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram<span class="sr-only"> (öffnet in neuem Tab)</span></a>
     </p>
   </div>
 
@@ -662,7 +678,7 @@
         <div class="knopf-reihe">
           <a class="knopf" href="#formate">Formate entdecken</a>
           <!-- TODO: echtes Instagram-Profil eintragen -->
-          <a class="knopf knopf--voll" href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram folgen</a>
+          <a class="knopf knopf--voll" href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram folgen<span class="sr-only"> (öffnet in neuem Tab)</span></a>
         </div>
         <!-- Der Schaltmoment aus v11, ins Handwerk uebersetzt: kein Lichtschalter,
              sondern ein Stempel, der beim Laden aufgedrueckt wird. -->
@@ -719,7 +735,7 @@
           </figure>
           <div>
             <p class="takt takt--leise">Live-Act</p>
-            <p class="name">Nima Lovario</p>
+            <h3 class="name">Nima Lovario</h3>
             <p class="rolle">DJ Live-Act &amp; Violinist · Bregenz</p>
             <p class="copy">
               <span class="laut">Elektronische Musik trifft Live-Violine.</span>
@@ -731,7 +747,7 @@
                  Mechanik wie bei Exodus, vor dem Klick geht kein Request an Meta. -->
             <!-- Der Knopf traegt den Namen des Kontos statt "Mehr erfahren":
                  das Handle IST die Adresse und wird wiedererkannt. -->
-            <p class="aktion"><a class="knopf" href="https://www.instagram.com/nima_lovario" target="_blank" rel="noopener">@nima_lovario</a></p>
+            <p class="aktion"><a class="knopf" href="https://www.instagram.com/nima_lovario" target="_blank" rel="noopener">@nima_lovario<span class="sr-only"> (öffnet in neuem Tab)</span></a></p>
           </div>
         </div>
       </div>
@@ -772,7 +788,7 @@
           <figcaption>Platzhalter · Foto folgt</figcaption>
         </figure>
         <!-- 2-Klick-Instagram: VOR dem Klick geht kein Request an Meta -->
-        <p class="aktion"><a class="knopf" href="https://www.instagram.com/exodus.aiff" target="_blank" rel="noopener">Mehr erfahren</a></p>
+        <p class="aktion"><a class="knopf" href="https://www.instagram.com/exodus.aiff" target="_blank" rel="noopener">Mehr erfahren<span class="sr-only"> (öffnet in neuem Tab)</span></a></p>
         <p class="format-by">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
       </div>
     </section>
@@ -792,7 +808,7 @@
         </p>
         <p class="aktion">
           <!-- TODO: echtes Instagram-Profil eintragen -->
-          <a class="knopf knopf--voll" href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram folgen</a>
+          <a class="knopf knopf--voll" href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram folgen<span class="sr-only"> (öffnet in neuem Tab)</span></a>
         </p>
         <p class="format-by">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
       </div>
@@ -826,7 +842,7 @@
           </dl>
           <p class="frei">Drinks aufs Haus</p>
         </div>
-        <p class="aktion"><a class="knopf" href="https://beerbeats.at" target="_blank" rel="noopener">Mehr erfahren</a></p>
+        <p class="aktion"><a class="knopf" href="https://beerbeats.at" target="_blank" rel="noopener">Mehr erfahren<span class="sr-only"> (öffnet in neuem Tab)</span></a></p>
         <p class="format-by">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
         </div>
     </section>
@@ -866,9 +882,9 @@
     <div class="fuss-oben">
       <p class="herkunft">Aus Bregenz.<br>F&uuml;r den Bodenseeraum.</p>
       <!-- TODO: echtes Instagram-Profil eintragen -->
-      <a class="knopf" href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram folgen</a>
+      <a class="knopf" href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram folgen<span class="sr-only"> (öffnet in neuem Tab)</span></a>
     </div>
-    <span class="wortmarke fuss-marke" aria-hidden="true">VIBE<span class="on">ON</span></span>
+    <a class="wortmarke fuss-marke" href="#inhalt" aria-label="Zurück zum Seitenanfang">VIBE<span class="on" aria-hidden="true">ON</span></a>
     <nav aria-label="Footer">
       <ul>
         <!-- TODO: Impressum (ECG) vor Launch verlinken -->
@@ -876,7 +892,7 @@
         <!-- TODO: Datenschutzerklaerung (DSGVO) vor Launch verlinken -->
         <li><a href="#">Datenschutz</a></li>
         <!-- TODO: echtes Instagram-Profil eintragen -->
-        <li><a href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram<span class="sr-only"> (öffnet in neuem Tab)</span></a></li>
         <li><a href="mailto:hallo@vibe-on.at">hallo@vibe-on.at</a></li>
       </ul>
     </nav>
