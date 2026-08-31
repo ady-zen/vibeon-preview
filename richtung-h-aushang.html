@@ -81,6 +81,7 @@
       --tinte:#16150F;
       --gelb:#E9F42F;
       --ueberdruck:#9AA318;
+      --ueberdruck-tief:#5D6213;   /* Gelb mit hoher Tintendeckung */
       --satz:clamp(18px,5.2vw,72px);
       --display:'Big Shoulders','Archivo Expanded',Impact,sans-serif;
       --text:'Archivo',system-ui,-apple-system,sans-serif;
@@ -327,7 +328,7 @@
     /* ============ Boegen 4-6 · Formate ============ */
     .formate-kopf{
       display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
-      padding:clamp(34px,6vh,64px) var(--satz) clamp(20px,3vh,30px);
+      padding:clamp(34px,6vh,64px) var(--satz) clamp(38px,6vh,64px);
     }
     .formate-kopf h2{font-size:clamp(30px,8vw,72px);line-height:.9}
     .formate-kopf .zusatz{font-family:var(--text);font-weight:400;font-size:clamp(14px,3.3vw,16px);text-transform:none;opacity:.7;text-align:right;max-width:20ch}
@@ -336,8 +337,8 @@
       line-height:.84;
       margin:clamp(6px,1.4vh,12px) 0 clamp(18px,3vh,28px);
     }
-    .format .amp{color:var(--gelb)}
-    .b-gelb .format .amp,.b-papier .format .amp{color:var(--ueberdruck)}
+    .format .amp{color:var(--ueberdruck-tief)}
+    .b-tinte .amp{color:var(--gelb)}
     .format .copy{font-size:clamp(17px,4.3vw,21px);line-height:1.5;max-width:40ch}
     .format .copy .laut{
       display:block;
@@ -368,7 +369,6 @@
       font-family:var(--display);font-weight:700;text-transform:uppercase;
       font-size:clamp(16px,4.2vw,20px);text-align:right;
     }
-    .innen--anschluss{padding-top:0}
     .beer .rasterfeld{aspect-ratio:5/4;width:100%;margin-top:clamp(26px,4.5vh,40px)}
 
     /* Exodus (Tinte-Vollton): Reels als Kontaktabzug-Streifen */
@@ -587,30 +587,6 @@
       </div>
 
       <!-- Beer & Beats (Papier) -->
-      <article class="format beer" aria-labelledby="f-beer">
-        <div class="innen innen--anschluss">
-          <p class="takt">Jeden Donnerstag</p>
-          <h3 id="f-beer">Beer <span class="amp">&amp;</span> Beats</h3>
-          <p class="copy">
-            <span class="laut">Afterwork ohne Programm.</span>
-            Gute Musik, kaltes Bier, feine Leute. Fühlt sich an wie eine House-Party im erweiterten Freundeskreis – weil es genau das ist.
-          </p>
-          <dl class="fakten">
-            <div><dt>Wann</dt><dd>18:00 bis offen</dd></div>
-            <div><dt>Wo</dt><dd>Galerie · Werkstatt · Dachboden</dd></div>
-            <div><dt>Musik</dt><dd>gut</dd></div>
-            <div><dt>Bier</dt><dd>kalt</dd></div>
-            <div><dt>Leute</dt><dd>fein</dd></div>
-            <div><dt>Drinks</dt><dd>aufs Haus</dd></div>
-          </dl>
-          <figure class="rasterfeld">
-            <canvas data-szene="abend" role="img" aria-label="Gedrucktes Rasterbild: Leute unter einer Hängelampe, erhobene Flaschen"></canvas>
-            <figcaption>Platzhalter · Foto folgt</figcaption>
-          </figure>
-          <p class="aktion"><a class="knopf" href="https://beerbeats.at" target="_blank" rel="noopener">Mehr erfahren</a></p>
-          <p class="format-by">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
-        </div>
-      </article>
     </section>
 
     <!-- Exodus (Tinte-Vollton) — INTERIMS-COPY bis Instagram-Destillat -->
@@ -678,6 +654,35 @@
         </p>
         <p class="format-by">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
       </div>
+    </section>
+
+    <!-- Beer & Beats (Gelb-Vollton) — seit v3 das LETZTE Format (Sascha).
+         Gelb, weil es das waermste und offenste der drei ist: Afterwork,
+         Drinks aufs Haus, House-Party. Das Raster laeuft hier zweifarbig,
+         Tintepunkte auf Gelb. -->
+    <section class="bogen b-gelb format beer" aria-labelledby="f-beer">
+      <div class="innen">
+        <p class="takt">Jeden Donnerstag</p>
+        <h3 id="f-beer">Beer <span class="amp">&amp;</span> Beats</h3>
+        <p class="copy">
+          <span class="laut">Afterwork ohne Programm.</span>
+          Gute Musik, kaltes Bier, feine Leute. Fühlt sich an wie eine House-Party im erweiterten Freundeskreis – weil es genau das ist.
+        </p>
+        <dl class="fakten">
+          <div><dt>Wann</dt><dd>18:00 bis offen</dd></div>
+          <div><dt>Wo</dt><dd>Galerie · Werkstatt · Dachboden</dd></div>
+          <div><dt>Musik</dt><dd>gut</dd></div>
+          <div><dt>Bier</dt><dd>kalt</dd></div>
+          <div><dt>Leute</dt><dd>fein</dd></div>
+          <div><dt>Drinks</dt><dd>aufs Haus</dd></div>
+        </dl>
+        <figure class="rasterfeld">
+          <canvas data-szene="abend" role="img" aria-label="Gedrucktes Rasterbild: Leute unter einer Hängelampe, erhobene Flaschen"></canvas>
+          <figcaption>Platzhalter · Foto folgt</figcaption>
+        </figure>
+        <p class="aktion"><a class="knopf" href="https://beerbeats.at" target="_blank" rel="noopener">Mehr erfahren</a></p>
+        <p class="format-by">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
+        </div>
     </section>
 
     <!-- ============ Bogen 7 · Live-Act (Papier 2) ============
