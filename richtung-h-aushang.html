@@ -692,10 +692,10 @@
         <h2 id="act-h" class="sr-only">Live-Act</h2>
         <div class="act-grid">
           <figure class="rasterfeld">
-            <!-- TODO: entsaettigtes Nima-Portrait (Bringschuld Sascha) ersetzt die
-                 gerechnete Szene — rastern() zieht das Foto durch dasselbe Raster -->
-            <canvas data-szene="act" role="img" aria-label="Gedrucktes Rasterbild: Platzhalter — Figur mit Violine im Gegenlicht"></canvas>
-            <figcaption>Platzhalter · Foto folgt</figcaption>
+            <!-- Echtes Portrait (Nima, Freigabe Sascha 2026-08-31). Der Instagram-
+                 Ton-Knopf ist beim Zuschnitt auf 4:5 herausgefallen. data-szene
+                 bleibt als Rueckfallebene stehen, falls das Bild nicht laedt. -->
+            <canvas data-bild="assets/bilder/nima-lovario.jpg" data-szene="act" role="img" aria-label="Nima Lovario mit E-Violine und Bogen, als gedrucktes Rasterbild"></canvas>
           </figure>
           <div>
             <p class="takt takt--leise">Live-Act</p>
@@ -1030,7 +1030,7 @@
     /* Aus der Szene (oder dem Foto) wird der Halbton.
        zeichner() fuellt ein kleines Offscreen-Canvas, das anschliessend weich
        hochgezogen und gerastert wird. */
-    function halbton(cv, W, H, grund, farbe, negativ, teiler, zeichner) {
+    function halbton(cv, W, H, grund, farbe, negativ, teiler, spreizen, weite, zeichner) {
       var kw = Math.max(4, Math.round(W / teiler)), kh = Math.max(4, Math.round(H / teiler));
       var klein = document.createElement('canvas');
       klein.width = kw; klein.height = kh;
@@ -1052,13 +1052,50 @@
         return false;
       }
 
+      /* TONWERTSPREIZUNG (nur fuer Fotos).
+         Ein Studioportrait in Weiss auf Weiss liegt fast vollstaendig im obersten
+         Zehntel der Helligkeit. Ohne Spreizung faellt es im Raster auf offenes
+         Papier zusammen und uebrig bleiben nur Haare und Instrument.
+         Die Kurve wird aus dem Bild selbst gebaut (Histogramm-Ausgleich): dort, wo
+         viele Tonwerte dicht beieinander liegen, wird der Abstand aufgezogen.
+         Zu 30 % bleibt die Originalkurve stehen, sonst wirkt das Ergebnis klinisch.
+         Genau diese Entscheidung trifft auch ein Drucker, wenn er separiert. */
+      var kurve = null;
+      if (spreizen) {
+        var hist = new Uint32Array(256), n = 0, k;
+        for (var q = 0; q < d.length; q += 16) {          /* Stichprobe genuegt */
+          hist[(d[q] * 0.299 + d[q + 1] * 0.587 + d[q + 2] * 0.114) | 0]++;
+          n++;
+        }
+        /* Beschneidung: ohne sie reisst ein einzelner sehr dichter Tonwertbereich
+           (hier der weisse Hintergrund) die ganze Kurve an sich und kippt das Bild.
+           Der Ueberhang wird gleichmaessig zurueckverteilt. */
+        var mittel = n / 256, grenze = mittel * 5, ueber = 0;
+        for (k = 0; k < 256; k++) {
+          if (hist[k] > grenze) { ueber += hist[k] - grenze; hist[k] = grenze; }
+        }
+        var zurueck = ueber / 256;
+        kurve = new Float32Array(256);
+        var summe = 0, gesamt = n;
+        for (k = 0; k < 256; k++) summe += hist[k] + zurueck;
+        gesamt = summe; summe = 0;
+        for (k = 0; k < 256; k++) {
+          summe += hist[k] + zurueck;
+          var m = 0.78 * (summe / gesamt) + 0.22 * (k / 255);
+          /* Lichter-Anhebung: die Tiefen bleiben Vollton, alles oberhalb wird
+             aufgezogen. Sonst legt sich ueber einen hellen Hintergrund ein
+             geschlossener Punktteppich und das Bild wird grau statt hell. */
+          kurve[k] = m < 0.45 ? m : 0.45 + 0.55 * Math.pow((m - 0.45) / 0.55, 0.55);
+        }
+      }
+
       var ctx = cv.getContext('2d');
       ctx.fillStyle = grund;
       ctx.fillRect(0, 0, W, H);
       ctx.fillStyle = farbe;
 
       var dpr = W / cv.clientWidth;
-      var s = 6.2 * dpr;                  /* Rasterweite  */
+      var s = weite * dpr;                /* Rasterweite  */
       var max = s * 0.72;                 /* Punkt bei voller Deckung */
       var winkel = Math.PI / 4;           /* 45° — der klassische Winkel */
       var cos = Math.cos(winkel), sin = Math.sin(winkel);
@@ -1074,7 +1111,8 @@
           var i = (py * W + px) * 4;
           /* echte Helligkeit, nicht nur der Rotkanal — bei Fotos macht das den
              Unterschied zwischen richtigem und falschem Tonwert */
-          var lum = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114) / 255;
+          var roh = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114) | 0;
+          var lum = kurve ? kurve[roh] : roh / 255;
           var deckung = negativ ? lum : 1 - lum;
           /* Druckumfang: Lichter bleiben offen, Tiefen laufen nicht zu */
           deckung = 0.04 + deckung * 0.88;
@@ -1123,23 +1161,23 @@
         var img = new Image();
         img.decoding = 'async';
         img.onload = function () {
-          var ok = halbton(cv, W, H, grund, farbe, negativ, 1, function (o, kw, kh) {
+          var ok = halbton(cv, W, H, grund, farbe, negativ, 1, true, 4.4, function (o, kw, kh) {
             decken(o, img, kw, kh);
           });
           if (ok === false) {
-            halbton(cv, W, H, grund, farbe, negativ, 2, function (o, kw, kh) {
+            halbton(cv, W, H, grund, farbe, negativ, 2, false, 6.2, function (o, kw, kh) {
               szene(o, kw, kh, art);
             });
           }
         };
         img.onerror = function () {
-          halbton(cv, W, H, grund, farbe, negativ, 2, function (o, kw, kh) {
+          halbton(cv, W, H, grund, farbe, negativ, 2, false, 6.2, function (o, kw, kh) {
             szene(o, kw, kh, art);
           });
         };
         img.src = pfad;
       } else {
-        halbton(cv, W, H, grund, farbe, negativ, 2, function (o, kw, kh) {
+        halbton(cv, W, H, grund, farbe, negativ, 2, false, 6.2, function (o, kw, kh) {
           szene(o, kw, kh, art);
         });
       }

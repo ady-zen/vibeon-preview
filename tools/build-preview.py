@@ -37,9 +37,18 @@ body = re.search(r"<body>(.*)</body>", html, re.S).group(1)
 for treffer in sorted(set(re.findall(r"assets/fonts/[\w.-]+\.woff2", style))):
     style = style.replace("'%s'" % treffer, "'%s'" % data_uri(treffer, "font/woff2"))
 
-# Bilder einbetten
-for treffer in sorted(set(re.findall(r'src="(assets/[\w./-]+)"', body))):
-    body = body.replace('src="%s"' % treffer, 'src="%s"' % data_uri(treffer))
+# Bilder einbetten — sowohl klassische <img src> als auch die Fotos der
+# Halbton-Engine, die ueber data-bild am <canvas> haengen.
+for attr in ("src", "data-bild"):
+    muster = r'%s="(assets/[\w./-]+)"' % attr
+    for treffer in sorted(set(re.findall(muster, body))):
+        # Der Skriptblock steht mit im Body, dort stehen Beispielpfade in
+        # Kommentaren. Nur einbetten, was es wirklich gibt.
+        if not (ROOT / treffer).is_file():
+            print("  uebersprungen (nicht vorhanden): %s" % treffer)
+            continue
+        body = body.replace('%s="%s"' % (attr, treffer),
+                            '%s="%s"' % (attr, data_uri(treffer)))
 
 ZIEL.write_text(
     "<title>%s</title>\n%s\n%s\n%s" % (TITEL, style, nosc.group(0) if nosc else "", body.strip()),
