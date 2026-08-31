@@ -371,35 +371,17 @@
     .marke{font-family:var(--logo);font-weight:900;font-stretch:125%;text-transform:uppercase;font-size:.92em}
     .marke .on{background:var(--gelb);color:var(--tinte);padding:.02em .09em .04em}
     .b-gelb .marke .on{background:var(--tinte);color:var(--gelb)}
-    /* Das Line-up: gedruckte Zeilen mit Haarlinien. Beim Antippen laeuft die
-       Tinte von links durch die Zeile — dieselbe Bewegung wie beim Aufdruck der
-       Auszeichnungsbloecke, damit die Seite EINE Handschrift behaelt. */
-    .index{
-      margin-top:clamp(30px,5.5vh,52px);
-      border-top:2px solid var(--farbe);
+    /* Das gedruckte Licht: randlos ueber die volle Bogenbreite.
+       Der Randanschnitt ist ein Druckmittel — ein Bild, das an der Kante
+       aufhoert, wirkt eingesetzt; eines, das darueber hinauslaeuft, gehoert dazu. */
+    .hero-licht{
+      margin-top:clamp(28px,5vh,48px);
+      margin-inline:calc(-1 * var(--satz));
+      width:calc(100% + 2 * var(--satz));
+      aspect-ratio:5/3;
     }
-    .index a{
-      display:flex;align-items:baseline;justify-content:space-between;gap:14px;
-      border-bottom:2px solid var(--farbe);
-      padding:clamp(10px,2.4vw,15px) .18em;
-      margin-inline:-.18em;
-      min-height:58px;
-      text-decoration:none;color:var(--farbe);
-      font-family:var(--display);font-weight:900;text-transform:uppercase;
-      font-size:clamp(27px,7.6vw,54px);line-height:1;
-      background-image:linear-gradient(var(--farbe),var(--farbe));
-      background-repeat:no-repeat;background-size:0% 100%;
-      transition:background-size .32s cubic-bezier(.3,.2,.25,1),color .16s ease .08s;
-    }
-    .index a em{
-      font-family:var(--text);font-style:normal;font-weight:400;text-transform:none;
-      font-size:clamp(13px,3.3vw,15px);letter-spacing:0;opacity:.72;
-      white-space:nowrap;
-    }
-    .index a em::after{content:" →"}
-    .index a:hover,.index a:focus-visible,.index a:active{
-      background-size:100% 100%;color:var(--grund);
-    }
+    @media (min-width:820px){ .hero-licht{aspect-ratio:21/9} }
+
     .hero .stempel-platz{
       display:flex;justify-content:flex-end;
       margin-top:clamp(24px,4.5vh,42px);margin-right:clamp(0px,2vw,40px);
@@ -731,19 +713,18 @@
           <span class="z">Frag die,</span><span class="z z2">die <span class="mark" data-wort="dabei">dabei</span></span><span class="z z3">waren.</span>
         </h1>
         <p class="sub"><span class="marke">VIBE<span class="on">ON</span></span>. Eventformate, über die man am nächsten Tag spricht.</p>
-        <!-- LINE-UP statt Knopfreihe.
-             Vorher standen hier zwei Knoepfe, und die Hierarchie war verkehrt: der
-             gefuellte (also staerkere) fuehrte zu Instagram — eine Bindung, bevor
-             es einen Grund dafuer gab. "Formate entdecken" wiederum versprach
-             etwas, ohne zu sagen was.
-             Ein Plakat nennt an dieser Stelle das Line-up. Das tut dreierlei auf
-             einmal: es sagt sofort, was es gibt; es ist die einzige Navigation der
-             Seite; und es fuellt die tote Flaeche unter dem Hero mit Substanz. -->
-        <nav class="index" aria-label="Die Formate">
-          <a href="#exodus">Exodus<em>Die Nacht</em></a>
-          <a href="#secret">Secret X<em>Tag X</em></a>
-          <a href="#beer">Beer &amp; Beats<em>Donnerstags</em></a>
-        </nav>
+        <!-- DAS LICHT.
+             Hier stand kurz ein Line-up der Formate. Sascha: "nicht gleich von den
+             Formaten sprechen" — richtig, das widerspricht "Menschen vor Programm".
+             Ein Hero ist ein Moment, kein Menue.
+             Stattdessen wird das Markenmotiv zum Bild: "Der Vibe ist an" stand
+             bisher nur als kleiner Stempel da. Jetzt ist das Licht selbst gedruckt —
+             randlos, als Halbton. Auf Gelb heisst das: das Licht ist die STELLE,
+             an der die Tinte aufhoert. Genau so druckt ein Sieb ein Licht.
+             Es baut sich beim Laden diagonal im Rasterwinkel auf. -->
+        <figure class="rasterfeld hero-licht">
+          <canvas data-szene="licht" role="img" aria-label="Gedrucktes Licht"></canvas>
+        </figure>
         <!-- Der Schaltmoment aus v11, ins Handwerk uebersetzt: kein Lichtschalter,
              sondern ein Stempel, der beim Laden aufgedrueckt wird. -->
         <div class="stempel-platz">
@@ -1029,10 +1010,9 @@
     /* GRUNDREGEL aller Szenen: eine Silhouette ist nur lesbar, wenn hinter ihr
        Licht steht. Jede Szene baut deshalb zuerst die helle Flaeche und setzt die
        Figuren dann davor — nicht umgekehrt. */
-    /* Aktuell genutzt: 'nacht' (Exodus) und 'act' (Rueckfallebene hinter Nimas
-       Foto). 'abend' und 'raum' stehen bereit, falls diese Flaechen wieder ein
-       Bild bekommen — seit 2026-08-31 tragen sie Zettel und Tafel statt eines
-       Motivs. */
+    /* Aktuell genutzt: 'licht' (Hero), 'nacht' (Exodus) und 'act' (Rueckfallebene
+       hinter Nimas Foto). 'abend' und 'raum' stehen bereit, falls diese Flaechen
+       wieder ein Motiv bekommen. */
     function szene(o, W, H, art) {
       var g, i, r = streu(art === 'abend' ? 7 : art === 'nacht' ? 23 : art === 'raum' ? 41 : 59);
 
@@ -1139,6 +1119,40 @@
                 kb * (2.4 + r() * 1.0), i === 3 ? -0.26 : 0.28, kb * 0.36, '#080808');
           }
         }
+
+      } else if (art === 'licht') {
+        /* DAS LICHT (Hero) — und das Licht hat die Form des ON.
+           Erster Anlauf war ein weicher Radialverlauf: der las sich als Textur
+           mit Helligkeitsgefaelle, nicht als Licht. Einem Licht fehlt ohne Form
+           die Aussage. Also bekommt es die einzige Form, die dieser Marke gehoert.
+           Auf dem Gelb-Bogen heisst das: die Buchstaben sind die STELLE, an der
+           die Tinte aufhoert. Das ON ist nicht gedruckt — es ist ausgespart.
+           Genau das ist "Der Vibe ist an", nur eben im Druck statt als Leuchte. */
+        o.fillStyle = '#6b6b6b';
+        o.fillRect(0, 0, W, H);
+        /* Richtung: Abfall zur unteren linken Ecke */
+        g = o.createLinearGradient(W, 0, 0, H);
+        g.addColorStop(0, 'rgba(255,255,255,.22)');
+        g.addColorStop(1, 'rgba(0,0,0,.3)');
+        o.fillStyle = g;
+        o.fillRect(0, 0, W, H);
+
+        var mx = W * 0.54, my = H * 0.52;
+        /* Der Hof um die Buchstaben — er macht aus Typografie ein Leuchten */
+        g = o.createRadialGradient(mx, my, 0, mx, my, W * 0.52);
+        g.addColorStop(0, 'rgba(255,255,255,.92)');
+        g.addColorStop(0.34, 'rgba(255,255,255,.5)');
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        o.fillStyle = g;
+        o.fillRect(0, 0, W, H);
+
+        /* Die Buchstaben selbst, voll ausgespart */
+        var gr = H * 0.62;
+        o.font = '900 ' + gr + 'px "Archivo Expanded", "Big Shoulders", sans-serif';
+        o.textAlign = 'center';
+        o.textBaseline = 'middle';
+        o.fillStyle = '#ffffff';
+        o.fillText('ON', mx, my + gr * 0.02);
 
       } else if (art === 'raum') {
         /* UEBER VIBEON — leerer Raum mit hohen Fenstern: Leerstand, Galerie,
@@ -1423,14 +1437,18 @@
         if (cv.getAttribute('data-breite') != cv.clientWidth) rastern(cv);
       });
     }
-    /* Erst zeichnen, wenn das Feld in die Naehe des Blickfelds kommt */
+    /* Erst zeichnen, wenn das Feld in die Naehe des Blickfelds kommt.
+       Und erst, wenn die Schriften stehen: die Licht-Szene setzt das ON mit
+       Archivo Expanded — ohne geladene Schrift haette es die falsche Form. */
+    var bereit = document.fonts && document.fonts.ready
+      ? document.fonts.ready : Promise.resolve();
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (eintraege) {
         eintraege.forEach(function (e) {
           if (e.isIntersecting && rastern(e.target)) io.unobserve(e.target);
         });
       }, { rootMargin: '300px 0px' });
-      felder.forEach(function (cv) { io.observe(cv); });
+      bereit.then(function () { felder.forEach(function (cv) { io.observe(cv); }); });
     } else {
       window.requestAnimationFrame(alleRastern);
     }
