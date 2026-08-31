@@ -250,7 +250,7 @@
     .kopf a.ausgabe-link{
       color:inherit;text-decoration:none;
       display:inline-flex;align-items:center;min-height:44px;   /* vorher 23px */
-      box-shadow:inset 0 -2px 0 var(--tinte);
+      text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.24em;
     }
 
     /* ============ Knoepfe = gedruckte Kaesten ============ */
@@ -371,9 +371,38 @@
     .marke{font-family:var(--logo);font-weight:900;font-stretch:125%;text-transform:uppercase;font-size:.92em}
     .marke .on{background:var(--gelb);color:var(--tinte);padding:.02em .09em .04em}
     .b-gelb .marke .on{background:var(--tinte);color:var(--gelb)}
+    /* Das Line-up: gedruckte Zeilen mit Haarlinien. Beim Antippen laeuft die
+       Tinte von links durch die Zeile — dieselbe Bewegung wie beim Aufdruck der
+       Auszeichnungsbloecke, damit die Seite EINE Handschrift behaelt. */
+    .index{
+      margin-top:clamp(30px,5.5vh,52px);
+      border-top:2px solid var(--farbe);
+    }
+    .index a{
+      display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+      border-bottom:2px solid var(--farbe);
+      padding:clamp(10px,2.4vw,15px) .18em;
+      margin-inline:-.18em;
+      min-height:58px;
+      text-decoration:none;color:var(--farbe);
+      font-family:var(--display);font-weight:900;text-transform:uppercase;
+      font-size:clamp(27px,7.6vw,54px);line-height:1;
+      background-image:linear-gradient(var(--farbe),var(--farbe));
+      background-repeat:no-repeat;background-size:0% 100%;
+      transition:background-size .32s cubic-bezier(.3,.2,.25,1),color .16s ease .08s;
+    }
+    .index a em{
+      font-family:var(--text);font-style:normal;font-weight:400;text-transform:none;
+      font-size:clamp(13px,3.3vw,15px);letter-spacing:0;opacity:.72;
+      white-space:nowrap;
+    }
+    .index a em::after{content:" →"}
+    .index a:hover,.index a:focus-visible,.index a:active{
+      background-size:100% 100%;color:var(--grund);
+    }
     .hero .stempel-platz{
       display:flex;justify-content:flex-end;
-      margin-top:clamp(26px,5vh,46px);margin-right:clamp(0px,2vw,40px);
+      margin-top:clamp(24px,4.5vh,42px);margin-right:clamp(0px,2vw,40px);
     }
 
     /* ============ Bogen 2 · Was ist VIBEON (Papier) ============ */
@@ -702,11 +731,19 @@
           <span class="z">Frag die,</span><span class="z z2">die <span class="mark" data-wort="dabei">dabei</span></span><span class="z z3">waren.</span>
         </h1>
         <p class="sub"><span class="marke">VIBE<span class="on">ON</span></span>. Eventformate, über die man am nächsten Tag spricht.</p>
-        <div class="knopf-reihe">
-          <a class="knopf" href="#formate">Formate entdecken</a>
-          <!-- TODO: echtes Instagram-Profil eintragen -->
-          <a class="knopf knopf--voll" href="https://instagram.com/PLATZHALTER" target="_blank" rel="noopener">Instagram folgen<span class="sr-only"> (öffnet in neuem Tab)</span></a>
-        </div>
+        <!-- LINE-UP statt Knopfreihe.
+             Vorher standen hier zwei Knoepfe, und die Hierarchie war verkehrt: der
+             gefuellte (also staerkere) fuehrte zu Instagram — eine Bindung, bevor
+             es einen Grund dafuer gab. "Formate entdecken" wiederum versprach
+             etwas, ohne zu sagen was.
+             Ein Plakat nennt an dieser Stelle das Line-up. Das tut dreierlei auf
+             einmal: es sagt sofort, was es gibt; es ist die einzige Navigation der
+             Seite; und es fuellt die tote Flaeche unter dem Hero mit Substanz. -->
+        <nav class="index" aria-label="Die Formate">
+          <a href="#exodus">Exodus<em>Die Nacht</em></a>
+          <a href="#secret">Secret X<em>Tag X</em></a>
+          <a href="#beer">Beer &amp; Beats<em>Donnerstags</em></a>
+        </nav>
         <!-- Der Schaltmoment aus v11, ins Handwerk uebersetzt: kein Lichtschalter,
              sondern ein Stempel, der beim Laden aufgedrueckt wird. -->
         <div class="stempel-platz">
@@ -793,7 +830,7 @@
     </section>
 
     <!-- Exodus (Tinte-Vollton) — INTERIMS-COPY bis Instagram-Destillat -->
-    <section class="bogen b-tinte format exodus" aria-labelledby="f-exodus">
+    <section id="exodus" class="bogen b-tinte format exodus" aria-labelledby="f-exodus">
       <div class="innen">
         <!-- Eigene Wortmarke von Exodus (Sascha, 2026-08-31), aus dem Profilbild
              freigestellt und auf die beiden Druckfarben der Seite abgebildet —
@@ -821,7 +858,7 @@
     </section>
 
     <!-- Secret X (Papier): das Plakat, aus dem die Location herausgeschwaerzt wurde -->
-    <section class="bogen b-papier format secret" aria-labelledby="f-secret">
+    <section id="secret" class="bogen b-papier format secret" aria-labelledby="f-secret">
       <div class="innen">
         <p class="takt">Tag X</p>
         <h3 id="f-secret">Secret X</h3>
@@ -845,7 +882,7 @@
          Gelb, weil es das waermste und offenste der drei ist: Afterwork,
          Drinks aufs Haus, House-Party. Das Raster laeuft hier zweifarbig,
          Tintepunkte auf Gelb. -->
-    <section class="bogen b-gelb format beer" aria-labelledby="f-beer">
+    <section id="beer" class="bogen b-gelb format beer" aria-labelledby="f-beer">
       <div class="innen">
         <p class="takt">Jeden Donnerstag</p>
         <h3 id="f-beer">Beer <span class="amp">&amp;</span> Beats</h3>
