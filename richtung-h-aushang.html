@@ -315,13 +315,6 @@
     }
     .ueber .lauf{font-size:clamp(17px,4.3vw,21px);line-height:1.5;max-width:38ch}
     .ueber .lauf + .lauf{margin-top:clamp(18px,3vh,26px)}
-    .ueber .gastgeber{
-      margin-top:clamp(26px,4.5vh,40px);
-      border-left:6px solid var(--tinte);padding-left:clamp(14px,3.5vw,22px);
-      font-family:var(--display);font-weight:700;text-transform:uppercase;
-      font-size:clamp(19px,5vw,28px);line-height:1.05;max-width:20ch;
-    }
-    .ueber .rasterfeld{aspect-ratio:4/5;width:100%}
 
     /* ============ Bogen 3 · Zwischen (Tinte-Vollton) ============ */
     .zwischen .innen{padding-block:clamp(40px,7vh,80px)}
@@ -364,23 +357,60 @@
     }
     .format-by .marke{font-size:1.15em;opacity:1}
 
-    /* Beer & Beats: die Fakten als gedruckte Auszeichnungstabelle */
-    .fakten{
-      margin-top:clamp(24px,4vh,36px);max-width:460px;
-      border-top:2px solid var(--farbe);
+    /* ============ Zettel · der Aushang mit den Fakten ============
+       Ersetzt auf dem Beer-&-Beats-Bogen Faktentabelle UND Bildfenster. Das
+       einzige Element der Seite, das schief sitzt — genau deshalb sieht man es
+       zuerst. Es tut auch nicht so, als waere es ein Foto. */
+    .zettel{
+      margin-top:clamp(26px,5vw,42px);
+      border:3px solid var(--tinte);background:var(--papier);color:var(--tinte);
+      padding:clamp(18px,4vw,30px);
+      transform:rotate(-.8deg);
+      box-shadow:5px 5px 0 rgba(22,21,15,.18);
+      max-width:520px;
     }
-    .fakten div{
-      display:flex;justify-content:space-between;align-items:baseline;gap:18px;
-      border-bottom:1px solid rgba(22,21,15,.28);
-      padding:9px 0;
-    }
-    .b-tinte .fakten div{border-bottom-color:rgba(216,213,197,.3)}
-    .fakten dt{font-size:clamp(14px,3.4vw,16px);opacity:.66}
-    .fakten dd{
+    .zettel .zk{
+      display:flex;justify-content:space-between;align-items:baseline;gap:12px;
       font-family:var(--display);font-weight:700;text-transform:uppercase;
-      font-size:clamp(16px,4.2vw,20px);text-align:right;
+      font-size:clamp(12px,3vw,14px);
+      border-bottom:2px solid var(--tinte);padding-bottom:8px;
     }
-    .beer .rasterfeld{aspect-ratio:5/4;width:100%;margin-top:clamp(26px,4.5vh,40px)}
+    .zettel dl{display:grid;grid-template-columns:auto 1fr;margin-top:6px}
+    .zettel dt{
+      font-family:var(--text);font-size:clamp(13px,3.2vw,15px);opacity:.6;
+      padding:9px 16px 9px 0;border-bottom:1px solid rgba(22,21,15,.25);
+      display:flex;align-items:center;
+    }
+    .zettel dd{
+      margin:0;font-family:var(--display);font-weight:900;text-transform:uppercase;
+      font-size:clamp(21px,5.6vw,34px);line-height:1;text-align:right;
+      padding:9px 0;border-bottom:1px solid rgba(22,21,15,.25);
+    }
+    /* Die Orte-Zeile ist die laengste — sie bleibt im Zeilenraster, nur kleiner */
+    .zettel dd.eng{font-weight:700;font-size:clamp(13px,3.4vw,18px);line-height:1.2}
+    .zettel .frei{
+      margin-top:14px;text-align:center;
+      font-family:var(--display);font-weight:900;text-transform:uppercase;
+      font-size:clamp(19px,5vw,30px);
+      background:var(--tinte);color:var(--papier);padding:9px 8px 7px;
+    }
+
+    /* ============ Tafel · ausgesparte Schrift auf Vollton ============
+       Gehoert auf HELLE Boegen: der Kasten bringt seine eigene Tinte mit.
+       Ersetzt auf dem Ueber-VIBEON-Bogen das gezeichnete Bildfenster. */
+    .tafel{
+      background:var(--tinte);color:var(--gelb);
+      padding:clamp(24px,5.5vw,44px) clamp(20px,4.5vw,36px);
+    }
+    .tafel .vor{
+      font-family:var(--text);font-weight:400;font-size:clamp(14px,3.4vw,16px);
+      color:var(--papier);opacity:.65;margin-bottom:clamp(10px,2vw,16px);
+    }
+    .tafel p.gross{
+      font-family:var(--display);font-weight:900;text-transform:uppercase;
+      font-size:clamp(34px,9.4vw,72px);line-height:.92;margin:0;
+    }
+    .tafel .leise{color:var(--papier);opacity:.5}
 
     /* Exodus (Tinte-Vollton): Reels als Kontaktabzug-Streifen */
     .reel-band{
@@ -587,12 +617,15 @@
             <h2 class="gross" id="ueber-h">Es gibt Abende,<br>die <span class="mark">bleiben</span>.</h2>
             <p class="lauf">Nicht wie eine Veranstaltung – wie ein Moment, der <span class="gelbmark">genau so passieren musste</span>.</p>
             <p class="lauf">Dafür steht <span class="marke">VIBE<span class="on">ON</span></span>: Eventformate rund um Musik, Menschen und Orte, die man sonst nicht erlebt.</p>
-            <p class="gastgeber">Hinter VIBEON stehen Gastgeber, keine Veranstalter.</p>
           </div>
-          <figure class="rasterfeld">
-            <canvas data-szene="raum" role="img" aria-label="Gedrucktes Rasterbild: leerer Raum mit hohen Fenstern und Licht auf dem Boden"></canvas>
-            <figcaption>Platzhalter · Foto folgt</figcaption>
-          </figure>
+          <!-- Die Tafel: traegt seit 2026-08-31 den Satz, der vorher klein als
+               Zitatzeile danebenstand, und ersetzt zugleich das gezeichnete
+               Bildfenster. Der Markenkern ist hier mehr wert als eine
+               Raumansicht, die keine ist. -->
+          <div class="tafel">
+            <p class="vor">Hinter VIBEON stehen</p>
+            <p class="gross">Gastgeber.<br><span class="leise">Keine Veranstalter.</span></p>
+          </div>
         </div>
       </div>
     </section>
@@ -633,37 +666,6 @@
             <!-- Instagram statt Textlink: sein Konto ist videobasiert — die Geige
                  ueber dem Beat sieht man, man liest sie nicht. Gleiche 2-Klick-
                  Mechanik wie bei Exodus, vor dem Klick geht kein Request an Meta. -->
-            <div class="reel-band" role="group" aria-label="Instagram-Videos von Nima Lovario">
-              <!-- TODO: echte Reel-IDs eintragen (instagram.com/reel/<ID>/) -->
-              <!-- Sobald die MP4 da ist, wird aus dieser Kachel:
-                   <div class="reel">
-                     <video class="reel-video" src="assets/video/nima-01.mp4"
-                            playsinline muted loop preload="metadata"></video>
-                     <button class="ton" type="button" aria-pressed="false">Ton</button>
-                   </div>
-                   Siehe assets/video/README.md -->
-              <div class="reel">
-                <button class="reel-laden" type="button" data-reel="PLATZHALTER_NIMA_1">
-                  <span class="spiel" aria-hidden="true"></span>
-                  <span>Video laden</span>
-                  <span class="hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
-                </button>
-              </div>
-              <div class="reel">
-                <button class="reel-laden" type="button" data-reel="PLATZHALTER_NIMA_2">
-                  <span class="spiel" aria-hidden="true"></span>
-                  <span>Video laden</span>
-                  <span class="hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
-                </button>
-              </div>
-              <div class="reel">
-                <button class="reel-laden" type="button" data-reel="PLATZHALTER_NIMA_3">
-                  <span class="spiel" aria-hidden="true"></span>
-                  <span>Video laden</span>
-                  <span class="hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
-                </button>
-              </div>
-            </div>
             <!-- Der Knopf traegt den Namen des Kontos statt "Mehr erfahren":
                  das Handle IST die Adresse und wird wiedererkannt. -->
             <p class="aktion"><a class="knopf" href="https://www.instagram.com/nima_lovario" target="_blank" rel="noopener">@nima_lovario</a></p>
@@ -707,30 +709,6 @@
           <figcaption>Platzhalter · Foto folgt</figcaption>
         </figure>
         <!-- 2-Klick-Instagram: VOR dem Klick geht kein Request an Meta -->
-        <div class="reel-band" role="group" aria-label="Instagram-Videos von Exodus">
-          <!-- TODO: echte Reel-IDs eintragen (instagram.com/reel/<ID>/) -->
-          <div class="reel">
-            <button class="reel-laden" type="button" data-reel="PLATZHALTER_REEL_1">
-              <span class="spiel" aria-hidden="true"></span>
-              <span>Video laden</span>
-              <span class="hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
-            </button>
-          </div>
-          <div class="reel">
-            <button class="reel-laden" type="button" data-reel="PLATZHALTER_REEL_2">
-              <span class="spiel" aria-hidden="true"></span>
-              <span>Video laden</span>
-              <span class="hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
-            </button>
-          </div>
-          <div class="reel">
-            <button class="reel-laden" type="button" data-reel="PLATZHALTER_REEL_3">
-              <span class="spiel" aria-hidden="true"></span>
-              <span>Video laden</span>
-              <span class="hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
-            </button>
-          </div>
-        </div>
         <p class="aktion"><a class="knopf" href="https://www.instagram.com/exodus.aiff" target="_blank" rel="noopener">Mehr erfahren</a></p>
         <p class="format-by">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
       </div>
@@ -769,18 +747,22 @@
           <span class="laut">Afterwork ohne Programm.</span>
           Gute Musik, kaltes Bier, feine Leute. Fühlt sich an wie eine House-Party im erweiterten Freundeskreis – weil es genau das ist.
         </p>
-        <dl class="fakten">
-          <div><dt>Wann</dt><dd>18:00 bis offen</dd></div>
-          <div><dt>Wo</dt><dd>Galerie · Werkstatt · Dachboden</dd></div>
-          <div><dt>Musik</dt><dd>gut</dd></div>
-          <div><dt>Bier</dt><dd>kalt</dd></div>
-          <div><dt>Leute</dt><dd>fein</dd></div>
-          <div><dt>Drinks</dt><dd>aufs Haus</dd></div>
-        </dl>
-        <figure class="rasterfeld">
-          <canvas data-szene="abend" role="img" aria-label="Gedrucktes Rasterbild: Leute unter einer Hängelampe, erhobene Flaschen"></canvas>
-          <figcaption>Platzhalter · Foto folgt</figcaption>
-        </figure>
+        <!-- Der Aushang: traegt seit 2026-08-31 die Fakten UND die Bildflaeche.
+             Vorher standen hier eine Faktentabelle und ein gezeichnetes Bild mit
+             Platzhalter-Fahne — zwei Elemente, von denen eines ein Foto versprach,
+             das nicht kommt. -->
+        <div class="zettel">
+          <p class="zk"><span>Aushang</span><span>VIBEON · Bregenz</span></p>
+          <dl>
+            <dt>Wann</dt><dd>Do 18:00</dd>
+            <dt>Bis</dt><dd>offen</dd>
+            <dt>Musik</dt><dd>gut</dd>
+            <dt>Bier</dt><dd>kalt</dd>
+            <dt>Leute</dt><dd>fein</dd>
+            <dt>Orte</dt><dd class="eng">Galerie · Werkstatt · Dachboden</dd>
+          </dl>
+          <p class="frei">Drinks aufs Haus</p>
+        </div>
         <p class="aktion"><a class="knopf" href="https://beerbeats.at" target="_blank" rel="noopener">Mehr erfahren</a></p>
         <p class="format-by">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
         </div>
@@ -896,6 +878,10 @@
     /* GRUNDREGEL aller Szenen: eine Silhouette ist nur lesbar, wenn hinter ihr
        Licht steht. Jede Szene baut deshalb zuerst die helle Flaeche und setzt die
        Figuren dann davor — nicht umgekehrt. */
+    /* Aktuell genutzt: 'nacht' (Exodus) und 'act' (Rueckfallebene hinter Nimas
+       Foto). 'abend' und 'raum' stehen bereit, falls diese Flaechen wieder ein
+       Bild bekommen — seit 2026-08-31 tragen sie Zettel und Tafel statt eines
+       Motivs. */
     function szene(o, W, H, art) {
       var g, i, r = streu(art === 'abend' ? 7 : art === 'nacht' ? 23 : art === 'raum' ? 41 : 59);
 
