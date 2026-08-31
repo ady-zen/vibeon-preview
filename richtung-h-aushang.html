@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<!--
+  VIBEON One-Pager — RICHTUNG H "AUSHANG", Version 1, 2026-08-31
+  ==============================================================
+  Anlass: Sascha, 2026-08-31 — "Das Ganze schaut aus wie KI generiert und das soll
+  auf keinen Fall sein ... es muss viel viel visueller werden." Richtung H aus dem
+  Richtungs-Board gewaehlt.
+
+  KONZEPT: Die Seite ist kein Bildschirm, sondern ein Aushang — das Plakat, das im
+  Leerstand an der Wand klebt. Zwei Druckfarben auf Zeitungspapier. Gelesen wird sie
+  als Folge von BOEGEN (Papier / Tinte-Vollton / Gelb-Vollton), nicht als Folge von
+  Sektionen. Das gibt der Seite einen Rhythmus, den die Vorgaenger-Version nicht hatte.
+
+  WAS GEGENUEBER v12 BEWUSST RAUSFLIEGT (Befund "sieht nach KI aus"):
+    - alle SIEBEN Leucht-Systeme (Puls, Sonar, Hero-Licht, Cursor-Spotlight,
+      Scroll-Licht, Strom-Filament, Punkt-Bloom) und jeder screen-blend-Radialverlauf
+    - Space Grotesk (die "sichere KI-Schrift") als Fliesstext
+    - Versal-Mono mit Sperrung als Standard-Auszeichnung fuer JEDEN Kleintext
+    - die Nummerierung "Format 01/02/03" (kodierte nichts — die Formate sind keine Reihe)
+    - beide Endlos-Ticker mit ·-Trennern
+    - der fuenfmal wiederholte Sektions-Anker (Punkt + Mono-Label + Haarlinie)
+    - die gestaffelten Scroll-Reveals (.beat d1-d4) — ein Plakat blendet nicht ein
+    - Ghost-Buttons mit Warmlauf-Fuellung
+    - Outline-Typo (-webkit-text-stroke) als Deko
+
+  WAS BLEIBT (Marke, nicht Mode):
+    - die Wortmarke VIBEON in Archivo Expanded Black, inkl. der ON-Story
+    - das VIBEON-Gelb #E9F42F — aber als DRUCKFARBE (Flaeche), nie als Leuchten
+    - die gesamte freigegebene Copy inkl. aller offenen TODOs
+    - Barrierefreiheit, prefers-reduced-motion, noscript, keine externen Requests
+
+  AUSZEICHNUNGS-REGEL (loest zugleich ein Kontrast-Problem):
+    Hervorhebung ist IMMER ein Farbblock, NIE farbige Schrift.
+      .mark      = Block in der Gegenfarbe des Bogens, Text ausgespart (stark)
+      .gelbmark  = gelber Marker hinter Tinte-Text (leicht) — nie auf dem Gelb-Bogen
+    Gelbe Schrift auf Papier waere unleserlich; als Flaeche traegt dieselbe Farbe.
+
+  BILDER OHNE FOTOS (die eigentliche Antwort auf "viel visueller"):
+    assets/ hat keine Fotos — echte Eventfotos kommen erst nach Event 1. Die Seite
+    rechnet ihre Bildflaechen deshalb selbst: eine Halbton-Engine (Canvas) legt ein
+    45°-Punktraster ueber eine gerechnete Lichtszene, Punktflaeche proportional zur
+    Schwaerzung — also echter Autotypie-Raster, nicht "Verlauf mit Punkten drueber".
+    Auf Tinte-Boegen laeuft dieselbe Engine negativ (Papierpunkte auf Tinte).
+    ABLOESE-PFAD: rastern() nimmt spaeter ein <img> statt einer gerechneten Szene
+    entgegen — echte Fotos bekommen denselben Druck-Look, der Look bleibt stabil.
+    Ohne JS bleibt ein CSS-Punktraster stehen (nie ein leeres Loch).
+
+  MOTION: Genau ein Motiv, aus dem Handwerk hergeleitet — der PASSER. Beim Laden
+  faehrt die zweite Druckfarbe einmalig in den Stand, der Stempel wird aufgedrueckt.
+  Danach steht die Seite still. Kein Scroll-Reveal, kein Loop, kein Glow.
+-->
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIBEON – Eventformate mit eigener Identität | Bregenz &amp; Bodenseeraum</title>
+  <meta name="description" content="VIBEON entwickelt Eventformate rund um Musik, Menschen und besondere Orte: Beer &amp; Beats, Exodus und Secret X. Der Vibe ist an.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="de_AT">
+  <meta property="og:title" content="VIBEON – Eventformate mit eigener Identität | Bregenz &amp; Bodenseeraum">
+  <meta property="og:description" content="VIBEON entwickelt Eventformate rund um Musik, Menschen und besondere Orte: Beer &amp; Beats, Exodus und Secret X. Der Vibe ist an.">
+  <meta name="theme-color" content="#D8D5C5">
+  <meta property="og:image" content="/assets/og-image-v1.jpg">
+  <link rel="icon" type="image/svg+xml" href="assets/vibeon-icon-gelb.svg">
+
+  <style>
+    /* ============ Schriften (self-hosted, keine externen Requests) ============
+       Archivo Expanded Black bleibt die Wortmarke (Logo-Kontinuitaet aus v1-v12).
+       Big Shoulders traegt die Plakat-Headlines, Archivo den Fliesstext — beide
+       aus derselben Werkstatt-Familie wie das Logo, aber klar unterscheidbar. */
+    @font-face{font-family:'Archivo Expanded';font-style:normal;font-weight:900;font-stretch:125%;font-display:swap;src:url('assets/fonts/archivo-expanded-black.woff2') format('woff2')}
+    @font-face{font-family:'Big Shoulders';font-style:normal;font-weight:100 900;font-display:swap;src:url('assets/fonts/big-shoulders-var.woff2') format('woff2')}
+    @font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-display:swap;src:url('assets/fonts/archivo-var.woff2') format('woff2')}
+
+    /* ============ Druckfarben ============
+       Kein #000 und kein #FFF: Zeitungspapier ist gruengrau, Druckschwarz ist warm.
+       --ueberdruck ist Gelb x Tinte gerechnet (multiply), fuer den Passerversatz. */
+    :root{
+      --papier:#D8D5C5;
+      --papier-2:#CFCBB9;
+      --tinte:#16150F;
+      --gelb:#E9F42F;
+      --ueberdruck:#9AA318;
+      --satz:clamp(18px,5.2vw,72px);
+      --display:'Big Shoulders','Archivo Expanded',Impact,sans-serif;
+      --text:'Archivo',system-ui,-apple-system,sans-serif;
+      --logo:'Archivo Expanded','Archivo',sans-serif;
+    }
+
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:clamp(16px,5vh,48px)}
+    body{
+      background:var(--papier);
+      color:var(--tinte);
+      font-family:var(--text);
+      font-weight:400;
+      font-size:clamp(16.5px,1.05vw+12px,19px);
+      line-height:1.55;
+      text-wrap:pretty;
+      overflow-x:hidden;
+    }
+    ::selection{background:var(--tinte);color:var(--papier)}
+    a,button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+
+    /* Papierfaser: multiply zieht die hellen Boegen an, screen setzt auf den
+       Tinte-Boegen die Faser wieder frei — so hat JEDER Bogen dieselbe Oberflaeche. */
+    .faser,.faser-hell{
+      position:fixed;inset:-40px;z-index:80;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23f)'/%3E%3C/svg%3E");
+    }
+    .faser{mix-blend-mode:multiply;opacity:.26}
+    .faser-hell{mix-blend-mode:screen;opacity:.07}
+
+    /* ============ A11y ============ */
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+    .skip-link{
+      position:absolute;left:var(--satz);top:-72px;z-index:100;
+      background:var(--tinte);color:var(--papier);
+      font-family:var(--display);font-weight:700;font-size:17px;text-transform:uppercase;
+      padding:14px 22px;text-decoration:none;transition:top .2s ease;
+    }
+    .skip-link:focus-visible{top:12px}
+    :focus-visible{outline:3px solid currentColor;outline-offset:3px}
+
+    /* ============ Bogen-System ============
+       Jeder Bogen setzt --grund/--farbe. Alles darin (Knoepfe, Marker, Linien,
+       Raster) leitet sich daraus ab — dadurch funktioniert JEDES Bauteil auf
+       JEDEM Bogen, ohne Sonderfaelle. */
+    .bogen{position:relative;background:var(--grund);color:var(--farbe)}
+    .b-papier{--grund:var(--papier);--farbe:var(--tinte)}
+    .b-papier2{--grund:var(--papier-2);--farbe:var(--tinte)}
+    .b-tinte{--grund:var(--tinte);--farbe:var(--papier)}
+    .b-gelb{--grund:var(--gelb);--farbe:var(--tinte)}
+    .innen{padding:clamp(46px,9vh,104px) var(--satz)}
+    .schmal{max-width:44ch}
+
+    /* Bogenkante: 2px Tinte-Linie — die Schnittkante zwischen zwei Bogen */
+    .kante{border-top:2px solid var(--tinte)}
+    .b-tinte + .b-papier,.b-tinte + .b-papier2,.b-tinte + .b-gelb{border-top:0}
+
+    /* ============ Typo ============ */
+    .display,h1,h2,h3{
+      font-family:var(--display);
+      font-weight:900;
+      text-transform:uppercase;
+      line-height:.92;
+      letter-spacing:-.005em;
+      text-wrap:balance;
+    }
+    /* Auszeichnung ist IMMER Flaeche, nie Farbschrift (Regel oben) */
+    .mark{
+      display:inline-block;
+      background:var(--farbe);color:var(--grund);
+      line-height:.86;padding:.1em .12em .06em;
+      -webkit-box-decoration-break:clone;box-decoration-break:clone;
+    }
+    .gelbmark{
+      background:var(--gelb);color:var(--tinte);
+      padding:.05em .1em;
+      -webkit-box-decoration-break:clone;box-decoration-break:clone;
+    }
+    /* Kleintext: Archivo im Satzsatz. KEIN Versal-Mono, keine Sperrung. */
+    .klein{font-size:clamp(14px,3.4vw,16px);line-height:1.45;opacity:.72}
+    .takt--leise{opacity:.66}
+    .takt{
+      font-family:var(--display);font-weight:700;
+      font-size:clamp(16px,4.2vw,20px);text-transform:uppercase;
+      letter-spacing:.01em;line-height:1.1;
+    }
+
+    /* ============ Wortmarke ============
+       Die ON-Story aus v1-v12 uebersetzt: ON wird nicht angeknipst, es wird
+       ueberdruckt — ein gelber Farbblock, in dem die Buchstaben ausgespart sind. */
+    .wortmarke{
+      font-family:var(--logo);font-weight:900;font-stretch:125%;
+      text-transform:uppercase;text-decoration:none;color:inherit;
+      display:inline-flex;align-items:center;
+      font-size:clamp(21px,5.4vw,28px);letter-spacing:.01em;
+      line-height:1;
+    }
+    .wortmarke .on{
+      background:var(--gelb);color:var(--tinte);
+      padding:.04em .1em .06em;margin-left:.05em;
+    }
+    .b-gelb .wortmarke .on{background:var(--tinte);color:var(--gelb)}
+
+    /* ============ Kopfbalken ============ */
+    .kopf{
+      display:flex;align-items:center;justify-content:space-between;gap:14px;
+      padding:14px var(--satz);
+      border-bottom:2px solid var(--tinte);
+      background:var(--papier);
+      position:relative;z-index:20;
+    }
+    .kopf .ausgabe{
+      font-family:var(--display);font-weight:700;
+      font-size:clamp(13px,3.2vw,16px);text-transform:uppercase;
+      font-variant-numeric:tabular-nums;
+      display:flex;gap:clamp(10px,3vw,26px);align-items:baseline;
+    }
+    .kopf .ausgabe .ort{display:none}
+    @media (min-width:600px){.kopf .ausgabe .ort{display:inline}}
+    .kopf a.ausgabe-link{color:inherit;text-decoration:none;border-bottom:2px solid var(--tinte);padding-bottom:1px}
+
+    /* ============ Knoepfe = gedruckte Kaesten ============ */
+    .knopf{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      min-height:54px;padding:12px clamp(20px,5vw,30px);
+      font-family:var(--display);font-weight:700;
+      font-size:clamp(17px,4.4vw,21px);text-transform:uppercase;letter-spacing:.01em;
+      text-decoration:none;
+      border:2px solid var(--farbe);color:var(--farbe);background:transparent;
+      cursor:pointer;
+      transition:background-color .16s ease,color .16s ease;
+    }
+    .knopf--voll{background:var(--farbe);color:var(--grund)}
+    .knopf:hover,.knopf:focus-visible{background:var(--farbe);color:var(--grund)}
+    .knopf--voll:hover,.knopf--voll:focus-visible{background:transparent;color:var(--farbe)}
+    .knopf:active{transform:translateY(1px)}
+    .knopf-reihe{display:flex;flex-wrap:wrap;gap:12px}
+
+    /* ============ Rasterfelder (Halbton) ============
+       Das Canvas liegt ueber einem CSS-Punktraster: ohne JS bleibt eine gedruckte
+       Flaeche stehen statt eines Lochs. */
+    .rasterfeld{
+      position:relative;overflow:hidden;
+      background-color:var(--grund);
+      background-image:radial-gradient(circle at center,var(--farbe) 34%,transparent 36%);
+      background-size:7px 7px;
+    }
+    .rasterfeld canvas{position:relative;display:block;width:100%;height:100%}
+    .rasterfeld figcaption{
+      position:absolute;left:0;bottom:0;z-index:2;
+      background:var(--farbe);color:var(--grund);
+      font-family:var(--display);font-weight:700;text-transform:uppercase;
+      font-size:clamp(12px,3vw,15px);padding:5px 10px 4px;
+    }
+
+    /* ============ Stempel ============ */
+    .stempel{
+      display:inline-block;
+      border:3px solid var(--farbe);color:var(--farbe);
+      font-family:var(--display);font-weight:900;text-transform:uppercase;
+      font-size:clamp(15px,4vw,22px);line-height:1;
+      padding:9px 14px 7px;
+      transform:rotate(-6deg);
+      box-shadow:3px 3px 0 rgba(22,21,15,.14);
+    }
+
+    /* ============ Passer-Motiv (die einzige Bewegung der Seite) ============ */
+    @keyframes passer{from{transform:translate(9px,-7px)}to{transform:translate(3px,-2px)}}
+    @keyframes aufdruecken{
+      0%{transform:rotate(-6deg) scale(1.14);opacity:0}
+      55%{opacity:1}
+      100%{transform:rotate(-6deg) scale(1);opacity:1}
+    }
+
+    /* ============ Bogen 1 · Hero (Gelb-Vollton) ============ */
+    .hero{padding:clamp(30px,6vh,60px) var(--satz) clamp(46px,8vh,86px);position:relative;isolation:isolate}
+    .hero .ort{
+      font-family:var(--display);font-weight:700;text-transform:uppercase;
+      font-size:clamp(16px,4.4vw,22px);margin-bottom:clamp(18px,3.5vh,30px);
+    }
+    .hero h1{
+      position:relative;
+      font-size:clamp(52px,15.5vw,188px);
+      line-height:.88;
+      letter-spacing:-.015em;
+      margin-bottom:clamp(26px,4.5vh,44px);
+    }
+    .hero h1 .z{display:block}
+    .hero h1 .z2{padding-left:.14em}
+    .hero h1 .z3{margin-top:-.02em}
+    .hero h1 .z3{padding-left:.03em}
+    /* Die zweite Druckfarbe, minimal daneben — der Passerversatz macht das Bild */
+    /* Die Versatz-Ebene traegt dasselbe Markup (gleiche Umbrueche!), aber
+       keine eigene Auszeichnungsfarbe — sie ist reiner Farbversatz. */
+    .hero h1 .versatz .mark{background:transparent;color:inherit}
+    .hero h1 .versatz{
+      position:absolute;left:0;top:0;width:100%;z-index:-1;
+      color:var(--ueberdruck);
+      transform:translate(3px,-2px);
+      pointer-events:none;user-select:none;
+    }
+    .hero .sub{
+      font-size:clamp(18px,4.6vw,26px);line-height:1.35;font-weight:400;
+      max-width:26ch;margin-bottom:clamp(26px,4.5vh,40px);
+    }
+    /* Die Wortmarke im Fliesstext — eine Regel fuer alle Vorkommen */
+    .marke{font-family:var(--logo);font-weight:900;font-stretch:125%;text-transform:uppercase;font-size:.92em}
+    .marke .on{background:var(--gelb);color:var(--tinte);padding:.02em .09em .04em}
+    .b-gelb .marke .on{background:var(--tinte);color:var(--gelb)}
+    .hero .stempel-platz{
+      display:flex;justify-content:flex-end;
+      margin-top:clamp(26px,5vh,46px);margin-right:clamp(0px,2vw,40px);
+    }
+
+    /* ============ Bogen 2 · Was ist VIBEON (Papier) ============ */
+    .ueber-grid{display:grid;gap:clamp(28px,5vh,52px)}
+    @media (min-width:900px){
+      .ueber-grid{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(36px,5vw,80px);align-items:start}
+    }
+    .ueber .gross{
+      font-family:var(--display);font-weight:900;text-transform:uppercase;
+      font-size:clamp(34px,9vw,86px);line-height:.9;
+      margin-bottom:clamp(20px,3.5vh,34px);
+    }
+    .ueber .lauf{font-size:clamp(17px,4.3vw,21px);line-height:1.5;max-width:38ch}
+    .ueber .lauf + .lauf{margin-top:clamp(18px,3vh,26px)}
+    .ueber .gastgeber{
+      margin-top:clamp(26px,4.5vh,40px);
+      border-left:6px solid var(--tinte);padding-left:clamp(14px,3.5vw,22px);
+      font-family:var(--display);font-weight:700;text-transform:uppercase;
+      font-size:clamp(19px,5vw,28px);line-height:1.05;max-width:20ch;
+    }
+    .ueber .rasterfeld{aspect-ratio:4/5;width:100%}
+
+    /* ============ Bogen 3 · Zwischen (Tinte-Vollton) ============ */
+    .zwischen .innen{padding-block:clamp(40px,7vh,80px)}
+    .zwischen p{
+      font-family:var(--display);font-weight:700;text-transform:uppercase;
+      font-size:clamp(26px,7.4vw,66px);line-height:1;
+    }
+    .zwischen p + p{margin-top:.24em}
+    .zwischen .u{opacity:.5}
+
+    /* ============ Boegen 4-6 · Formate ============ */
+    .formate-kopf{
+      display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+      padding:clamp(34px,6vh,64px) var(--satz) clamp(20px,3vh,30px);
+    }
+    .formate-kopf h2{font-size:clamp(30px,8vw,72px);line-height:.9}
+    .formate-kopf .zusatz{font-family:var(--text);font-weight:400;font-size:clamp(14px,3.3vw,16px);text-transform:none;opacity:.7;text-align:right;max-width:20ch}
+    .format h3{
+      font-size:clamp(42px,12.5vw,124px);
+      line-height:.84;
+      margin:clamp(6px,1.4vh,12px) 0 clamp(18px,3vh,28px);
+    }
+    .format .amp{color:var(--gelb)}
+    .b-gelb .format .amp,.b-papier .format .amp{color:var(--ueberdruck)}
+    .format .copy{font-size:clamp(17px,4.3vw,21px);line-height:1.5;max-width:40ch}
+    .format .copy .laut{
+      display:block;
+      font-family:var(--display);font-weight:900;text-transform:uppercase;
+      font-size:clamp(24px,6.4vw,38px);line-height:.95;margin-bottom:.32em;
+    }
+    .format .aktion{margin-top:clamp(26px,4.5vh,42px)}
+    .format-by{
+      margin-top:clamp(22px,3.5vh,32px);
+      font-size:clamp(13px,3.1vw,15px);opacity:.66;
+      display:flex;align-items:center;gap:.5em;
+    }
+    .format-by .marke{font-size:1.15em;opacity:1}
+
+    /* Beer & Beats: die Fakten als gedruckte Auszeichnungstabelle */
+    .fakten{
+      margin-top:clamp(24px,4vh,36px);max-width:460px;
+      border-top:2px solid var(--farbe);
+    }
+    .fakten div{
+      display:flex;justify-content:space-between;align-items:baseline;gap:18px;
+      border-bottom:1px solid rgba(22,21,15,.28);
+      padding:9px 0;
+    }
+    .b-tinte .fakten div{border-bottom-color:rgba(216,213,197,.3)}
+    .fakten dt{font-size:clamp(14px,3.4vw,16px);opacity:.66}
+    .fakten dd{
+      font-family:var(--display);font-weight:700;text-transform:uppercase;
+      font-size:clamp(16px,4.2vw,20px);text-align:right;
+    }
+    .innen--anschluss{padding-top:0}
+    .beer .rasterfeld{aspect-ratio:5/4;width:100%;margin-top:clamp(26px,4.5vh,40px)}
+
+    /* Exodus (Tinte-Vollton): Reels als Kontaktabzug-Streifen */
+    .reel-band{
+      margin-top:clamp(24px,4vh,36px);
+      display:grid;grid-auto-flow:column;grid-auto-columns:min(58vw,220px);
+      gap:10px;overflow-x:auto;overscroll-behavior-x:contain;
+      scroll-snap-type:x mandatory;padding-bottom:10px;scrollbar-width:none;
+    }
+    .reel-band::-webkit-scrollbar{display:none}
+    .reel{
+      aspect-ratio:9/16;scroll-snap-align:start;position:relative;overflow:hidden;
+      border:2px solid var(--farbe);background:transparent;
+    }
+    .reel iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    .reel-laden{
+      position:absolute;inset:0;width:100%;height:100%;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+      background:transparent;border:0;cursor:pointer;color:var(--farbe);
+      font-family:var(--display);font-weight:700;text-transform:uppercase;
+      font-size:clamp(15px,3.8vw,18px);padding:16px;text-align:center;
+    }
+    .reel-laden .spiel{
+      width:0;height:0;flex:none;
+      border-left:22px solid var(--farbe);
+      border-top:14px solid transparent;border-bottom:14px solid transparent;
+    }
+    .reel-laden .hinweis{
+      font-family:var(--text);font-weight:400;text-transform:none;
+      font-size:12.5px;line-height:1.4;opacity:.62;max-width:22ch;
+    }
+    .reel-laden:hover,.reel-laden:focus-visible{background:rgba(216,213,197,.09)}
+    .exodus .rasterfeld{aspect-ratio:16/9;width:100%;margin-top:clamp(26px,4.5vh,40px)}
+
+    /* Secret X (Papier): das Plakat, aus dem die Location herausgeschwaerzt wurde */
+    .secret .innen{padding-block:clamp(56px,10vh,120px)}
+    .secret h3{font-size:clamp(46px,14vw,150px)}
+    .secret .schwaerzung{
+      margin-top:clamp(28px,5vh,46px);
+      display:flex;align-items:center;gap:clamp(12px,3vw,20px);flex-wrap:wrap;
+    }
+    .secret .schwaerzung .frage{
+      font-family:var(--display);font-weight:900;text-transform:uppercase;
+      font-size:clamp(30px,8vw,64px);line-height:1;
+    }
+    .secret .balken{
+      flex:1 1 200px;min-width:180px;height:clamp(38px,9vw,72px);
+      background:var(--tinte);
+      /* leicht schief aufgesetzt, wie mit dem Filzstift gezogen */
+      transform:rotate(-.6deg);
+    }
+    .secret .stempel-platz{margin-top:clamp(30px,5vh,48px)}
+
+    /* ============ Bogen 7 · Live-Act (Papier 2) ============ */
+    .act-grid{display:grid;gap:clamp(26px,4.5vh,40px)}
+    @media (min-width:820px){
+      .act-grid{grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:clamp(30px,5vw,64px);align-items:center}
+    }
+    .act .rasterfeld{aspect-ratio:4/5;width:100%;max-width:340px}
+    .act .name{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(38px,10vw,84px);line-height:.88}
+    .act .rolle{margin-top:clamp(10px,1.6vh,16px);font-size:clamp(15px,3.7vw,18px);opacity:.72}
+    .act .copy{margin-top:clamp(18px,3vh,26px);font-size:clamp(17px,4.3vw,21px);line-height:1.5;max-width:40ch}
+    .act .copy .laut{display:block;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(22px,5.6vw,32px);line-height:.98;margin-bottom:.3em}
+    .act .sound{margin-top:clamp(16px,2.6vh,24px)}
+    .act .aktion{margin-top:clamp(24px,4vh,36px)}
+
+    /* ============ Bogen 8 · Orte (Tinte-Streifen) ============ */
+    .orte .innen{padding-block:clamp(34px,6vh,64px)}
+    .orte ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px 10px}
+    .orte li{
+      font-family:var(--display);font-weight:700;text-transform:uppercase;
+      font-size:clamp(17px,4.6vw,28px);line-height:1;
+      border:2px solid var(--farbe);padding:7px 11px 5px;
+    }
+    .orte .vor{font-size:clamp(14px,3.4vw,16px);opacity:.66;margin-bottom:clamp(14px,2.4vh,20px);font-family:var(--text);font-weight:400;text-transform:none}
+
+    /* ============ Bogen 9 · Manifest (Gelb-Vollton) ============ */
+    .manifest .innen{padding-block:clamp(50px,9vh,110px)}
+    .manifest p{
+      font-family:var(--display);font-weight:900;text-transform:uppercase;
+      font-size:clamp(34px,10vw,104px);line-height:.9;
+    }
+    .manifest p + p{margin-top:.3em}
+    .manifest .vor{color:var(--ueberdruck)}
+
+    /* ============ Bogen 10 · Die Liste (Tinte-Vollton, Abriss-Coupon) ============ */
+    .liste h2{font-size:clamp(56px,16vw,180px);line-height:.84}
+    .liste .text{margin-top:clamp(22px,4vh,36px);font-size:clamp(17px,4.3vw,21px);line-height:1.5;max-width:38ch}
+    .coupon{
+      margin-top:clamp(32px,5.5vh,54px);
+      border:2px dashed var(--papier);
+      padding:clamp(20px,4.5vw,32px);
+      position:relative;
+      display:grid;gap:14px;
+    }
+    /* Perforations-Kerben links und rechts — der Abschnitt zum Abreissen */
+    .coupon::before,.coupon::after{
+      content:"";position:absolute;top:50%;width:26px;height:26px;
+      margin-top:-13px;border-radius:50%;background:var(--tinte);
+      border:2px dashed var(--papier);
+    }
+    .coupon::before{left:-15px}
+    .coupon::after{right:-15px}
+    .coupon .kopfzeile{
+      font-family:var(--display);font-weight:700;text-transform:uppercase;
+      font-size:clamp(14px,3.4vw,17px);opacity:.7;
+      display:flex;justify-content:space-between;gap:12px;
+    }
+    .coupon .knopf{width:100%}
+
+    /* ============ B2B + Fuss ============ */
+    .b2b{
+      padding:clamp(22px,4vh,34px) var(--satz);
+      border-top:2px solid var(--tinte);
+      display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;
+      font-size:clamp(14px,3.4vw,16px);
+    }
+    .b2b a{
+      color:inherit;display:inline-flex;align-items:center;min-height:44px;
+      text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.22em;
+    }
+    .b2b a:hover{background:var(--tinte);color:var(--papier);text-decoration-color:transparent}
+    footer{
+      padding:clamp(26px,4.5vh,44px) var(--satz) clamp(36px,6vh,60px);
+      border-top:2px solid var(--tinte);
+      display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 28px;
+    }
+    footer .herkunft{
+      font-family:var(--display);font-weight:700;text-transform:uppercase;
+      font-size:clamp(17px,4.4vw,24px);line-height:1;
+    }
+    footer nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:2px 20px}
+    footer nav a{
+      color:inherit;
+      display:inline-flex;align-items:center;min-height:44px;
+      font-size:clamp(14px,3.4vw,16px);
+      text-decoration:underline;text-decoration-color:rgba(22,21,15,.4);
+      text-underline-offset:.22em;
+    }
+    footer nav a:hover{text-decoration-color:var(--tinte)}
+    footer .fuss-marke-zeile{margin-top:10px}
+    footer .fuss-marke{font-size:clamp(17px,4.4vw,22px);opacity:.9}
+
+    /* ============ noscript ============ */
+    .kein-js .reel-band{display:none}
+
+    /* ============ prefers-reduced-motion ============ */
+    @media (prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      *,*::before,*::after{animation:none !important;transition:none !important}
+      .hero h1 .versatz{transform:translate(3px,-2px)}
+      .stempel{transform:rotate(-6deg);opacity:1}
+    }
+  </style>
+  <noscript><style>.reel-band{display:none}</style></noscript>
+</head>
+<body>
+  <!-- Papieroberflaeche: liegt ueber allem, nimmt keine Klicks an -->
+  <div class="faser" aria-hidden="true"></div>
+  <div class="faser-hell" aria-hidden="true"></div>
+
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+  <!-- ============ Kopfbalken ============ -->
+  <div class="kopf">
+    <a class="wortmarke" href="#inhalt" aria-label="VIBEON – zum Seitenanfang">VIBE<span class="on">ON</span></a>
+    <p class="ausgabe">
+      <span class="ort">Bregenz &amp; Bodensee</span>
+      <!-- TODO: echte WhatsApp-Kanal-URL — bis dahin Anker auf die Listen-Sektion -->
+      <a class="ausgabe-link" href="#liste">Die Liste</a>
+    </p>
+  </div>
+
+  <main id="inhalt">
+
+    <!-- ============ Bogen 1 · Hero (Gelb-Vollton) ============ -->
+    <section class="bogen b-gelb" aria-labelledby="hero-h">
+      <div class="hero">
+        <p class="ort">Bregenz &amp; Bodenseeraum</p>
+        <h1 id="hero-h">
+          <span class="versatz" aria-hidden="true">
+            <span class="z">Du weißt,</span><span class="z z2">wenn du</span><span class="z z3"><span class="mark">dabei</span> warst.</span>
+          </span>
+          <span class="z">Du weißt,</span><span class="z z2">wenn du</span><span class="z z3"><span class="mark">dabei</span> warst.</span>
+        </h1>
+        <p class="sub"><span class="marke">VIBE<span class="on">ON</span></span>. Eventformate, über die man am nächsten Tag spricht.</p>
+        <div class="knopf-reihe">
+          <a class="knopf" href="#formate">Formate entdecken</a>
+          <!-- TODO: echte WhatsApp-Kanal-URL eintragen -->
+          <a class="knopf knopf--voll" href="https://whatsapp.com/channel/PLATZHALTER">Auf die Liste</a>
+        </div>
+        <!-- Der Schaltmoment aus v11, ins Handwerk uebersetzt: kein Lichtschalter,
+             sondern ein Stempel, der beim Laden aufgedrueckt wird. -->
+        <div class="stempel-platz">
+          <span class="stempel" id="stempel">Der Vibe ist an</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Bogen 2 · Was ist VIBEON (Papier) ============ -->
+    <section class="bogen b-papier ueber kante" aria-labelledby="ueber-h">
+      <div class="innen">
+        <div class="ueber-grid">
+          <div>
+            <h2 class="gross" id="ueber-h">Es gibt Abende,<br>die <span class="mark">bleiben</span>.</h2>
+            <p class="lauf">Nicht wie eine Veranstaltung – wie ein Moment, der <span class="gelbmark">genau so passieren musste</span>.</p>
+            <p class="lauf">Dafür steht <span class="marke">VIBE<span class="on">ON</span></span>: Eventformate rund um Musik, Menschen und Orte, die man sonst nicht erlebt.</p>
+            <p class="gastgeber">Hinter VIBEON stehen Gastgeber, keine Veranstalter.</p>
+          </div>
+          <figure class="rasterfeld">
+            <canvas data-szene="raum" role="img" aria-label="Gedrucktes Rasterbild: Licht fällt durch einen Türspalt in einen dunklen Raum"></canvas>
+            <figcaption>Platzhalter · Raster</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Bogen 3 · Zwischen (Tinte-Vollton) ============ -->
+    <section class="bogen b-tinte zwischen" aria-label="Wofür VIBEON steht">
+      <div class="innen">
+        <p><span class="u">Zwischen</span> Wohnzimmer <span class="u">und</span> Club.</p>
+        <p><span class="u">Zwischen</span> Galerie <span class="u">und</span> Gastronomie.</p>
+        <p><span class="u">Zwischen</span> Kultur <span class="u">und</span> Lifestyle.</p>
+      </div>
+    </section>
+
+    <!-- ============ Boegen 4-6 · Formate ============
+         KEINE Nummerierung mehr (01/02/03 kodierte nichts). Die Augenbraue traegt
+         jetzt echte Information: den Takt des jeweiligen Formats. -->
+    <section id="formate" class="bogen b-papier" aria-labelledby="formate-h">
+      <div class="formate-kopf">
+        <h2 id="formate-h">Die Formate</h2>
+        <p class="zusatz">Drei Abende, drei Temperaturen.</p>
+      </div>
+
+      <!-- Beer & Beats (Papier) -->
+      <article class="format beer" aria-labelledby="f-beer">
+        <div class="innen innen--anschluss">
+          <p class="takt">Jeden Donnerstag</p>
+          <h3 id="f-beer">Beer <span class="amp">&amp;</span> Beats</h3>
+          <p class="copy">
+            <span class="laut">Afterwork ohne Programm.</span>
+            Gute Musik, kaltes Bier, feine Leute. Fühlt sich an wie eine House-Party im erweiterten Freundeskreis – weil es genau das ist.
+          </p>
+          <dl class="fakten">
+            <div><dt>Wann</dt><dd>18:00 bis offen</dd></div>
+            <div><dt>Wo</dt><dd>Galerie · Werkstatt · Dachboden</dd></div>
+            <div><dt>Musik</dt><dd>gut</dd></div>
+            <div><dt>Bier</dt><dd>kalt</dd></div>
+            <div><dt>Leute</dt><dd>fein</dd></div>
+            <div><dt>Drinks</dt><dd>aufs Haus</dd></div>
+          </dl>
+          <figure class="rasterfeld">
+            <canvas data-szene="fenster" role="img" aria-label="Gedrucktes Rasterbild: erleuchtetes Fenster in der Nacht"></canvas>
+            <figcaption>Platzhalter · Raster</figcaption>
+          </figure>
+          <p class="aktion"><a class="knopf" href="https://beerbeats.at" target="_blank" rel="noopener">Mehr erfahren</a></p>
+          <p class="format-by">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Exodus (Tinte-Vollton) — INTERIMS-COPY bis Instagram-Destillat -->
+    <section class="bogen b-tinte format exodus" aria-labelledby="f-exodus">
+      <div class="innen">
+        <!-- TODO: Takt-Zeile (Rhythmus · Zeit) nach Instagram-Destillat ergaenzen -->
+        <p class="takt">@exodus.aiff · Bregenz</p>
+        <h3 id="f-exodus">Exodus</h3>
+        <!-- TODO INTERIMS-COPY (nicht freigegeben): ersetzen, sobald das Destillat aus dem
+             Instagram-Account vorliegt — Sascha liefert Screenshots (Bio + 2-3 Posts) -->
+        <p class="copy">
+          <span class="laut">Die Nacht, konzentriert.</span>
+          Elektronische Musik, dunkle Räume, keine Ablenkung.
+        </p>
+        <figure class="rasterfeld">
+          <canvas data-szene="nebel" data-negativ="1" role="img" aria-label="Gedrucktes Rasterbild: Lichtkegel im Nebel"></canvas>
+          <figcaption>Platzhalter · Raster</figcaption>
+        </figure>
+        <!-- 2-Klick-Instagram: VOR dem Klick geht kein Request an Meta -->
+        <div class="reel-band" role="group" aria-label="Instagram-Videos von Exodus">
+          <!-- TODO: echte Reel-IDs eintragen (instagram.com/reel/<ID>/) -->
+          <div class="reel">
+            <button class="reel-laden" type="button" data-reel="PLATZHALTER_REEL_1">
+              <span class="spiel" aria-hidden="true"></span>
+              <span>Video laden</span>
+              <span class="hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
+            </button>
+          </div>
+          <div class="reel">
+            <button class="reel-laden" type="button" data-reel="PLATZHALTER_REEL_2">
+              <span class="spiel" aria-hidden="true"></span>
+              <span>Video laden</span>
+              <span class="hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
+            </button>
+          </div>
+          <div class="reel">
+            <button class="reel-laden" type="button" data-reel="PLATZHALTER_REEL_3">
+              <span class="spiel" aria-hidden="true"></span>
+              <span>Video laden</span>
+              <span class="hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
+            </button>
+          </div>
+        </div>
+        <p class="aktion"><a class="knopf" href="https://www.instagram.com/exodus.aiff" target="_blank" rel="noopener">Mehr erfahren</a></p>
+        <p class="format-by">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
+      </div>
+    </section>
+
+    <!-- Secret X (Papier): das Plakat, aus dem die Location herausgeschwaerzt wurde -->
+    <section class="bogen b-papier format secret" aria-labelledby="f-secret">
+      <div class="innen">
+        <p class="takt">Tag X</p>
+        <h3 id="f-secret">Secret X</h3>
+        <p class="copy">
+          <span class="laut">Datum steht. <span class="mark">Location nicht.</span></span>
+          Wo es stattfindet, erfährst du am Tag X – aber nur, wenn du auf der Liste bist.
+        </p>
+        <p class="schwaerzung">
+          <span class="frage">Wo?</span>
+          <span class="balken" role="img" aria-label="Die Location ist geschwärzt – sie wird am Tag X bekanntgegeben"></span>
+        </p>
+        <p class="aktion">
+          <!-- TODO: echte WhatsApp-Kanal-URL eintragen -->
+          <a class="knopf knopf--voll" href="https://whatsapp.com/channel/PLATZHALTER">Auf die Liste</a>
+        </p>
+        <p class="format-by">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
+      </div>
+    </section>
+
+    <!-- ============ Bogen 7 · Live-Act (Papier 2) ============
+         Eigener Kuenstler-Block, KEIN Format: keine Takt-Zeile, kein "A format by". -->
+    <section class="bogen b-papier2 act kante" aria-labelledby="act-h">
+      <div class="innen">
+        <h2 id="act-h" class="sr-only">Live-Act</h2>
+        <div class="act-grid">
+          <figure class="rasterfeld">
+            <!-- TODO: entsaettigtes Nima-Portrait (Bringschuld Sascha) ersetzt die
+                 gerechnete Szene — rastern() zieht das Foto durch dasselbe Raster -->
+            <canvas data-szene="portrait" role="img" aria-label="Gedrucktes Rasterbild: Platzhalter-Porträt im Gegenlicht"></canvas>
+            <figcaption>Platzhalter · Raster</figcaption>
+          </figure>
+          <div>
+            <p class="takt takt--leise">Live-Act</p>
+            <p class="name">Nima Lovario</p>
+            <p class="rolle">DJ Live-Act &amp; Violinist · Bregenz</p>
+            <p class="copy">
+              <span class="laut">Elektronische Musik trifft Live-Violine.</span>
+              Nima Lovario legt auf – und zieht die E-Violine live über den Beat.
+            </p>
+            <p class="sound"><span class="gelbmark">House · Afro House · Melodic Techno</span></p>
+            <p class="aktion"><a class="knopf" href="https://www.instagram.com/nima_lovario" target="_blank" rel="noopener">Mehr erfahren</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Bogen 8 · Orte (Tinte-Streifen) ============ -->
+    <section class="bogen b-tinte orte" aria-labelledby="orte-h">
+      <div class="innen">
+        <p class="vor" id="orte-h">Orte, an denen VIBEON stattfindet</p>
+        <ul>
+          <li>Galerie</li><li>Dachterrasse</li><li>Hafen</li>
+          <li>Industriefläche</li><li>Historisches Haus</li><li>Leerstand</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ Bogen 9 · Manifest (Gelb-Vollton) ============ -->
+    <section class="bogen b-gelb manifest" aria-label="Haltung">
+      <div class="innen">
+        <p>Menschen <span class="vor">vor</span> Programm.</p>
+        <p>Atmosphäre <span class="vor">vor</span> Show.</p>
+        <p>Orte <span class="vor">vor</span> Hallen.</p>
+        <p>Momente <span class="vor">vor</span> Terminen.</p>
+      </div>
+    </section>
+
+    <!-- ============ Bogen 10 · Die Liste (Tinte-Vollton, Abriss-Coupon) ============ -->
+    <section id="liste" class="bogen b-tinte liste" aria-labelledby="liste-h">
+      <div class="innen">
+        <h2 id="liste-h">Die Liste.</h2>
+        <p class="text">Wer drauf steht, erfährt <span class="mark">zuerst</span>, was passiert – und bei Secret X als Einziger, <span class="mark">wo</span>. Keine Newsletter-Flut. Nur Termine, Drops und Locations.</p>
+        <div class="coupon">
+          <p class="kopfzeile"><span>Abschnitt</span><span>VIBEON · Bregenz</span></p>
+          <!-- TODO: echte WhatsApp-Kanal-URL eintragen -->
+          <a class="knopf knopf--voll" href="https://whatsapp.com/channel/PLATZHALTER">WhatsApp-Kanal beitreten</a>
+          <!-- TODO: echtes Instagram-Profil eintragen -->
+          <a class="knopf" href="https://instagram.com/PLATZHALTER">Instagram folgen</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ B2B-Zeile ============ -->
+    <p class="b2b">Für Locations, Partner &amp; Kooperationen: <a href="mailto:hallo@vibe-on.at">hallo@vibe-on.at</a></p>
+
+  </main>
+
+  <!-- ============ Fuss ============ -->
+  <footer>
+    <div>
+      <p class="herkunft">Aus Bregenz.<br>Für den Bodenseeraum.</p>
+      <p class="fuss-marke-zeile"><span class="wortmarke fuss-marke" aria-hidden="true">VIBE<span class="on">ON</span></span></p>
+    </div>
+    <nav aria-label="Footer">
+      <ul>
+        <!-- TODO: Impressum (ECG) vor Launch verlinken -->
+        <li><a href="#">Impressum</a></li>
+        <!-- TODO: Datenschutzerklaerung (DSGVO) vor Launch verlinken -->
+        <li><a href="#">Datenschutz</a></li>
+        <!-- TODO: echtes Instagram-Profil eintragen -->
+        <li><a href="https://instagram.com/PLATZHALTER">Instagram</a></li>
+        <li><a href="mailto:hallo@vibe-on.at">hallo@vibe-on.at</a></li>
+      </ul>
+    </nav>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+    var reduziert = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ==================================================================
+       1) HALBTON-ENGINE
+       Autotypie statt Verlauf: ueber eine gerechnete Lichtszene legt sich ein
+       um 45° gedrehtes Punktraster; die FLAECHE jedes Punktes ist proportional
+       zur Schwaerzung (daher sqrt — Radius waechst mit der Wurzel der Deckung).
+       Auf Tinte-Boegen laeuft dieselbe Rechnung negativ: Papierpunkte auf Tinte.
+
+       ABLOESE-PFAD fuer echte Fotos nach Event 1: statt szene() ein
+       ctx.drawImage(foto, ...) in das Offscreen-Canvas — der Rest bleibt gleich,
+       echte Fotos bekommen exakt denselben Druck-Look.
+       ================================================================== */
+
+    function szene(o, W, H, art) {
+      var g;
+      o.fillStyle = '#232323';
+      o.fillRect(0, 0, W, H);
+
+      if (art === 'raum') {
+        /* Licht faellt durch einen Tuerspalt in einen dunklen Raum */
+        g = o.createLinearGradient(W * 0.34, 0, W * 0.86, 0);
+        g.addColorStop(0, 'rgba(255,255,255,0)');
+        g.addColorStop(0.52, 'rgba(255,255,255,.16)');
+        g.addColorStop(0.62, 'rgba(255,255,255,.95)');
+        g.addColorStop(0.70, 'rgba(255,255,255,.20)');
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        o.fillStyle = g;
+        o.fillRect(0, 0, W, H);
+        /* der Lichtkeil auf dem Boden */
+        o.save();
+        o.beginPath();
+        o.moveTo(W * 0.56, H * 0.62);
+        o.lineTo(W * 0.70, H * 0.62);
+        o.lineTo(W * 1.02, H);
+        o.lineTo(W * 0.24, H);
+        o.closePath();
+        g = o.createLinearGradient(0, H * 0.62, 0, H);
+        g.addColorStop(0, 'rgba(255,255,255,.55)');
+        g.addColorStop(1, 'rgba(255,255,255,.04)');
+        o.fillStyle = g;
+        o.fill();
+        o.restore();
+
+      } else if (art === 'fenster') {
+        /* Erleuchtetes Fenster in der Nacht — "Blick in den Abend".
+           Leicht aus der Achse gedreht und aus der Mitte gerueckt, sonst liest
+           sich das Rechteck als Piktogramm statt als Aufnahme. */
+        var fx = W * 0.17, fy = H * 0.14, fb = W * 0.44, fh = H * 0.48;
+        g = o.createRadialGradient(fx + fb * 0.5, fy + fh * 0.5, 0, fx + fb * 0.5, fy + fh * 0.5, W * 0.85);
+        g.addColorStop(0, 'rgba(255,255,255,.34)');
+        g.addColorStop(0.30, 'rgba(255,255,255,.11)');
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        o.fillStyle = g;
+        o.fillRect(0, 0, W, H);
+
+        o.save();
+        o.translate(fx + fb * 0.5, fy + fh * 0.5);
+        o.rotate(-0.055);
+        o.translate(-(fx + fb * 0.5), -(fy + fh * 0.5));
+        /* Die Scheibe ist nicht flaechig hell — oben heller, zum Sims hin abfallend */
+        g = o.createLinearGradient(fx, fy, fx + fb * 0.35, fy + fh);
+        g.addColorStop(0, 'rgba(255,255,255,1)');
+        g.addColorStop(0.55, 'rgba(255,255,255,.82)');
+        g.addColorStop(1, 'rgba(255,255,255,.52)');
+        o.fillStyle = g;
+        o.fillRect(fx, fy, fb, fh);
+        /* Sprossen: duenn, leicht ausserhalb der Mitte */
+        o.fillStyle = '#0d0d0d';
+        o.fillRect(fx + fb * 0.38, fy, W * 0.011, fh);
+        o.fillRect(fx, fy + fh * 0.43, fb, H * 0.01);
+        /* Sims */
+        o.fillStyle = 'rgba(13,13,13,.9)';
+        o.fillRect(fx - W * 0.02, fy + fh, fb + W * 0.04, H * 0.022);
+        o.restore();
+
+        /* Lichtfall auf die Wand darunter, seitlich versetzt */
+        g = o.createLinearGradient(0, fy + fh, 0, H);
+        g.addColorStop(0, 'rgba(255,255,255,.26)');
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        o.fillStyle = g;
+        o.fillRect(fx - W * 0.06, fy + fh, fb + W * 0.2, H - (fy + fh));
+        /* Ecken abdunkeln — die Aufnahme bekommt Tiefe */
+        g = o.createRadialGradient(W * 0.5, H * 0.44, W * 0.2, W * 0.5, H * 0.5, W * 0.82);
+        g.addColorStop(0, 'rgba(0,0,0,0)');
+        g.addColorStop(1, 'rgba(0,0,0,.5)');
+        o.fillStyle = g;
+        o.fillRect(0, 0, W, H);
+
+      } else if (art === 'nebel') {
+        /* Lichtkegel durch Dunst — der Club-Raum */
+        o.save();
+        o.beginPath();
+        o.moveTo(W * 0.80, -H * 0.05);
+        o.lineTo(W * 1.02, H * 0.06);
+        o.lineTo(W * 0.30, H * 1.05);
+        o.lineTo(W * -0.06, H * 0.74);
+        o.closePath();
+        g = o.createLinearGradient(W * 0.92, 0, W * 0.12, H);
+        g.addColorStop(0, 'rgba(255,255,255,.92)');
+        g.addColorStop(0.38, 'rgba(255,255,255,.34)');
+        g.addColorStop(1, 'rgba(255,255,255,.02)');
+        o.fillStyle = g;
+        o.fill();
+        o.restore();
+        /* Dunstschwaden quer durch den Kegel */
+        for (var i = 0; i < 7; i++) {
+          var sy = H * (0.10 + i * 0.13);
+          g = o.createLinearGradient(0, sy, W, sy + H * 0.06);
+          g.addColorStop(0, 'rgba(255,255,255,0)');
+          g.addColorStop(0.5, 'rgba(255,255,255,.09)');
+          g.addColorStop(1, 'rgba(255,255,255,0)');
+          o.fillStyle = g;
+          o.fillRect(0, sy, W, H * 0.05);
+        }
+        /* die Lichtquelle selbst */
+        g = o.createRadialGradient(W * 0.92, 0, 0, W * 0.92, 0, W * 0.34);
+        g.addColorStop(0, 'rgba(255,255,255,1)');
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        o.fillStyle = g;
+        o.fillRect(W * 0.55, 0, W * 0.45, H * 0.4);
+
+      } else {
+        /* portrait — Platzhalter im Gegenlicht (bis Nimas Foto da ist) */
+        g = o.createRadialGradient(W * 0.52, H * 0.32, 0, W * 0.52, H * 0.32, W * 0.86);
+        g.addColorStop(0, 'rgba(255,255,255,.72)');
+        g.addColorStop(0.42, 'rgba(255,255,255,.20)');
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        o.fillStyle = g;
+        o.fillRect(0, 0, W, H);
+        o.fillStyle = '#0b0b0b';
+        o.beginPath();
+        o.ellipse(W * 0.5, H * 0.40, W * 0.20, H * 0.17, 0, 0, 6.2832);
+        o.fill();
+        o.beginPath();
+        o.moveTo(W * 0.16, H);
+        o.quadraticCurveTo(W * 0.26, H * 0.60, W * 0.5, H * 0.58);
+        o.quadraticCurveTo(W * 0.74, H * 0.60, W * 0.84, H);
+        o.closePath();
+        o.fill();
+        /* Kantenlicht rechts — trennt die Silhouette vom Grund */
+        o.save();
+        o.globalCompositeOperation = 'lighter';
+        g = o.createLinearGradient(W * 0.60, 0, W * 0.74, 0);
+        g.addColorStop(0, 'rgba(255,255,255,0)');
+        g.addColorStop(0.6, 'rgba(255,255,255,.5)');
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        o.fillStyle = g;
+        o.fillRect(W * 0.56, H * 0.22, W * 0.22, H * 0.62);
+        o.restore();
+      }
+    }
+
+    function rastern(cv) {
+      var feld = cv.parentElement;
+      var b = cv.clientWidth, h = cv.clientHeight;
+      if (!b || !h) return false;
+
+      var stil = window.getComputedStyle(feld);
+      var grund = stil.backgroundColor;   /* Bogenfarbe   */
+      var farbe = stil.color;             /* Gegenfarbe   */
+      var negativ = cv.getAttribute('data-negativ') === '1';
+
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var W = Math.round(b * dpr), H = Math.round(h * dpr);
+      cv.width = W; cv.height = H;
+
+      /* Szene klein rechnen und weich hochziehen: die Interpolation erzeugt die
+         Tonwertuebergaenge, die eine gerechnete Grafik sonst nicht hat. Ohne das
+         liest sich das Raster als Piktogramm statt als gedrucktes Foto. */
+      var teiler = 3;
+      var kw = Math.max(4, Math.round(W / teiler)), kh = Math.max(4, Math.round(H / teiler));
+      var klein = document.createElement('canvas');
+      klein.width = kw; klein.height = kh;
+      szene(klein.getContext('2d'), kw, kh, cv.getAttribute('data-szene'));
+
+      var off = document.createElement('canvas');
+      off.width = W; off.height = H;
+      var o = off.getContext('2d');
+      o.imageSmoothingEnabled = true;
+      if ('imageSmoothingQuality' in o) o.imageSmoothingQuality = 'high';
+      o.drawImage(klein, 0, 0, W, H);
+      var d = o.getImageData(0, 0, W, H).data;
+
+      var ctx = cv.getContext('2d');
+      ctx.fillStyle = grund;
+      ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = farbe;
+
+      var s = 6.2 * dpr;                  /* Rasterweite  */
+      var max = s * 0.72;                 /* Punkt bei voller Deckung */
+      var winkel = Math.PI / 4;           /* 45° — der klassische Winkel */
+      var cos = Math.cos(winkel), sin = Math.sin(winkel);
+      var diag = Math.sqrt(W * W + H * H) / 2 + s;
+
+      for (var u = -diag; u < diag; u += s) {
+        for (var v = -diag; v < diag; v += s) {
+          var x = W / 2 + u * cos - v * sin;
+          var y = H / 2 + u * sin + v * cos;
+          if (x < -s || y < -s || x > W + s || y > H + s) continue;
+          var px = x < 0 ? 0 : (x > W - 1 ? W - 1 : x | 0);
+          var py = y < 0 ? 0 : (y > H - 1 ? H - 1 : y | 0);
+          var lum = d[(py * W + px) * 4] / 255;
+          var deckung = negativ ? lum : 1 - lum;
+          /* Druckumfang: Lichter bleiben offen, Tiefen laufen nicht zu */
+          deckung = 0.04 + deckung * 0.88;
+          if (deckung <= 0.05) continue;
+          /* winzige Schwankung — ein echter Druck ist nie perfekt */
+          var r = max * Math.sqrt(deckung) * (0.93 + Math.random() * 0.14);
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, 6.2832);
+          ctx.fill();
+        }
+      }
+      cv.setAttribute('data-breite', b);
+      return true;
+    }
+
+    var felder = Array.prototype.slice.call(document.querySelectorAll('.rasterfeld canvas'));
+    function alleRastern() {
+      felder.forEach(function (cv) {
+        if (cv.getAttribute('data-breite') != cv.clientWidth) rastern(cv);
+      });
+    }
+    /* Erst zeichnen, wenn das Feld in die Naehe des Blickfelds kommt */
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (eintraege) {
+        eintraege.forEach(function (e) {
+          if (e.isIntersecting && rastern(e.target)) io.unobserve(e.target);
+        });
+      }, { rootMargin: '300px 0px' });
+      felder.forEach(function (cv) { io.observe(cv); });
+    } else {
+      window.requestAnimationFrame(alleRastern);
+    }
+    /* Neuzeichnen nur bei echter Breitenaenderung (nicht beim Scrollen am Handy) */
+    var zeit;
+    window.addEventListener('resize', function () {
+      window.clearTimeout(zeit);
+      zeit = window.setTimeout(alleRastern, 220);
+    }, { passive: true });
+
+    /* ==================================================================
+       2) PASSER — die einzige Bewegung der Seite.
+       Die zweite Druckfarbe faehrt einmalig in den Stand, der Stempel wird
+       aufgedrueckt. Ohne JS steht beides sofort korrekt (Basiszustand).
+       ================================================================== */
+    if (!reduziert) {
+      var versatz = document.querySelector('.hero h1 .versatz');
+      if (versatz) versatz.style.animation = 'passer .95s cubic-bezier(.2,.7,.2,1) both';
+      var stempel = document.getElementById('stempel');
+      if (stempel) stempel.style.animation = 'aufdruecken .45s cubic-bezier(.3,1.5,.5,1) .5s both';
+    }
+
+    /* ==================================================================
+       3) 2-Klick-Instagram: VOR dem Klick geht kein Request an Meta.
+       ================================================================== */
+    Array.prototype.forEach.call(document.querySelectorAll('.reel-laden'), function (knopf) {
+      knopf.addEventListener('click', function () {
+        var halter = knopf.parentElement;
+        var frame = document.createElement('iframe');
+        frame.src = 'https://www.instagram.com/reel/' + knopf.getAttribute('data-reel') + '/embed/';
+        frame.loading = 'lazy';
+        frame.setAttribute('allowfullscreen', '');
+        frame.title = 'Instagram-Video (Exodus)';
+        halter.replaceChild(frame, knopf);
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
