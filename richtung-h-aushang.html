@@ -1027,28 +1027,14 @@
       }
     }
 
-    function rastern(cv) {
-      var feld = cv.parentElement;
-      var b = cv.clientWidth, h = cv.clientHeight;
-      if (!b || !h) return false;
-
-      var stil = window.getComputedStyle(feld);
-      var grund = stil.backgroundColor;   /* Bogenfarbe   */
-      var farbe = stil.color;             /* Gegenfarbe   */
-      var negativ = cv.getAttribute('data-negativ') === '1';
-
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      var W = Math.round(b * dpr), H = Math.round(h * dpr);
-      cv.width = W; cv.height = H;
-
-      /* Szene klein rechnen und weich hochziehen: die Interpolation erzeugt die
-         Tonwertuebergaenge, die eine gerechnete Grafik sonst nicht hat. Ohne das
-         liest sich das Raster als Piktogramm statt als gedrucktes Foto. */
-      var teiler = 2;
+    /* Aus der Szene (oder dem Foto) wird der Halbton.
+       zeichner() fuellt ein kleines Offscreen-Canvas, das anschliessend weich
+       hochgezogen und gerastert wird. */
+    function halbton(cv, W, H, grund, farbe, negativ, teiler, zeichner) {
       var kw = Math.max(4, Math.round(W / teiler)), kh = Math.max(4, Math.round(H / teiler));
       var klein = document.createElement('canvas');
       klein.width = kw; klein.height = kh;
-      szene(klein.getContext('2d'), kw, kh, cv.getAttribute('data-szene'));
+      zeichner(klein.getContext('2d'), kw, kh);
 
       var off = document.createElement('canvas');
       off.width = W; off.height = H;
@@ -1056,13 +1042,22 @@
       o.imageSmoothingEnabled = true;
       if ('imageSmoothingQuality' in o) o.imageSmoothingQuality = 'high';
       o.drawImage(klein, 0, 0, W, H);
-      var d = o.getImageData(0, 0, W, H).data;
+      var d;
+      try {
+        d = o.getImageData(0, 0, W, H).data;
+      } catch (e) {
+        /* Ein Bild von einer fremden Herkunft (oder ueber file://) verunreinigt das
+           Canvas und sperrt getImageData. Dann bleibt lieber die gerechnete Szene
+           stehen als eine leere Flaeche. */
+        return false;
+      }
 
       var ctx = cv.getContext('2d');
       ctx.fillStyle = grund;
       ctx.fillRect(0, 0, W, H);
       ctx.fillStyle = farbe;
 
+      var dpr = W / cv.clientWidth;
       var s = 6.2 * dpr;                  /* Rasterweite  */
       var max = s * 0.72;                 /* Punkt bei voller Deckung */
       var winkel = Math.PI / 4;           /* 45° — der klassische Winkel */
@@ -1076,19 +1071,78 @@
           if (x < -s || y < -s || x > W + s || y > H + s) continue;
           var px = x < 0 ? 0 : (x > W - 1 ? W - 1 : x | 0);
           var py = y < 0 ? 0 : (y > H - 1 ? H - 1 : y | 0);
-          var lum = d[(py * W + px) * 4] / 255;
+          var i = (py * W + px) * 4;
+          /* echte Helligkeit, nicht nur der Rotkanal — bei Fotos macht das den
+             Unterschied zwischen richtigem und falschem Tonwert */
+          var lum = (d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114) / 255;
           var deckung = negativ ? lum : 1 - lum;
           /* Druckumfang: Lichter bleiben offen, Tiefen laufen nicht zu */
           deckung = 0.04 + deckung * 0.88;
           if (deckung <= 0.05) continue;
           /* winzige Schwankung — ein echter Druck ist nie perfekt */
-          var r = max * Math.sqrt(deckung) * (0.93 + Math.random() * 0.14);
+          var rad = max * Math.sqrt(deckung) * (0.93 + Math.random() * 0.14);
           ctx.beginPath();
-          ctx.arc(x, y, r, 0, 6.2832);
+          ctx.arc(x, y, rad, 0, 6.2832);
           ctx.fill();
         }
       }
+      return true;
+    }
+
+    /* Foto formatfuellend einpassen (cover), ohne es zu verzerren */
+    function decken(o, img, W, H) {
+      var f = Math.max(W / img.naturalWidth, H / img.naturalHeight);
+      var bw = img.naturalWidth * f, bh = img.naturalHeight * f;
+      o.drawImage(img, (W - bw) / 2, (H - bh) / 2, bw, bh);
+    }
+
+    function rastern(cv) {
+      var feld = cv.parentElement;
+      var b = cv.clientWidth, h = cv.clientHeight;
+      if (!b || !h) return false;
+
+      var stil = window.getComputedStyle(feld);
+      var grund = stil.backgroundColor;   /* Bogenfarbe   */
+      var farbe = stil.color;             /* Gegenfarbe   */
+      var negativ = cv.getAttribute('data-negativ') === '1';
+      var art = cv.getAttribute('data-szene');
+
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var W = Math.round(b * dpr), H = Math.round(h * dpr);
+      cv.width = W; cv.height = H;
       cv.setAttribute('data-breite', b);
+
+      /* ECHTE FOTOS: data-bild="assets/bilder/xyz.jpg" am <canvas> genuegt — das
+         Foto laeuft durch exakt dieselbe Rasterung wie die Zeichnung und bekommt
+         damit denselben Druck-Look. Faellt der Ladevorgang aus, bleibt die
+         gerechnete Szene stehen, die Seite hat also nie ein Loch.
+         Fotos werden NICHT weichgezeichnet (teiler 1) — sie bringen ihre
+         Tonwerte selbst mit; die Zeichnungen brauchen die Unschaerfe. */
+      var pfad = cv.getAttribute('data-bild');
+      if (pfad) {
+        var img = new Image();
+        img.decoding = 'async';
+        img.onload = function () {
+          var ok = halbton(cv, W, H, grund, farbe, negativ, 1, function (o, kw, kh) {
+            decken(o, img, kw, kh);
+          });
+          if (ok === false) {
+            halbton(cv, W, H, grund, farbe, negativ, 2, function (o, kw, kh) {
+              szene(o, kw, kh, art);
+            });
+          }
+        };
+        img.onerror = function () {
+          halbton(cv, W, H, grund, farbe, negativ, 2, function (o, kw, kh) {
+            szene(o, kw, kh, art);
+          });
+        };
+        img.src = pfad;
+      } else {
+        halbton(cv, W, H, grund, farbe, negativ, 2, function (o, kw, kh) {
+          szene(o, kw, kh, art);
+        });
+      }
       return true;
     }
 
