@@ -158,11 +158,35 @@
     }
     /* Auszeichnung ist IMMER Flaeche, nie Farbschrift (Regel oben) */
     .mark{
-      display:inline-block;
+      display:inline-block;position:relative;
       background:var(--farbe);color:var(--grund);
       line-height:.86;padding:.1em .12em .06em;
       -webkit-box-decoration-break:clone;box-decoration-break:clone;
     }
+    /* AUFDRUCK: Der Block laeuft von links ein, die Buchstaben werden dabei
+       ausgespart. Darunter liegt dasselbe Wort in normaler Tinte (::before) —
+       sonst waere das Wort vor dem Aufdruck unsichtbar (ausgespart auf Grund).
+       Ohne JS bleibt der fertige Zustand stehen. */
+    .js .mark[data-wort]{
+      background:none;
+      background-image:linear-gradient(var(--farbe),var(--farbe));
+      background-repeat:no-repeat;
+      background-size:100% 100%;
+    }
+    .js .mark[data-wort]::before{
+      content:attr(data-wort);
+      position:absolute;left:.12em;top:.1em;
+      color:var(--farbe);
+      pointer-events:none;
+      opacity:0;
+    }
+    .js .mark[data-wort].wartet{background-size:0% 100%;color:transparent}
+    .js .mark[data-wort].wartet::before{opacity:1}
+    .js .mark[data-wort].druckt{
+      background-size:100% 100%;color:var(--grund);
+      transition:background-size .42s cubic-bezier(.2,.7,.2,1),color 0s linear .42s;
+    }
+    .js .mark[data-wort].druckt::before{opacity:0;transition:opacity 0s linear .42s}
     .gelbmark{
       background:var(--gelb);color:var(--tinte);
       padding:.05em .1em;
@@ -213,6 +237,7 @@
 
     /* ============ Knoepfe = gedruckte Kaesten ============ */
     .knopf{
+      position:relative;overflow:hidden;isolation:isolate;
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
       min-height:54px;padding:12px clamp(20px,5vw,30px);
       font-family:var(--display);font-weight:700;
@@ -220,11 +245,24 @@
       text-decoration:none;
       border:2px solid var(--farbe);color:var(--farbe);background:transparent;
       cursor:pointer;
-      transition:background-color .16s ease,color .16s ease;
+      transition:color .16s ease .1s;
     }
+    /* Der Tintenfleck. --tx/--ty setzt das Skript auf die beruehrte Stelle;
+       ohne Skript laeuft er aus der Mitte. */
+    .knopf::before{
+      content:"";position:absolute;z-index:-1;
+      left:var(--tx,50%);top:var(--ty,50%);
+      width:0;height:0;border-radius:50%;
+      background:var(--farbe);
+      transform:translate(-50%,-50%);
+      transition:width .44s cubic-bezier(.3,.2,.25,1),height .44s cubic-bezier(.3,.2,.25,1);
+    }
+    .knopf:hover::before,.knopf:focus-visible::before,.knopf:active::before{width:250%;height:250%}
+    .knopf:hover,.knopf:focus-visible,.knopf:active{color:var(--grund)}
+    /* Der gefuellte Knopf laeuft andersherum: Papier breitet sich in der Tinte aus */
     .knopf--voll{background:var(--farbe);color:var(--grund)}
-    .knopf:hover,.knopf:focus-visible{background:var(--farbe);color:var(--grund)}
-    .knopf--voll:hover,.knopf--voll:focus-visible{background:transparent;color:var(--farbe)}
+    .knopf--voll::before{background:var(--grund)}
+    .knopf--voll:hover,.knopf--voll:focus-visible,.knopf--voll:active{color:var(--farbe)}
     .knopf:active{transform:translateY(1px)}
     .knopf-reihe{display:flex;flex-wrap:wrap;gap:12px}
 
@@ -253,11 +291,26 @@
       font-size:clamp(15px,4vw,22px);line-height:1;
       padding:9px 14px 7px;
       transform:rotate(-6deg);
-      box-shadow:3px 3px 0 rgba(22,21,15,.14);
+      box-shadow:calc(3px + var(--passer,0) * 2px) calc(3px + var(--passer,0) * 2px) 0 rgba(22,21,15,.14);
     }
 
-    /* ============ Passer-Motiv (die einzige Bewegung der Seite) ============ */
-    @keyframes passer{from{transform:translate(9px,-7px)}to{transform:translate(3px,-2px)}}
+    /* ============ BEWEGUNGSSYSTEM ============
+       Grundsatz: Alles, was sich bewegt, ist ein DRUCKVORGANG. Nichts leuchtet,
+       nichts blendet ein, nichts schwebt, nichts laeuft in Schleife. Es gibt genau
+       fuenf Bewegungen, und jede davon passiert an einer echten Druckmaschine auch:
+
+         1 ANDRUCK    Beim Laden fahren die zwei Druckplatten in den Stand.
+         2 PASSERLAUF Der Passer wandert beim Scrollen minimal — eine Maschine
+                      laeuft nie perfekt. Sichtbar wird das nur unbewusst.
+         3 RASTERAUFBAU Die Halbtonbilder drucken sich beim Eintreten selbst,
+                      diagonal im Rasterwinkel, wie ein Maschinendurchgang.
+         4 TINTENFLECK Beim Antippen laeuft die Tinte von der BERUEHRTEN STELLE
+                      aus ins Papier — nicht von der Kante. Das ist der Effekt,
+                      den es nur am Handy gibt.
+         5 AUFDRUCK   Die Auszeichnungsbloecke drucken sich beim Eintreten von
+                      links auf, und die Buchstaben werden dabei ausgespart.
+
+       Alles davon ist einmalig. Nichts wiederholt sich. */
     @keyframes aufdruecken{
       0%{transform:rotate(-6deg) scale(1.14);opacity:0}
       55%{opacity:1}
@@ -287,7 +340,9 @@
     .hero h1 .versatz{
       position:absolute;left:0;top:0;width:100%;z-index:-1;
       color:var(--ueberdruck);
-      transform:translate(3px,-2px);
+      /* Ohne JS steht der Passer sofort im Stand. Mit JS faehrt er ein (Andruck)
+         und wandert danach mit dem Scrollen (Passerlauf). */
+      transform:translate(var(--px,3px),var(--py,-2px));
       pointer-events:none;user-select:none;
     }
     .hero .sub{
@@ -366,7 +421,7 @@
       border:3px solid var(--tinte);background:var(--papier);color:var(--tinte);
       padding:clamp(18px,4vw,30px);
       transform:rotate(-.8deg);
-      box-shadow:5px 5px 0 rgba(22,21,15,.18);
+      box-shadow:calc(5px + var(--passer,0) * 3px) calc(5px + var(--passer,0) * 3px) 0 rgba(22,21,15,.18);
       max-width:520px;
     }
     .zettel .zk{
@@ -560,8 +615,16 @@
     @media (prefers-reduced-motion:reduce){
       html{scroll-behavior:auto}
       *,*::before,*::after{animation:none !important;transition:none !important}
+      .hero h1{transform:none !important}
       .hero h1 .versatz{transform:translate(3px,-2px)}
       .stempel{transform:rotate(-6deg);opacity:1}
+      /* Auszeichnungen stehen fertig gedruckt, Tintenfleck faellt auf die
+         schlichte Fuellung zurueck */
+      .js .mark[data-wort]{background-size:100% 100% !important;color:var(--grund) !important}
+      .js .mark[data-wort]::before{opacity:0 !important}
+      .knopf::before{display:none}
+      .knopf:hover,.knopf:focus-visible,.knopf:active{background:var(--farbe)}
+      .knopf--voll:hover,.knopf--voll:focus-visible,.knopf--voll:active{background:var(--grund)}
     }
   </style>
   <noscript><style>.reel-band{display:none}</style></noscript>
@@ -593,7 +656,7 @@
           <span class="versatz" aria-hidden="true">
             <span class="z">Frag die,</span><span class="z z2">die <span class="mark">dabei</span></span><span class="z z3">waren.</span>
           </span>
-          <span class="z">Frag die,</span><span class="z z2">die <span class="mark">dabei</span></span><span class="z z3">waren.</span>
+          <span class="z">Frag die,</span><span class="z z2">die <span class="mark" data-wort="dabei">dabei</span></span><span class="z z3">waren.</span>
         </h1>
         <p class="sub"><span class="marke">VIBE<span class="on">ON</span></span>. Eventformate, über die man am nächsten Tag spricht.</p>
         <div class="knopf-reihe">
@@ -614,7 +677,7 @@
       <div class="innen">
         <div class="ueber-grid">
           <div>
-            <h2 class="gross" id="ueber-h">Es gibt Abende,<br>die <span class="mark">bleiben</span>.</h2>
+            <h2 class="gross" id="ueber-h">Es gibt Abende,<br>die <span class="mark" data-wort="bleiben">bleiben</span>.</h2>
             <p class="lauf">Nicht wie eine Veranstaltung – wie ein Moment, der <span class="gelbmark">genau so passieren musste</span>.</p>
             <p class="lauf">Dafür steht <span class="marke">VIBE<span class="on">ON</span></span>: Eventformate rund um Musik, Menschen und Orte, die man sonst nicht erlebt.</p>
           </div>
@@ -720,7 +783,7 @@
         <p class="takt">Tag X</p>
         <h3 id="f-secret">Secret X</h3>
         <p class="copy">
-          <span class="laut">Datum steht. <span class="mark">Location nicht.</span></span>
+          <span class="laut">Datum steht. <span class="mark" data-wort="Location nicht.">Location nicht.</span></span>
           Wo es stattfindet, erfährst du am Tag X.
         </p>
         <p class="schwaerzung">
@@ -823,6 +886,8 @@
   (function () {
     'use strict';
     var reduziert = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var wurzel = document.documentElement;
+    wurzel.classList.add('js');
 
     /* ==================================================================
        1) HALBTON-ENGINE
@@ -1162,7 +1227,15 @@
       var cos = Math.cos(winkel), sin = Math.sin(winkel);
       var diag = Math.sqrt(W * W + H * H) / 2 + s;
 
-      for (var u = -diag; u < diag; u += s) {
+      /* RASTERAUFBAU: Die Punkte werden nicht auf einmal gesetzt, sondern in
+         Scheiben entlang der Rasterachse — das Bild laeuft diagonal ein wie bei
+         einem Maschinendurchgang. Kostet nicht mehr Rechenzeit, sie verteilt
+         sich nur auf mehrere Bilder und macht den Aufbau dadurch sogar ruhiger.
+         Bei reduzierter Bewegung wird alles in einem Zug gesetzt. */
+      var achsen = [];
+      for (var u = -diag; u < diag; u += s) achsen.push(u);
+
+      function reihe(u) {
         for (var v = -diag; v < diag; v += s) {
           var x = W / 2 + u * cos - v * sin;
           var y = H / 2 + u * sin + v * cos;
@@ -1185,6 +1258,19 @@
           ctx.fill();
         }
       }
+
+      if (reduziert) {
+        for (var a = 0; a < achsen.length; a++) reihe(achsen[a]);
+      } else {
+        var k = 0, scheibe = Math.max(2, Math.round(achsen.length / 22));
+        var durchgang = function () {
+          var bis = Math.min(achsen.length, k + scheibe);
+          for (; k < bis; k++) reihe(achsen[k]);
+          if (k < achsen.length) window.requestAnimationFrame(durchgang);
+        };
+        window.requestAnimationFrame(durchgang);
+      }
+
       return true;
     }
 
@@ -1270,15 +1356,86 @@
     }, { passive: true });
 
     /* ==================================================================
-       2) PASSER — die einzige Bewegung der Seite.
-       Die zweite Druckfarbe faehrt einmalig in den Stand, der Stempel wird
-       aufgedrueckt. Ohne JS steht beides sofort korrekt (Basiszustand).
+       2) ANDRUCK + PASSERLAUF
+       Andruck: beim Laden fahren die zwei Platten in den Stand — erst die
+       Tinteplatte (die Schrift selbst), dann die zweite Farbe in den Passer.
+       Passerlauf: danach wandert der Passer minimal mit der Scrollposition.
+       Eine Maschine laeuft nie exakt; genau das macht den Druck lebendig.
+       Ohne JS steht alles sofort im Stand (die CSS-Vorgaben sind die Endwerte).
        ================================================================== */
+    var hero = document.querySelector('.hero h1');
+    var stempel = document.getElementById('stempel');
+
+    function passerSetzen(t) {          /* t = 0 beim Andruck, 1 im Stand */
+      if (!hero) return;
+      hero.style.setProperty('--px', (3 + (1 - t) * 8).toFixed(2) + 'px');
+      hero.style.setProperty('--py', (-2 - (1 - t) * 7).toFixed(2) + 'px');
+      hero.style.transform = t >= 1 ? '' : 'translate(' + ((1 - t) * -5).toFixed(2) + 'px,' +
+                                            ((1 - t) * 4).toFixed(2) + 'px)';
+    }
+
     if (!reduziert) {
-      var versatz = document.querySelector('.hero h1 .versatz');
-      if (versatz) versatz.style.animation = 'passer .95s cubic-bezier(.2,.7,.2,1) both';
-      var stempel = document.getElementById('stempel');
-      if (stempel) stempel.style.animation = 'aufdruecken .45s cubic-bezier(.3,1.5,.5,1) .5s both';
+      passerSetzen(0);
+      var start = null, dauer = 620;
+      var andruck = function (jetzt) {
+        if (start === null) start = jetzt;
+        var t = Math.min(1, (jetzt - start) / dauer);
+        /* fest ausschwingend, kein Federn — eine Platte federt nicht */
+        passerSetzen(1 - Math.pow(1 - t, 3));
+        if (t < 1) window.requestAnimationFrame(andruck);
+      };
+      window.requestAnimationFrame(andruck);
+      if (stempel) stempel.style.animation = 'aufdruecken .45s cubic-bezier(.3,1.5,.5,1) .52s both';
+
+      /* Passerlauf: 0 bis 1 ueber die Seite, rAF-gedrosselt und passiv */
+      var pfrei = true;
+      var passerLauf = function () {
+        var m = wurzel.scrollHeight - window.innerHeight;
+        wurzel.style.setProperty('--passer', m > 0 ? (window.scrollY / m).toFixed(3) : 0);
+        pfrei = true;
+      };
+      window.addEventListener('scroll', function () {
+        if (pfrei) { pfrei = false; window.requestAnimationFrame(passerLauf); }
+      }, { passive: true });
+      passerLauf();
+    }
+
+    /* ==================================================================
+       2b) TINTENFLECK — die Fuellung laeuft von der beruehrten Stelle aus.
+       Das ist der eine Effekt, den es nur mit einem Finger gibt: der Zeiger
+       verraet, WO gedrueckt wurde, und die Tinte zieht von dort ins Papier.
+       ================================================================== */
+    Array.prototype.forEach.call(document.querySelectorAll('.knopf'), function (k) {
+      var setzen = function (e) {
+        var r = k.getBoundingClientRect();
+        var x = (e.clientX != null ? e.clientX : r.left + r.width / 2) - r.left;
+        var y = (e.clientY != null ? e.clientY : r.top + r.height / 2) - r.top;
+        k.style.setProperty('--tx', x.toFixed(1) + 'px');
+        k.style.setProperty('--ty', y.toFixed(1) + 'px');
+      };
+      k.addEventListener('pointerdown', setzen);
+      k.addEventListener('pointerenter', setzen);
+    });
+
+    /* ==================================================================
+       2c) AUFDRUCK — die Auszeichnungsbloecke drucken sich beim Eintreten auf.
+       Einmalig je Block; danach steht der Zustand.
+       ================================================================== */
+    var marken = Array.prototype.slice.call(document.querySelectorAll('.mark[data-wort]'));
+    if (marken.length && !reduziert && 'IntersectionObserver' in window) {
+      marken.forEach(function (m) { m.classList.add('wartet'); });
+      var mo = new IntersectionObserver(function (eintraege) {
+        eintraege.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          var m = e.target;
+          mo.unobserve(m);
+          window.requestAnimationFrame(function () {
+            m.classList.add('druckt');
+            m.classList.remove('wartet');
+          });
+        });
+      }, { threshold: 0.9 });
+      marken.forEach(function (m) { mo.observe(m); });
     }
 
     /* ==================================================================
