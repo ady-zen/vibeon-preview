@@ -411,7 +411,7 @@
       font-family:var(--text);font-weight:400;text-transform:none;
       font-size:12.5px;line-height:1.4;opacity:.62;max-width:22ch;
     }
-    .reel-laden:hover,.reel-laden:focus-visible{background:rgba(216,213,197,.09)}
+    .reel-laden:hover,.reel-laden:focus-visible{background:rgba(128,128,128,.14)}
     .exodus .rasterfeld{aspect-ratio:16/9;width:100%;margin-top:clamp(26px,4.5vh,40px)}
 
     /* Secret X (Papier): das Plakat, aus dem die Location herausgeschwaerzt wurde */
@@ -435,6 +435,7 @@
 
     /* ============ Bogen 7 · Live-Act (Papier 2) ============ */
     .act-grid{display:grid;gap:clamp(26px,4.5vh,40px)}
+    .act-grid > *{min-width:0}   /* sonst sprengt das Reel-Band die Seite */
     @media (min-width:820px){
       .act-grid{grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:clamp(30px,5vw,64px);align-items:center}
     }
@@ -588,10 +589,69 @@
       </div>
     </section>
 
+    <!-- ============ Bogen 7 · Live-Act (Papier 2) ============
+         Eigener Kuenstler-Block, steht seit 2026-08-31 auf Saschas Wunsch VOR den
+         Formaten. Bleibt aber KEIN Format: keine Format-Auszeichnung, kein
+         "A format by VIBEON" — Nima ist ein externer Kuenstler, kein Eventformat
+         von VIBEON. Die Reihenfolge fuehrt ihn voran, die Einordnung nicht. -->
+    <section class="bogen b-papier2 act kante" aria-labelledby="act-h">
+      <div class="innen">
+        <h2 id="act-h" class="sr-only">Live-Act</h2>
+        <div class="act-grid">
+          <figure class="rasterfeld">
+            <!-- Echtes Portrait (Nima, Freigabe Sascha 2026-08-31). Der Instagram-
+                 Ton-Knopf ist beim Zuschnitt auf 4:5 herausgefallen. data-szene
+                 bleibt als Rueckfallebene stehen, falls das Bild nicht laedt. -->
+            <canvas data-bild="assets/bilder/nima-lovario.jpg" data-szene="act" role="img" aria-label="Nima Lovario mit E-Violine und Bogen, als gedrucktes Rasterbild"></canvas>
+          </figure>
+          <div>
+            <p class="takt takt--leise">Live-Act</p>
+            <p class="name">Nima Lovario</p>
+            <p class="rolle">DJ Live-Act &amp; Violinist · Bregenz</p>
+            <p class="copy">
+              <span class="laut">Elektronische Musik trifft Live-Violine.</span>
+              Nima Lovario legt auf – und zieht die E-Violine live über den Beat.
+            </p>
+            <p class="sound"><span class="gelbmark">House · Afro House · Melodic Techno</span></p>
+            <!-- Instagram statt Textlink: sein Konto ist videobasiert — die Geige
+                 ueber dem Beat sieht man, man liest sie nicht. Gleiche 2-Klick-
+                 Mechanik wie bei Exodus, vor dem Klick geht kein Request an Meta. -->
+            <div class="reel-band" role="group" aria-label="Instagram-Videos von Nima Lovario">
+              <!-- TODO: echte Reel-IDs eintragen (instagram.com/reel/<ID>/) -->
+              <div class="reel">
+                <button class="reel-laden" type="button" data-reel="PLATZHALTER_NIMA_1">
+                  <span class="spiel" aria-hidden="true"></span>
+                  <span>Video laden</span>
+                  <span class="hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
+                </button>
+              </div>
+              <div class="reel">
+                <button class="reel-laden" type="button" data-reel="PLATZHALTER_NIMA_2">
+                  <span class="spiel" aria-hidden="true"></span>
+                  <span>Video laden</span>
+                  <span class="hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
+                </button>
+              </div>
+              <div class="reel">
+                <button class="reel-laden" type="button" data-reel="PLATZHALTER_NIMA_3">
+                  <span class="spiel" aria-hidden="true"></span>
+                  <span>Video laden</span>
+                  <span class="hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
+                </button>
+              </div>
+            </div>
+            <!-- Der Knopf traegt den Namen des Kontos statt "Mehr erfahren":
+                 das Handle IST die Adresse und wird wiedererkannt. -->
+            <p class="aktion"><a class="knopf" href="https://www.instagram.com/nima_lovario" target="_blank" rel="noopener">@nima_lovario</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ Boegen 4-6 · Formate ============
          KEINE Nummerierung mehr (01/02/03 kodierte nichts). Die Augenbraue traegt
          jetzt echte Information: den Takt des jeweiligen Formats. -->
-    <section id="formate" class="bogen b-papier" aria-labelledby="formate-h">
+    <section id="formate" class="bogen b-papier kante" aria-labelledby="formate-h">
       <div class="formate-kopf">
         <h2 id="formate-h">Die Formate</h2>
         <p class="zusatz">Drei Abende, drei Temperaturen.</p>
@@ -702,32 +762,6 @@
         </div>
     </section>
 
-    <!-- ============ Bogen 7 · Live-Act (Papier 2) ============
-         Eigener Kuenstler-Block, KEIN Format: keine Takt-Zeile, kein "A format by". -->
-    <section class="bogen b-papier2 act kante" aria-labelledby="act-h">
-      <div class="innen">
-        <h2 id="act-h" class="sr-only">Live-Act</h2>
-        <div class="act-grid">
-          <figure class="rasterfeld">
-            <!-- Echtes Portrait (Nima, Freigabe Sascha 2026-08-31). Der Instagram-
-                 Ton-Knopf ist beim Zuschnitt auf 4:5 herausgefallen. data-szene
-                 bleibt als Rueckfallebene stehen, falls das Bild nicht laedt. -->
-            <canvas data-bild="assets/bilder/nima-lovario.jpg" data-szene="act" role="img" aria-label="Nima Lovario mit E-Violine und Bogen, als gedrucktes Rasterbild"></canvas>
-          </figure>
-          <div>
-            <p class="takt takt--leise">Live-Act</p>
-            <p class="name">Nima Lovario</p>
-            <p class="rolle">DJ Live-Act &amp; Violinist · Bregenz</p>
-            <p class="copy">
-              <span class="laut">Elektronische Musik trifft Live-Violine.</span>
-              Nima Lovario legt auf – und zieht die E-Violine live über den Beat.
-            </p>
-            <p class="sound"><span class="gelbmark">House · Afro House · Melodic Techno</span></p>
-            <p class="aktion"><a class="knopf" href="https://www.instagram.com/nima_lovario" target="_blank" rel="noopener">Mehr erfahren</a></p>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- ============ Bogen 8 · Orte (Tinte-Streifen) ============ -->
     <section class="bogen b-tinte orte" aria-labelledby="orte-h">
@@ -1247,7 +1281,10 @@
         frame.src = 'https://www.instagram.com/reel/' + knopf.getAttribute('data-reel') + '/embed/';
         frame.loading = 'lazy';
         frame.setAttribute('allowfullscreen', '');
-        frame.title = 'Instagram-Video (Exodus)';
+        var band = knopf.closest ? knopf.closest('.reel-band') : null;
+        frame.title = band && band.getAttribute('aria-label')
+          ? band.getAttribute('aria-label')
+          : 'Instagram-Video';
         halter.replaceChild(frame, knopf);
       });
     });
