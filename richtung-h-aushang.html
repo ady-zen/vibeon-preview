@@ -395,6 +395,23 @@
       border:2px solid var(--farbe);background:transparent;
     }
     .reel iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    /* Selbst gehostetes Video: spielt inline, fuellt die Kachel formatfuellend
+       und braucht weder Einwilligung noch fremde Skripte. */
+    .reel-video{
+      position:absolute;inset:0;width:100%;height:100%;
+      object-fit:cover;display:block;background:transparent;
+    }
+    .reel .ton{
+      position:absolute;right:8px;bottom:8px;z-index:2;
+      border:2px solid var(--farbe);background:var(--grund);color:var(--farbe);
+      font-family:var(--display);font-weight:700;text-transform:uppercase;
+      font-size:clamp(12px,3vw,14px);line-height:1;
+      padding:7px 10px 5px;cursor:pointer;
+      transition:background-color .16s ease,color .16s ease;
+    }
+    .reel .ton:hover,.reel .ton:focus-visible,.reel .ton[aria-pressed="true"]{
+      background:var(--farbe);color:var(--grund);
+    }
     .reel-laden{
       position:absolute;inset:0;width:100%;height:100%;
       display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
@@ -618,6 +635,13 @@
                  Mechanik wie bei Exodus, vor dem Klick geht kein Request an Meta. -->
             <div class="reel-band" role="group" aria-label="Instagram-Videos von Nima Lovario">
               <!-- TODO: echte Reel-IDs eintragen (instagram.com/reel/<ID>/) -->
+              <!-- Sobald die MP4 da ist, wird aus dieser Kachel:
+                   <div class="reel">
+                     <video class="reel-video" src="assets/video/nima-01.mp4"
+                            playsinline muted loop preload="metadata"></video>
+                     <button class="ton" type="button" aria-pressed="false">Ton</button>
+                   </div>
+                   Siehe assets/video/README.md -->
               <div class="reel">
                 <button class="reel-laden" type="button" data-reel="PLATZHALTER_NIMA_1">
                   <span class="spiel" aria-hidden="true"></span>
@@ -1272,7 +1296,56 @@
     }
 
     /* ==================================================================
-       3) 2-Klick-Instagram: VOR dem Klick geht kein Request an Meta.
+       3) Selbst gehostete Videos.
+       Spielen stumm, sobald die Kachel im Blick ist, und pausieren wieder,
+       sobald sie es nicht mehr ist — drei Videos gleichzeitig laufen zu lassen
+       kostet am Handy Daten und Akku ohne Gegenwert. Bei reduzierter Bewegung
+       laeuft nichts von allein, dann bekommt das Video seine eigenen Bedienelemente.
+       ================================================================== */
+    var videos = Array.prototype.slice.call(document.querySelectorAll('.reel-video'));
+    if (videos.length) {
+      if (!reduziert && 'IntersectionObserver' in window) {
+        var vo = new IntersectionObserver(function (eintraege) {
+          eintraege.forEach(function (e) {
+            if (e.isIntersecting) {
+              var lauf = e.target.play();
+              if (lauf && lauf.catch) lauf.catch(function () {});
+            } else {
+              e.target.pause();
+            }
+          });
+        }, { threshold: 0.6 });
+        videos.forEach(function (v) { vo.observe(v); });
+      } else {
+        videos.forEach(function (v) { v.setAttribute('controls', ''); });
+      }
+
+      /* Ton: immer nur EIN Video laut. Autoplay setzt Stummschaltung voraus,
+         deshalb ist der Ton eine bewusste Handlung. */
+      Array.prototype.forEach.call(document.querySelectorAll('.reel .ton'), function (knopf) {
+        knopf.addEventListener('click', function () {
+          var v = knopf.parentElement.querySelector('.reel-video');
+          if (!v) return;
+          var an = v.muted;
+          videos.forEach(function (o) { o.muted = true; });
+          Array.prototype.forEach.call(document.querySelectorAll('.reel .ton'), function (o) {
+            o.setAttribute('aria-pressed', 'false');
+            o.textContent = 'Ton';
+          });
+          v.muted = !an;
+          knopf.setAttribute('aria-pressed', String(an));
+          knopf.textContent = an ? 'Ton aus' : 'Ton';
+          if (an) {
+            var lauf = v.play();
+            if (lauf && lauf.catch) lauf.catch(function () {});
+          }
+        });
+      });
+    }
+
+    /* ==================================================================
+       4) 2-Klick-Instagram (Rueckfallebene, solange kein eigenes Video vorliegt):
+       VOR dem Klick geht kein Request an Meta.
        ================================================================== */
     Array.prototype.forEach.call(document.querySelectorAll('.reel-laden'), function (knopf) {
       knopf.addEventListener('click', function () {

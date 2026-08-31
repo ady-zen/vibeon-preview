@@ -47,6 +47,11 @@ for attr in ("src", "data-bild"):
         if not (ROOT / treffer).is_file():
             print("  uebersprungen (nicht vorhanden): %s" % treffer)
             continue
+        # Alles wird als data:-URI eingebettet und dabei um rund ein Drittel
+        # groesser. Ein Artifact darf 16 MB haben - bei Videos wird das schnell eng.
+        kb = (ROOT / treffer).stat().st_size / 1024
+        if kb > 2048:
+            print("  WARNUNG: %s ist %.1f MB - eingebettet rund %.1f MB" % (treffer, kb / 1024, kb * 1.34 / 1024))
         body = body.replace('%s="%s"' % (attr, treffer),
                             '%s="%s"' % (attr, data_uri(treffer)))
 
