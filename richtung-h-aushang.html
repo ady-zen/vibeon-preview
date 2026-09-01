@@ -441,70 +441,29 @@
     }
     .format-by .marke{font-size:1.15em;opacity:1}
 
-    /* ============ Rhythmus + Faktensatz (Beer & Beats) ============
-       Loest den Zettel ab (Sascha: "nicht so stylisch"). Der war ein Kasten mit
-       Schlagschatten — also ausgerechnet die Karten-Aesthetik, aus der die Seite
-       raus wollte, und er unterbrach das Gelb, statt darin zu liegen.
-
-       Stattdessen: die staerkste Tatsache ueber dieses Format wird zum BILD.
-       Beer & Beats ist immer donnerstags — also steht hier ein Wochenraster, in
-       dem nur die Donnerstage gedruckt sind. Man liest es nicht, man sieht es.
-       Die Fakten darunter stehen als Plakatsatz direkt auf dem Gelb: keine
-       Tabelle, kein Kasten, nur Zeilen und Haarlinien. */
-    .rhythmus{
+    /* ============ Stempelkette (Beer & Beats) ============
+       Dritte Fassung dieser Flaeche, und die beiden Vorgaenger sind aus gutem
+       Grund gegangen:
+         1. Der ZETTEL war ein Kasten mit Schlagschatten — Karten-Aesthetik.
+         2. Der FAKTENSATZ war dieselbe Tabelle ohne Kasten: Beschriftung links,
+            Wert rechts. Bleibt ein Formular, egal wie fein die Haarlinien sind.
+         3. Das WOCHENRASTER behauptete "jeden Donnerstag" — das stimmt nicht
+            (Sascha, 2026-08-31). Ein Bild, das etwas Falsches sagt, muss weg,
+            unabhaengig davon, wie gut es aussieht.
+       Jetzt: jede Tatsache ein eigener Abdruck, leicht verdreht, als waeren sie
+       nacheinander aufgedrueckt worden. Bewusst KLEINER als der Stempel im Hero —
+       sonst stehen vier gleich grosse Stempel auf der Seite und das Mittel nutzt
+       sich ab. Drei hier, einer im Hero: das ist eine Ordnung, keine Masche. */
+    .kette{
       margin-top:clamp(26px,5vw,44px);
-      max-width:460px;
+      display:flex;flex-wrap:wrap;align-items:flex-start;
+      gap:clamp(14px,3.4vw,22px);
+      max-width:600px;
     }
-    .rhythmus .tage{
-      display:grid;grid-template-columns:repeat(7,1fr);gap:clamp(5px,1.4vw,9px);
-      font-family:var(--display);font-weight:700;text-transform:uppercase;
-      font-size:clamp(12px,3.1vw,15px);text-align:center;
-      margin-bottom:clamp(7px,1.8vw,11px);
-    }
-    .rhythmus .tage span{padding:3px 0 1px;opacity:.7}   /* .55 ergab 3.85:1 */
-    .rhythmus .tage .do{opacity:1}
-    .rhythmus .tage .do{background:var(--tinte);color:var(--gelb)}
-    .rhythmus .netz{
-      display:grid;grid-template-columns:repeat(7,1fr);gap:clamp(5px,1.4vw,9px);
-    }
-    .rhythmus .netz i{
-      display:block;aspect-ratio:1;
-      border:1.5px solid rgba(22,21,15,.3);
-    }
-    /* Nur die Donnerstage sind gedruckt — das ist das ganze Bild */
-    .rhythmus .netz i.an{background:var(--tinte);border-color:var(--tinte)}
-    .rhythmus .unter{
-      margin-top:clamp(9px,2.2vw,14px);
-      font-family:var(--text);font-size:clamp(13px,3.3vw,15px);
-      display:flex;justify-content:space-between;gap:12px;opacity:.78;
-    }
-
-    /* Der Faktensatz: Plakatzeilen mit Haarlinien, ohne Kasten */
-    .satz{
-      margin-top:clamp(26px,5vw,42px);
-      max-width:560px;
-      border-top:2px solid var(--tinte);
-    }
-    .satz p{
-      margin:0;
-      border-bottom:1px solid rgba(22,21,15,.3);
-      padding:clamp(9px,2.2vw,13px) 0;
-      font-family:var(--display);font-weight:900;text-transform:uppercase;
-      font-size:clamp(22px,6.2vw,40px);line-height:1;
-      text-wrap:balance;
-    }
-    .satz p .leise{
-      display:block;font-family:var(--text);font-weight:400;text-transform:none;
-      font-size:clamp(12.5px,3.1vw,14px);line-height:1.3;opacity:.72;
-      margin-bottom:4px;letter-spacing:0;
-    }
-    /* Die eine Zeile, die ein Versprechen ist, wird ausgespart gedruckt */
-    .satz p.frei{
-      border-bottom:0;margin-top:clamp(12px,2.6vw,18px);
-      background:var(--tinte);color:var(--gelb);
-      padding:clamp(11px,2.6vw,15px) clamp(12px,3vw,18px) clamp(9px,2.2vw,13px);
-      font-size:clamp(24px,6.8vw,44px);
-    }
+    .kette .stempel{font-size:clamp(15px,4.1vw,21px);padding:9px 14px 7px}
+    .kette .stempel:nth-child(1){transform:rotate(-5deg)}
+    .kette .stempel:nth-child(2){transform:rotate(3.5deg)}
+    .kette .stempel:nth-child(3){transform:rotate(-2deg)}
 
     /* ============ Tafel · ausgesparte Schrift auf Vollton ============
        Gehoert auf HELLE Boegen: der Kasten bringt seine eigene Tinte mit.
@@ -869,33 +828,22 @@
          Tintepunkte auf Gelb. -->
     <section id="beer" class="bogen b-gelb format beer" aria-labelledby="f-beer">
       <div class="innen">
-        <p class="takt">Jeden Donnerstag</p>
+        <!-- TODO Rhythmus: "jeden Donnerstag" war falsch (Sascha). "Donnerstags"
+     nennt nur den Tag, ohne Haeufigkeit. Sobald der echte Takt feststeht
+     (monatlich? unregelmaessig?), gehoert er hierher. -->
+        <p class="takt">Donnerstags</p>
         <h3 id="f-beer">Beer <span class="amp">&amp;</span> Beats</h3>
         <p class="copy">
           <span class="laut">Afterwork ohne Programm.</span>
           Gute Musik, kaltes Bier, feine Leute. Fühlt sich an wie eine House-Party im erweiterten Freundeskreis – weil es genau das ist.
         </p>
-        <!-- Wochenraster: nur die Donnerstage sind gedruckt. Das Bild sagt,
-             was der Satz darunter nur behaupten koennte. -->
-        <div class="rhythmus" role="img" aria-label="Wochenraster: gedruckt ist jeder Donnerstag">
-          <div class="tage" aria-hidden="true">
-            <span>Mo</span><span>Di</span><span>Mi</span><span class="do">Do</span><span>Fr</span><span>Sa</span><span>So</span>
-          </div>
-          <div class="netz" aria-hidden="true">
-            <i></i><i></i><i></i><i class="an"></i><i></i><i></i><i></i>
-            <i></i><i></i><i></i><i class="an"></i><i></i><i></i><i></i>
-            <i></i><i></i><i></i><i class="an"></i><i></i><i></i><i></i>
-            <i></i><i></i><i></i><i class="an"></i><i></i><i></i><i></i>
-          </div>
-          <p class="unter" aria-hidden="true"><span>Jede Woche</span><span>Bregenz</span></p>
-        </div>
-
-        <!-- Faktensatz als Plakatzeilen, nicht als Tabelle -->
-        <div class="satz">
-          <p><span class="leise">Wann</span>18:00 bis offen</p>
-          <p><span class="leise">Wo</span>Galerie · Werkstatt · Dachboden</p>
-          <p><span class="leise">Und sonst</span>Musik gut · Bier kalt · Leute fein</p>
-          <p class="frei">Drinks aufs Haus</p>
+        <!-- Die Fakten als Abdruecke. Vorher standen hier ein Wochenraster und
+             ein Faktensatz — das Raster behauptete "jeden Donnerstag" und war
+             damit schlicht falsch, der Faktensatz war eine Tabelle ohne Kasten. -->
+        <div class="kette">
+          <span class="stempel">18:00 bis offen</span>
+          <span class="stempel">Drinks aufs Haus</span>
+          <span class="stempel">Galerie · Werkstatt · Dachboden</span>
         </div>
         <p class="aktion"><a class="knopf" href="https://beerbeats.at" target="_blank" rel="noopener">Mehr erfahren<span class="sr-only"> (öffnet in neuem Tab)</span></a></p>
         <p class="format-by">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
