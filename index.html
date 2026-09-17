@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  VIBEON One-Pager Mockup — Richtung G (Welle 3) = F-Puls veredelt mit Beer_Beats.at-Raffinessen, Version 9, 2026-07-04
+  VIBEON One-Pager Mockup — Richtung G (Welle 3) = F-Puls veredelt mit Beer_Beats.at-Raffinessen, Version 13, 2026-09-17
   Basis: Kopie von welle2-richtung-f-puls.html (Version 1). F's Substanz unveraendert:
   atmender Puls-Kern, Sonar-Ringe, zwei Mono-Ticker, warme Schwarz-Abstufungen mit Grain,
   gestaffelte Setzung, Lichtfeld-Gallery, Kontur-Anker je Format.
@@ -104,11 +104,26 @@
        Secret-X-Redaction-"Decrypt"-Shimmer jetzt in-view auf ALLEN Geraeten (statt nur Desktop-
        Hover — 70% Handy), langsamer/faint; overscroll-behavior am Reel-Band (gesture-conflicts).
        Alles progressive Enhancement, reduced-motion + Gelb-auf-Schwarz-Regel unangetastet.
+  v13 — UX/UI-Review-Pass (design-critique, Sascha-Auftrag "aus UX/UI-Sicht pruefen und
+       optimieren"), Markenkern unveraendert: (1) Mobiler Sticky-CTA "Auf die Liste" (nur
+       <=820px, erscheint nach dem Hero, verschwindet an Liste/Kontakt/Footer) — Hauptkonversion
+       auf ~7500px Seitenlaenge immer einen Daumen entfernt. (2) Hero-CTAs unter 480px gestapelt,
+       volle Breite, Primaer-CTA zuerst. (3) Reel-Band mobil kompakter (48vw statt 62vw),
+       Datenschutz-Hinweis EINMAL unter dem Band (12px) statt 3x in 10px, Buttons mit eindeutigen
+       aria-labels. (4) Lesbarkeit: keine Schrift mehr unter 11px (format-by 11, Orte/Herkunft/
+       Hinweis 12). (5) Nima-Platzhalter mit Kontur-"N" (Anker-Sprache wie &, ->, X) statt
+       leerer Box. (6) Orte-Band balanciert umbrechen, doppelte Hairline zum Ticker weg.
+       (7) B2B-Mail-Link: Unterstreichung am Text statt Border unter dem Padding.
+       (8) theme-color + Font-Preload (Hero ohne Fallback-Flash). (9) Anker-h2-Styles aus
+       Inline-Attributen in eine Regel gezogen.
 -->
 <html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0E0E0E">
+  <link rel="preload" href="assets/fonts/archivo-expanded-black.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/space-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
   <title>VIBEON – Eventformate mit eigener Identität | Bregenz &amp; Bodenseeraum</title>
   <meta name="description" content="VIBEON entwickelt Eventformate rund um Musik, Menschen und besondere Orte: Beer &amp; Beats, Exodus und Secret X. Der Vibe ist an.">
   <meta property="og:type" content="website">
@@ -295,6 +310,7 @@
     }
     .anker .linie{flex:1;height:1px;background:var(--hairline)}
     .anker .mono{color:var(--text-dim)}
+    .anker h2{font-weight:500;font-size:clamp(12px,.85vw,14px);letter-spacing:.14em;line-height:1.4}
 
     /* ============ Header ============ */
     header{
@@ -346,6 +362,11 @@
       display:flex;flex-wrap:wrap;gap:16px;
       margin-top:clamp(32px,5vh,56px);
       padding-left:clamp(8px,2.5vw,44px);
+    }
+    /* v13: unter 480px stapeln die CTAs in voller Breite, Primaer-CTA (Liste) zuerst */
+    @media (max-width:480px){
+      .hero-ctas{flex-direction:column;align-items:stretch}
+      .hero-ctas .btn--gelb{order:-1}
     }
     .hero-meta{
       position:relative;z-index:2;
@@ -598,8 +619,13 @@
       border-left:12px solid var(--gelb);border-top:8px solid transparent;border-bottom:8px solid transparent;
     }
     .ig-laden:hover .ig-play,.ig-laden:focus-visible .ig-play,.ig-laden:active .ig-play{background:rgba(233,244,47,.12)}
-    .ig-hinweis{font-size:10px;letter-spacing:.08em;text-transform:none;color:var(--text-dim);max-width:24ch;line-height:1.5}
-    @media (max-width:820px){.ig-band{grid-auto-columns:min(62vw,240px)}}
+    /* v13: Datenschutz-Hinweis EINMAL unter dem Band (12px) statt 3x in 10px auf jeder Kachel */
+    .ig-datenschutz{
+      margin-top:12px;max-width:52ch;
+      font-family:var(--mono);font-size:clamp(12px,.8vw,13px);letter-spacing:.04em;
+      line-height:1.55;color:var(--text-dim);
+    }
+    @media (max-width:820px){.ig-band{grid-auto-columns:min(48vw,190px)}}
 
     /* Secret X — tiefstes Schwarz, minimal, nur Typo, Gelb zuendet dosiert */
     .format--secret{background:var(--schwarz-tief);text-align:center}
@@ -669,6 +695,15 @@
       border:1px solid var(--hairline);background:#0a0908;
     }
     .act-foto svg{display:block;width:100%;height:100%}
+    /* v13: Kontur-Initiale in der Anker-Sprache der Formate (&, ->, X) — Platzhalter liest sich
+       als gestaltetes Element statt als leere Box; verschwindet mit dem echten Portrait. */
+    .act-kontur{
+      position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);
+      font-family:var(--archivo);font-weight:900;font-stretch:125%;
+      font-size:clamp(150px,22vw,240px);line-height:1;
+      color:transparent;-webkit-text-stroke:1px rgba(245,241,234,.22);
+      user-select:none;pointer-events:none;
+    }
     .act-name{
       font-family:var(--grotesk);font-weight:500;
       font-size:clamp(34px,5vw,64px);line-height:1.02;letter-spacing:-.01em;
@@ -701,7 +736,7 @@
     .zwischen .u{color:var(--text-dim)}
     .format-by{
       margin-top:clamp(18px,3vh,28px);
-      font-family:var(--mono);font-weight:500;font-size:clamp(10px,.72vw,12px);
+      font-family:var(--mono);font-weight:500;font-size:clamp(11px,.75vw,12px);
       letter-spacing:.22em;text-transform:uppercase;color:var(--text-dim);
     }
     .format-by .marke{
@@ -713,10 +748,13 @@
       padding:clamp(26px,4vh,42px) var(--rand);
       border-top:1px solid var(--hairline);
       border-bottom:1px solid var(--hairline);
-      font-family:var(--mono);font-weight:500;font-size:clamp(11px,.85vw,14px);
+      font-family:var(--mono);font-weight:500;font-size:clamp(12px,.85vw,14px);
       letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);
       text-align:center;
     }
+    /* v13: ausgewogener Umbruch (kein einzelnes "Leerstand" in Zeile 3), doppelte Naht zum Ticker weg */
+    .orte-band p{max-width:44ch;margin-inline:auto;text-wrap:balance}
+    .orte-band + .ticker{border-top:0}
     .manifest{padding:clamp(80px,13vh,170px) var(--rand)}
     .manifest p{
       margin:0;font-weight:300;
@@ -726,7 +764,7 @@
     .manifest .vor{color:var(--text-dim)}
     .herkunft{
       width:100%;margin:0 0 4px;
-      font-family:var(--mono);font-weight:500;font-size:clamp(11px,.8vw,13px);
+      font-family:var(--mono);font-weight:500;font-size:clamp(12px,.8vw,13px);
       letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);
     }
 
@@ -825,8 +863,12 @@
       font-family:var(--mono);font-size:clamp(12px,.9vw,14px);
       letter-spacing:.08em;color:var(--text-dim);
     }
-    .b2b a{display:inline-flex;align-items:center;min-height:44px;color:var(--weiss);text-decoration:none;border-bottom:1px solid var(--hairline);padding:12px 0}
-    .b2b a:hover{color:var(--gelb);border-bottom-color:var(--gelb)}
+    .b2b a{
+      display:inline-flex;align-items:center;min-height:44px;padding:12px 0;color:var(--weiss);
+      text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.35em;
+      text-decoration-color:var(--hairline);transition:color .25s ease,text-decoration-color .25s ease;
+    }
+    .b2b a:hover{color:var(--gelb);text-decoration-color:var(--gelb)}
 
     /* ============ Footer ============ */
     footer{
@@ -871,6 +913,24 @@
     @media (pointer:fine) and (prefers-reduced-motion:no-preference){
       .spot{display:block}
     }
+
+    /* ============ Mobiler Sticky-CTA v13 ============
+       Nur <=820px und nur mit JS: erscheint, sobald der Hero aus dem Bild ist, verschwindet an
+       Liste/Kontakt/Footer. Gelb ausschliesslich auf Schwarz, 48px Touch-Ziel, Safe-Area. */
+    .fab{
+      position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;
+      display:none;align-items:center;gap:10px;min-height:48px;padding:0 20px;
+      font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--gelb);text-decoration:none;
+      background:rgba(14,14,14,.92);border:1px solid var(--gelb);
+      -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+      opacity:0;transform:translateY(12px);pointer-events:none;
+      transition:opacity .4s ease,transform .4s ease;
+    }
+    .fab .dot{width:7px;height:7px;border-radius:50%;background:var(--gelb);flex:none;animation:atmen var(--puls-dauer) ease-in-out infinite;animation-delay:-1.9s}
+    .fab.sicht{opacity:1;transform:none;pointer-events:auto}
+    .fab:active{transform:scale(.98)}
+    @media (max-width:820px){.js .fab{display:inline-flex}}
 
     /* ============ Responsive ============ */
     @media (max-width:820px){
@@ -964,7 +1024,7 @@
       <div class="innen">
         <div class="anker">
           <span class="puls" style="--pv:-2.3s" aria-hidden="true"><i></i></span>
-          <h2 class="mono" id="about-h" style="font-family:var(--mono);font-weight:500;font-size:clamp(12px,.85vw,14px);letter-spacing:.14em">Was ist VIBEON</h2>
+          <h2 class="mono" id="about-h">Was ist VIBEON</h2>
           <span class="linie" aria-hidden="true"></span>
         </div>
         <div class="about-grid">
@@ -993,7 +1053,7 @@
       <div class="formate-kopf">
         <div class="anker" style="margin-bottom:0">
           <span class="puls" style="--pv:-3.1s" aria-hidden="true"><i></i></span>
-          <h2 class="mono" id="formate-h" style="font-family:var(--mono);font-weight:500;font-size:clamp(12px,.85vw,14px);letter-spacing:.14em">Formate</h2>
+          <h2 class="mono" id="formate-h">Formate</h2>
           <span class="linie" aria-hidden="true"></span>
         </div>
       </div>
@@ -1043,27 +1103,25 @@
             <div class="ig-band beat d3" role="group" aria-label="Instagram-Videos von Exodus">
               <!-- TODO: echte Reel-IDs eintragen (instagram.com/reel/<ID>/) -->
               <div class="ig-video">
-                <button class="ig-laden" type="button" data-reel="PLATZHALTER_REEL_1">
+                <button class="ig-laden" type="button" data-reel="PLATZHALTER_REEL_1" aria-label="Video 1 von Instagram laden">
                   <span class="ig-play" aria-hidden="true"></span>
                   <span>Video laden</span>
-                  <span class="ig-hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
                 </button>
               </div>
               <div class="ig-video">
-                <button class="ig-laden" type="button" data-reel="PLATZHALTER_REEL_2">
+                <button class="ig-laden" type="button" data-reel="PLATZHALTER_REEL_2" aria-label="Video 2 von Instagram laden">
                   <span class="ig-play" aria-hidden="true"></span>
                   <span>Video laden</span>
-                  <span class="ig-hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
                 </button>
               </div>
               <div class="ig-video">
-                <button class="ig-laden" type="button" data-reel="PLATZHALTER_REEL_3">
+                <button class="ig-laden" type="button" data-reel="PLATZHALTER_REEL_3" aria-label="Video 3 von Instagram laden">
                   <span class="ig-play" aria-hidden="true"></span>
                   <span>Video laden</span>
-                  <span class="ig-hinweis">Lädt von Instagram — dabei werden Daten an Meta übertragen.</span>
                 </button>
               </div>
             </div>
+            <p class="ig-datenschutz beat d3">Videos laden erst auf Klick von Instagram — dabei werden Daten an Meta übertragen.</p>
             <p class="format-cta beat d4"><a class="btn" href="https://www.instagram.com/exodus.aiff" target="_blank" rel="noopener">Mehr erfahren</a></p>
             <p class="format-by beat d4">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
           </div>
@@ -1096,7 +1154,7 @@
       <div class="innen">
         <div class="anker">
           <span class="puls" style="--pv:-3.7s" aria-hidden="true"><i></i></span>
-          <h2 class="mono" id="act-h" style="font-family:var(--mono);font-weight:500;font-size:clamp(12px,.85vw,14px);letter-spacing:.14em">Live-Act</h2>
+          <h2 class="mono" id="act-h">Live-Act</h2>
           <span class="linie" aria-hidden="true"></span>
         </div>
         <div class="act-grid">
@@ -1119,6 +1177,7 @@
               <rect width="800" height="1000" fill="url(#act-boden)"/>
               <rect width="800" height="1000" filter="url(#act-grain)" opacity=".07"/>
             </svg>
+            <span class="act-kontur" aria-hidden="true">N</span>
           </figure>
           <div class="act-text">
             <h3 class="act-name beat d1">Nima Lovario</h3>
@@ -1200,6 +1259,8 @@
     </nav>
   </footer>
 
+  <!-- Mobiler Sticky-CTA v13 (nur <=820px, nur mit JS sichtbar) — TODO: echte WhatsApp-Kanal-URL -->
+  <a class="fab" href="https://whatsapp.com/channel/PLATZHALTER" aria-label="Auf die Liste – WhatsApp-Kanal"><span class="dot" aria-hidden="true"></span>Auf die Liste</a>
   <!-- Licht-Leitmotiv v11: der "Strom" laedt sich beim Scrollen auf (JS setzt --fill) -->
   <div class="strom" aria-hidden="true"><span class="ladung"></span></div>
   <!-- Cursor-Spotlight (nur Desktop, per CSS auf pointer:fine begrenzt) -->
@@ -1278,6 +1339,20 @@
         if (lfrei) { lfrei = false; window.requestAnimationFrame(setzLadung); }
       }, { passive: true });
       setzLadung();
+    }
+
+    // 7) Mobiler Sticky-CTA: sichtbar zwischen Hero-Ende und Liste/Kontakt/Footer (CSS begrenzt auf <=820px).
+    var fab = document.querySelector('.fab');
+    if (fab && 'IntersectionObserver' in window) {
+      var heroDa = true, endeSichtbar = new Set();
+      var zeigFab = function () { fab.classList.toggle('sicht', !heroDa && endeSichtbar.size === 0); };
+      new IntersectionObserver(function (es) { heroDa = es[0].isIntersecting; zeigFab(); }, { threshold: 0.05 })
+        .observe(document.querySelector('.hero'));
+      var endeIO = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { endeSichtbar.add(e.target); } else { endeSichtbar.delete(e.target); } });
+        zeigFab();
+      }, { threshold: 0.05 });
+      document.querySelectorAll('.liste, .b2b, footer').forEach(function (el) { endeIO.observe(el); });
     }
 
     // 5) 2-Klick-Instagram: VOR dem Klick geht kein Request an Meta (Entscheidung, tech-notizen).
