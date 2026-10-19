@@ -1,197 +1,5 @@
 <!DOCTYPE html>
-<!--
-  VIBEON One-Pager Mockup — Richtung G (Welle 3) = F-Puls veredelt mit Beer_Beats.at-Raffinessen, Version 26, 2026-10-19
-  Basis: Kopie von welle2-richtung-f-puls.html (Version 1). F's Substanz unveraendert:
-  atmender Puls-Kern, Sonar-Ringe, zwei Mono-Ticker, warme Schwarz-Abstufungen mit Grain,
-  gestaffelte Setzung, Lichtfeld-Gallery, Kontur-Anker je Format.
-  Changelog:
-  v1 — Veredelung ohne Neuanfang: Hero-Load-Sequenz (CSS-only, Zeilen-Stagger 0.14s),
-       Schaltmoment "Der Vibe ist — an" als data-mode-Zustandsmaschine (JS schaltet nach 1.5s,
-       CSS animiert, Label-Crossfade 0.55s), Beat-Stagger-Reveals (.beat + .d1-.d4,
-       IntersectionObserver, will-change nur vor Sichtbarkeit), Ghost-Button-Warmlauf
-       (Fuellung Knochenweiss von links, nie Gelb), Gegenlaeufigkeit aller Loops
-       (Primzahl-artige Dauern + negative Delays, Ticker 47s/61s), Cursor-Spotlight
-       (nur pointer:fine, screen-blend, ueber Coffee Club aus), Ambient-Mulden via body::before
-       (2x Warmgrau + 1x Gelb, sehr schwach), noscript-Override, tabular-nums auf Mono-Ziffern,
-       Beer-&-Atem-Amplitude von scale 1.35 auf 1.15 reduziert (F-Selbstkritik-Fix).
-  v2 — Feedback Sascha (2026-07-03): Coffee Club komplett entfernt (Format noch nicht
-       freigegeben; Wiederaufnahme nach Freigabe — Referenz: v1-Datei), Formate neu
-       nummeriert (01 Beer & Beats, 02 Secret X), Ticker + Meta-Description ohne Coffee Club.
-       About-Copy: "Manche Abende fuehlen sich anders an." ersetzt durch "Es gibt Abende,
-       die bleiben." (Copy-Update, von Sascha gewaehlt); kaputte .einzug-Staffelung des
-       Folgesatzes entfernt — Absatz fliesst jetzt natuerlich (Fix des Umbruch-Fehlers).
-  v3 — Bilder-Thema implementiert: Lichtfeld-Sektion durch Mood/Gallery mit 4 Beispiel-
-       Bildern ersetzt (assets/mood/, handgebaute SVG-Texturen in Schwarz-Abstufungen:
-       Lichtkegel, Fenster, Lichter-Schwarm mit einem gelben ON-Licht, Horizont).
-       Asymmetrisches 2-Spalten-Grid (Spalte B versetzt), mobil gestapelt, lazy geladen,
-       width/height gegen CLS, alt="" (Copy-Regel: kein Text, keine Captions).
-       Interims-Bilder mit Abloese-Pfad: echte Fotos nach Event 1 in dieselben Slots.
-  v4 — Beer-&-Beats-Block mit Fakten der Live-Seite beerbeats.at angereichert (dosiert,
-       Balance zu Secret X gewahrt): Mono-Meta-Zeile "Donnerstags · 18:00 bis offen · Bregenz",
-       mono-zeilen erweitert um Orte-Vielfalt (Galerie · Werkstatt · Dachboden) und
-       "Drinks aufs Haus", "Mehr erfahren" verlinkt jetzt ECHT auf https://beerbeats.at
-       (target=_blank, rel=noopener) statt Interims-Anker. Bewusst NICHT uebernommen:
-       Geheimort-Inszenierung (kollidiert mit Secret-X-USP auf dieser Seite).
-  v5 — Mood-Bildsatz v2 (Sascha: "visueller, nicht generisch"): vier neue, art-direktete
-       Licht-Kompositionen mit Material-Tiefe (assets/mood/): mood-05 Tuerspalt (warmes
-       Licht faellt durch einen Spalt, Nebel im Lichtkeil), mood-06 Bokeh-Nacht (unscharfe
-       Stadtlichter, EIN gelbes Licht ist an), mood-07 Nebelkegel (diagonaler Lichtkegel
-       durch Dunst mit Staub), mood-08 Beton & Licht (hartes Streiflicht auf Relief-
-       Textur via feDiffuseLighting). Alter Bildsatz mood-01..04 bleibt als Referenz.
-       Qualitaet objektiv verifiziert (Pixel-Statistik: Kontrastumfang, Hellzonen,
-       Gelb nur in mood-06); Screenshot-Capture in Session defekt, Urteil bei Sascha.
-  v6 — Content-Elemente aus Konzept-Reflexion (VIBEON Gesamtkonzept.docx, von Sascha
-       gewaehlt + freigegeben): (1) "A FORMAT BY VIBEON"-Zeile an beiden Format-Bloecken,
-       (2) Gastgeber-Zeile im About ("Hinter VIBEON stehen Gastgeber, keine Veranstalter."),
-       (3) Zwischen-Band nach About (Konzept-Sprache woertlich: Wohnzimmer/Club,
-       Galerie/Gastronomie, Kultur/Lifestyle), (4) Orte-Typen-Band nach Mood
-       (Location-Typen aus Konzept Abschnitt 12), (5) Manifest V1 vor der Liste
-       (Menschen vor Programm / Atmosphaere vor Show / Orte vor Hallen / Momente vor
-       Terminen), (6) Herkunfts-Zeile im Footer (Aus Bregenz. Fuer den Bodenseeraum.).
-       Copy-SSOT entsprechend ergaenzt. Nicht gewaehlt: "Weitere Formate folgen",
-       Anti-Positionierung + Sound-Zeile (Backlog-Kandidaten Checkpoint 4).
-  v7 — Bildwelt + Motion, mobile-first (70% Handy-Traffic, alle 7 Bausteine von Sascha
-       gewaehlt): M1 Licht-an-Reveal (schwarzes Overlay hebt sich beim Scroll-Eintritt —
-       Bilder "schalten sich ein"), M2 Scroll-Licht (gelbe Licht-Mulde wandert mit
-       Scrollposition, nur pointer:coarse — mobile Antwort auf den Cursor-Spotlight),
-       M3 Touch-Warmlauf (:active-Fuellung der CTAs), M4 Bild-Atmen (Scale 1→1.035,
-       Primzahl-Dauern, gegenlaeufig), B1 Full-Bleed mobil (Mood randlos), B2 Bild im
-       Beer-&-Beats-Block (mood-02 Fenster, "Blick in den Abend"; Secret X bleibt
-       bildlos), B3 Bildsatz +2 (mood-09 Treppenhaus, mood-10 Regen auf Glas — nach
-       Pixel-Statistik-Fix: Kanten/Glanzpunkte). Gallery jetzt 6 Bilder in 2 Spalten.
-       Reduced-motion: Overlays sofort offen, Atmen/Scroll-Licht aus.
-  v8 — Mood/Gallery-Block komplett entfernt (Sascha: "Kuenstler-Bild-Elemente als
-       grosser Block raus"). Alle Interims-Bilder waren Platzhalter; Copy-Sektion 5
-       (Mood, 4-6 starke Bilder) wartet jetzt auf ECHTE Eventfotos nach Event 1 —
-       Referenz-Markup fuer die Wiederaufnahme: v7-Datei. Beer-&-Beats-Fenster-Bild
-       bleibt (einziges Bild der Seite, ebenfalls Platzhalter). Bild-Atmen wandert
-       vom Mood-Grid auf das Format-Bild. Orte-Band bekommt border-top (neue Naht
-       Secret X → Orte). Seite ist damit wieder konsequent Typo-first.
-  v9 — Drittes Format EXODUS (@exodus.aiff, laut Sascha laufendes eigenes Format wie
-       Beer & Beats): eigener Block zwischen B&B und Secret X (Format 02, Secret X → 03),
-       clubnah/dunkler (#0d0b0a), Kontur-Anker "→" (Aufbruch). ACHTUNG INTERIMS-COPY:
-       Instagram-Account nicht zugaenglich (Login-Wand, Websuche leer, kein Chrome
-       verbunden) — Copy + Meta-Zeile sind Platzhalter bis Sascha Screenshots liefert.
-       2-KLICK-INSTAGRAM-VIDEOS (Entscheidung Sascha): 3 Reel-Slots als 9:16-Band mit
-       Scroll-Snap; VOR dem Klick null Meta-Requests, Klick laedt iframe
-       instagram.com/reel/<id>/embed (Reel-IDs = TODO-Platzhalter). Datenschutz-Hinweis
-       an jeder Kachel; ohne JS ist das Band ausgeblendet (Account-Link bleibt).
-       Ticker + Meta-Description um Exodus ergaenzt.
-  v10 — Live-Act NIMA LOVARIO als eigener Block (KEIN Format, keine Nummer): DJ Live-Act &amp;
-       Violinist aus Bregenz, House/Afro House/Melodic Techno. Copy faktenbasiert aus der
-       verifizierten Instagram-Bio (@nima_lovario, Screenshots Sascha 2026-07-04), in
-       VIBEON-Deutsch statt der englischen Bio-Zeile. Eigene Sektion "Live-Act" direkt nach
-       den Formaten; Name in Space Grotesk (nicht Logo-/Formatname-Schrift), Sound-Zeile gelb.
-       KEIN "A format by VIBEON" (externer Kuenstler, kein VIBEON-Format). CTA -> echtes Ziel
-       instagram.com/nima_lovario. Foto = markengerechter Platzhalter (inline SVG, dunkel +
-       Grain + Licht-an-Reveal) — entsaettigtes Portrait folgt (Bringschuld Sascha). Meta/OG
-       unveraendert (Nima ist kein Format). Coffee Club KLARGESTELLT: externes Event (nicht
-       VIBEON) — bleibt draussen, "vor dem ersten Event" gilt weiter.
-  v11 — UX/UI-Verdichtung "verdichten & schaerfen" (frontend-design-Skill, Sascha-Auftrag),
-       Markenkern unveraendert: (1) EINSCHALT-HERO — gelbe Akzente (Wort "dabei", Sub-ON) und
-       Hero-Licht zuenden koordiniert als Klimax (~1.3s), Switch als Hauptmoment statt Fussnote
-       (@keyframes zuenden Flicker; schalt-Flip 1500->1300ms; hero-licht-Bloom nachgezogen).
-       (2) TYPO-KONTRAST: Hero-h1 groesser (bis 172px), Secret-X-"X" groesser (bis 300px).
-       (3) SECRET X: Redaction-Signal "Wo? [Balken]" (verschluesselte Location als Kernbild) +
-       Fast-Reveal-Scan nur Desktop-Hover. (4) DIE LISTE: finaler Licht-Aufschlag (Punkt-Bloom +
-       Ambient-Licht am unteren Rand, NIE Gelb hinter Text — screen-blend). (5) STROM: duennes
-       Licht-Filament links, laedt sich beim Scrollen mit Gelb auf (Leitmotiv). Reduced-motion +
-       noscript fuer alle neuen Elemente abgesichert; Gelb bleibt ausschliesslich auf Schwarz.
-  v12 — Detail-/Raffinesse-Pass (ui-ux-pro-max-Skill, Sascha-Auftrag), Markenkern unveraendert:
-       touch-action:manipulation auf Links/Buttons (tap-delay weg); scroll-padding-top fuer
-       Anker-Spruenge; Micro-Press-Scale .98 auf .btn (scale-feedback); Ticker mit weichen
-       Rand-Fades (mask-image); text-wrap balance/pretty (Headlines/poetische Zeilen/Copy);
-       Secret-X-Redaction-"Decrypt"-Shimmer jetzt in-view auf ALLEN Geraeten (statt nur Desktop-
-       Hover — 70% Handy), langsamer/faint; overscroll-behavior am Reel-Band (gesture-conflicts).
-       Alles progressive Enhancement, reduced-motion + Gelb-auf-Schwarz-Regel unangetastet.
-  v13 — UX/UI-Review-Pass (design-critique, Sascha-Auftrag "aus UX/UI-Sicht pruefen und
-       optimieren"), Markenkern unveraendert: (1) Mobiler Sticky-CTA "Auf die Liste" (nur
-       <=820px, erscheint nach dem Hero, verschwindet an Liste/Kontakt/Footer) — Hauptkonversion
-       auf ~7500px Seitenlaenge immer einen Daumen entfernt. (2) Hero-CTAs unter 480px gestapelt,
-       volle Breite, Primaer-CTA zuerst. (3) Reel-Band mobil kompakter (48vw statt 62vw),
-       Datenschutz-Hinweis EINMAL unter dem Band (12px) statt 3x in 10px, Buttons mit eindeutigen
-       aria-labels. (4) Lesbarkeit: keine Schrift mehr unter 11px (format-by 11, Orte/Herkunft/
-       Hinweis 12). (5) Nima-Platzhalter mit Kontur-"N" (Anker-Sprache wie &, ->, X) statt
-       leerer Box. (6) Orte-Band balanciert umbrechen, doppelte Hairline zum Ticker weg.
-       (7) B2B-Mail-Link: Unterstreichung am Text statt Border unter dem Padding.
-       (8) theme-color + Font-Preload (Hero ohne Fallback-Flash). (9) Anker-h2-Styles aus
-       Inline-Attributen in eine Regel gezogen.
-  v14 — Neue Ideen (Brainstorming, Sascha-Auswahl 2026-09-17), Markenkern unveraendert:
-       (1) WEITERSAGEN — tertiaerer Ghost-Button in der Liste-Sektion (nur mit JS): Web Share API
-       (natives Share-Sheet am Handy), Fallback-Kaskade Clipboard API -> execCommand -> Link im Label
-       sichtbar; Erfolg meldet "Link kopiert" (aria-live). Scheitert nie stumm.
-       (2) SECRET-X-BALKEN ANTIPPBAR — "Wo? [Balken]" ist ein 44px-Button: Klick startet einen
-       schnellen Decrypt-Scan (0.7s x2), dann erscheint gelb "Nur auf der Liste." (role=status)
-       und der CTA bekommt einen einmaligen Glow-Ring (kein Gelb als Flaeche). Reduced-motion:
-       Antwort sofort. (3) ON-EASTER-EGG — Klick auf das ON der Wortmarke dimmt --gelb per
-       Keyframes fuer 1.1s auf 22% und zuendet neu: ALLE Gelb-Akzente der Seite gehen aus und an,
-       der Status-Schalter laeuft "aus -> an" mit. Kein Scroll-Sprung, Hover-Glow als Hinweis,
-       nur mit JS + Motion. (4) FORMATNAMEN ATMEN — Sperrung .14em -> .2em bei Hover/Fokus des
-       Format-Blocks, nur pointer:fine, bei reduced-motion kein Wechsel.
-       Dazu: Sticky-CTA blendet jetzt auch am Secret-X-CTA aus (stand sonst doppelt uebereinander).
-       Nicht gewaehlt (Kandidaten fuer spaeter): "Naechster Abend live" (Do-Rhythmus muesste fix
-       sein), "In den Kalender" (.ics), "Die Seite weiss, dass Nacht ist" (Ambient nach 20 Uhr).
-  v15 — DIE LISTE ENTFERNT (Sascha 2026-10-19, ersatzlos): Header-Link wird "Kontakt" (mailto),
-       Hero nur noch "Formate entdecken", Secret X ohne Listen-CTA ("erfaehrst du am Tag X."),
-       Balken-Antwort "Erst am Tag X.", Ticker 2 neu, Liste-Sektion inkl. WhatsApp/Instagram/
-       Weitersagen weg, mobiler Sticky-CTA weg (CSS+JS). Instagram bleibt im Footer.
-  v16 — NIMA-INSTAGRAM INTEGRIERT (Sascha 2026-10-19): 2-Klick-Reel-Band im Live-Act-Block
-       (3 Reels von instagram.com/nima_lovario, gleiche Datenschutz-Mechanik wie Exodus),
-       CTA "Mehr erfahren" -> "@nima_lovario auf Instagram", iframe-Titel je Band statt fix "Exodus".
-  v17 — BILDER SOFORT STATT INSTAGRAM-WIDGET (Sascha 2026-10-19, Nima-Freigabe liegt vor):
-       Nima-Platzhalter-SVG -> eigener, selbst gehosteter Video-Loop (7s, stumm, Nachtpur-Grading:
-       entsaettigt/dunkel/Grain) mit Poster, spielt nur im Blick, reduced-motion = Standbild;
-       Klick oeffnet das Reel auf Instagram. Alle Instagram-Embeds (Nima + Exodus) + 2-Klick-JS raus,
-       kein Request an Meta mehr. Credit "Video: @nima_lovario".
-  v18 — Neues Format BALLHAUS (Sascha 2026-10-19, Fakten von ballhaus-bregenz.at): Ballhaus Revival
-       Night Vol. 01 als Format 01 ganz oben. Anmutung "Samt-Nacht": warmes Schwarz mit Bordeaux-
-       Stich, Anker = Spiegelkugel als Konturgrafik (pendelt sanft, Glitzerpunkte funkeln in
-       Knochenweiss, ein einziger gelber). Mono-Zeilen wie Beer & Beats, CTA -> ballhaus-bregenz.at.
-       Reihenfolge NEU: Ballhaus 01 -> Live-Act Nima (hochgezogen, spielt beim Ballhaus; Bruecke
-       "Live beim Ballhaus · Sa 21.11.") -> Beer & Beats 02 -> Exodus 03 -> Secret X 04.
-       Ticker, sr-Text, Meta-/OG-Description um Ballhaus ergaenzt.
-  v19 — NIMA-BILDBAND (auf Ballhaus-v18) (Sascha 2026-10-19: "mehr Bilder und Videos zeigen"): unter dem Act-Block
-       ein Bento-Raster (Desktop 1 grosse + 4 kleine Kacheln, mobil Wisch-Band mit Snap):
-       3 Loops + 2 Fotos aus Collab-Posts, die Nima zeigen, alle selbst gehostet + Nachtpur-Grading,
-       Credit je Kachel, Klick -> Original-Post. Loop-JS gilt jetzt fuer alle .act-loop.
-       KONZEPT-STAND: Collab-Material nur lokal, vor Pages-Deploy OK der Partner-Accounts einholen.
-  v20 — BEER-&-BEATS-BILDBAND (Sascha 2026-10-19: "Konzept passt, auf Beer & Beats uebertragen"):
-       gleiches Bento/Wischband wie Nima (v19) im Beer-&-Beats-Block, ersetzt den Mood-Platzhalter
-       (mood-02-fenster.svg). 3 Loops aus Reels von @beer.n.beats + 2 Fotos von beerbeats.at,
-       selbst gehostet + Nachtpur-Grading. Rechte: eigene VIBEON-Inhalte (Sascha), Deploy ok.
-  v21 — MIT DABEI: COFFEE CLUB (Sascha 2026-10-19). Coffee Club gehoert sechs Personen
-       (Katja, Stefan, Emil, Ramona, Sascha, Nima) und ist KEIN VIBEON-Format: eigener Bereich
-       NACH den Formaten, ohne Nummer, ohne "A format by VIBEON", Anker "Mit dabei".
-       Crew-Zeile nennt alle sechs gleichrangig, die VIBEON-Leute zuletzt.
-       Bildband: 3 Loops (Filme coffee-club.at Vol. 08/09) + 2 Fotos (Vol. 09/11), Nachtpur.
-  v22 — LAUNCH-VORBEREITUNG (Sascha 2026-10-19, Go-Live auf vibe-on.at via Plesk-Git):
-       Footer verlinkt impressum.html + datenschutz.html (Basis ady.at, absoluteDYNAMICS als
-       Medieninhaber, VIBEON GmbH in Gruendung). Instagram-Platzhalter raus. Kein Cookie-Banner
-       noetig: keine Cookies/Storage/Tracking/Fremd-Requests.
-  v23 — UX/UI-PASS (design-critique, Sascha 2026-10-19): seit die Liste weg ist, hatte der
-       erste Screen kein Ziel. (1) "Naechster Abend" im Hero: Ballhaus · Sa 21.11. -> springt
-       zum Ballhaus-Block. (2) Mobiler Ticket-Sticky (<=820px): erscheint nach dem Hero, blendet
-       im Ballhaus-Block und am Seitenende aus. Beide verschwinden nach dem Datum automatisch
-       (data-bis, JS). (3) Format-Index 01-04 unter "Formate" (Sprungleiste, Artikel-IDs).
-       (4) Schluss entdoppelt: Mail nur noch in der B2B-Zeile (+ Header), B2B-Zeile in
-       Grotesk statt Mini-Mono.
-  v24 — WISCHBAND MOBIL (Sascha 2026-10-19: "man sieht nicht, dass es mehr gibt"): Bildbaender
-       (<=820px) laufen rechts randlos aus, Kachel 66vw statt 72vw (naechste Kachel ~40% sichtbar),
-       Steuerleiste unter jedem Band: Pfeile zurueck/weiter (44px), Fortschrittslinie mit gelbem
-       Laeufer, Zaehler "1 / 5". Einmaliger Anstups beim ersten Sichtkontakt (nicht bei
-       reduced-motion). Steuerleiste per JS erzeugt (ohne JS bleibt das native Wischen).
-  v25 — MOTION MOBIL (web-animation-design / Emil Kowalski, Sascha 2026-10-19): Bewegung, die auf
-       den Finger antwortet statt weiterer Loops. (1) Touch-Feedback: alles Tippbare gibt nach
-       (scale .97, 120ms ease-out). (2) Formatname zuendet mobil einmal wie eine Leuchtroehre
-       (nur opacity), Ersatz fuer den Hover-Sperrungseffekt. (3) Wischband-Fokus: aktive Kachel
-       voll, Nachbarn scale .96 + gedimmt, scroll-gekoppelt. (4) Reveals mobil straffer (500ms
-       ease-out-quint, 16px); Dauerschleifen ausserhalb des Viewports pausieren (alle Geraete).
-  v26 — NIMA-EIGENBAND (Sascha 2026-10-19: "bei nima sehe ich mobile nicht die scrolling funktion"):
-       live fehlte das Wischband, weil das Collab-Band (v19) bis zum Partner-OK draussen bleibt.
-       Neues Band NUR aus eigenen Posts von @nima_lovario (Freigabe Nima): 4 Loops (Club, Schnee-
-       buehne Zuers, Al Porto, DJ-Set im Schnee) + 1 Portraet, selbst gehostet, Nachtpur-Grading.
-       Darf live. Das Collab-Band bleibt lokal darunter und wird beim Deploy weiter entfernt.
--->
+
 <html lang="de">
 <head>
   <meta charset="UTF-8">
@@ -205,25 +13,52 @@
   <meta property="og:locale" content="de_AT">
   <meta property="og:title" content="VIBEON – Eventformate mit eigener Identität | Bregenz &amp; Bodenseeraum">
   <meta property="og:description" content="VIBEON entwickelt Eventformate rund um Musik, Menschen und besondere Orte: Ballhaus, Beer &amp; Beats, Exodus und Secret X. Der Vibe ist an.">
-  <!-- TODO: og-image-v1.jpg erstellen (staerkstes Mood-Bild, Logo dezent) -->
-  <meta property="og:image" content="/assets/og-image-v1.jpg">
+  
+  <link rel="canonical" href="https://vibe-on.at/">
+  <meta property="og:url" content="https://vibe-on.at/">
+  <meta property="og:site_name" content="VIBEON">
+  <meta property="og:image" content="https://vibe-on.at/assets/og-image-v1.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VIBEON – Du weißt, wenn du dabei warst. Bregenz und Bodenseeraum.">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="assets/vibeon-icon-gelb.svg">
+  <link rel="icon" href="assets/favicon.ico" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Organization","@id":"https://vibe-on.at/#org","name":"VIBEON","url":"https://vibe-on.at/",
+     "logo":"https://vibe-on.at/assets/apple-touch-icon.png","email":"hallo@vibe-on.at",
+     "description":"Eventformate rund um Musik, Menschen und besondere Orte in Bregenz und im Bodenseeraum.",
+     "areaServed":"Bodenseeraum","address":{"@type":"PostalAddress","addressLocality":"Bregenz","addressCountry":"AT"}},
+    {"@type":"WebSite","@id":"https://vibe-on.at/#web","url":"https://vibe-on.at/","name":"VIBEON","inLanguage":"de-AT","publisher":{"@id":"https://vibe-on.at/#org"}},
+    {"@type":"Event","name":"Ballhaus Revival Night Vol. 01",
+     "description":"Das Ballhaus kommt zurück – mit Disco Funk, Disco House und Nima Lovario an den Decks und live an der Violine.",
+     "startDate":"2026-11-21T20:00:00+01:00","endDate":"2026-11-22T02:00:00+01:00",
+     "eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode",
+     "location":{"@type":"Place","name":"Gösser Bregenz","address":{"@type":"PostalAddress","streetAddress":"Anton-Schneider-Straße 1","postalCode":"6900","addressLocality":"Bregenz","addressCountry":"AT"}},
+     "image":"https://vibe-on.at/assets/og-image-v1.jpg",
+     "performer":{"@type":"Person","name":"Nima Lovario","sameAs":"https://www.instagram.com/nima_lovario/"},
+     "organizer":{"@id":"https://vibe-on.at/#org"},
+     "offers":{"@type":"Offer","name":"Early Bird","price":"15","priceCurrency":"EUR","url":"https://ballhaus-bregenz.at/","availability":"https://schema.org/InStock"},
+     "typicalAgeRange":"18-"}
+  ]}
+  </script>
 
   <style>
-    /* ============ Fonts (self-hosted, keine externen Requests) ============ */
+    
     @font-face{font-family:'Archivo Expanded';font-style:normal;font-weight:900;font-stretch:125%;font-display:swap;src:url('assets/fonts/archivo-expanded-black.woff2') format('woff2')}
     @font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 500;font-display:swap;src:url('assets/fonts/space-grotesk-var.woff2') format('woff2')}
     @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/ibm-plex-mono-400.woff2') format('woff2')}
     @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:500;font-display:swap;src:url('assets/fonts/ibm-plex-mono-500.woff2') format('woff2')}
 
-    /* ============ Tokens ============ */
     :root{
-      --schwarz:#0E0E0E;          /* Nachtschwarz, Basis */
-      --schwarz-warm:#141110;     /* warme Abstufung */
-      --schwarz-glut:#171310;     /* waermste Abstufung (Beer & Beats) */
-      --schwarz-tief:#070707;     /* tiefstes Schwarz (Secret X) */
-      --weiss:#F5F1EA;            /* Knochenweiss */
-      --gelb:#E9F42F;             /* Signalgelb — NUR auf Schwarz */
+      --schwarz:#0E0E0E;          
+      --schwarz-warm:#141110;     
+      --schwarz-glut:#171310;     
+      --schwarz-tief:#070707;     
+      --weiss:#F5F1EA;            
+      --gelb:#E9F42F;             
       --text-dim:rgba(245,241,234,.66);
       --hairline:rgba(245,241,234,.14);
       --hairline-gelb:rgba(233,244,47,.35);
@@ -231,7 +66,7 @@
       --grotesk:'Space Grotesk',system-ui,sans-serif;
       --mono:'IBM Plex Mono',ui-monospace,monospace;
       --rand:clamp(20px, 5vw, 96px);
-      --puls-dauer:4.6s;          /* der Herzschlag — bleibt aus F */
+      --puls-dauer:4.6s;          
     }
 
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -248,8 +83,6 @@
     }
     ::selection{background:var(--gelb);color:var(--schwarz)}
 
-    /* Ambient-Mulden — sehr schwaches Raumlicht, screen-blend (auf hellem Grund neutral).
-       Warmgrau-Abstufungen + genau EINE schwache Gelb-Mulde. Kein Farbverlaufs-Look: Alphas winzig. */
     body::before{
       content:"";
       position:fixed;
@@ -263,7 +96,6 @@
         radial-gradient(circle clamp(300px,38vw,560px) at 80% 6%, rgba(233,244,47,.05), transparent 72%);
     }
 
-    /* Grain — Schwarz-Abstufung, kein Farbverlauf */
     body::after{
       content:"";
       position:fixed;
@@ -274,7 +106,6 @@
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    /* ============ A11y-Grundlagen ============ */
     .sr-only{
       position:absolute;width:1px;height:1px;padding:0;margin:-1px;
       overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
@@ -290,7 +121,6 @@
     :focus-visible{outline:2px solid var(--gelb);outline-offset:4px}
     .hell :focus-visible, .hell:focus-visible{outline-color:var(--schwarz)}
 
-    /* ============ Typo-Bausteine ============ */
     h1,h2,.display{
       font-family:var(--archivo);
       font-weight:900;
@@ -300,13 +130,13 @@
       text-transform:uppercase;
       text-wrap:balance;
     }
-    /* v12: ausgewogene Umbrueche auch bei den poetischen Kurzzeilen */
+    
     .manifest p,.zwischen p{text-wrap:balance}
     .mono{font-family:var(--mono);font-weight:400;font-size:clamp(12px,.8vw,14px);letter-spacing:.08em;text-transform:uppercase}
     .mono-500{font-weight:500}
-    /* Tabellenziffern auf allen Mono-Meta-Ziffern (Zeiten, Daten) */
+    
     .mono,.mono-500,.ticker-teil,.format-nr,.format-anker,.mono-zeilen,.b2b,.schalt{font-variant-numeric:tabular-nums}
-    /* Formatnamen: IMMER Space Grotesk Light gesperrt, NIE Archivo */
+    
     .formatname{
       font-family:var(--grotesk);
       font-weight:300;
@@ -315,16 +145,12 @@
       line-height:1.15;
       transition:letter-spacing .55s cubic-bezier(.2,.7,.2,1);
     }
-    /* v14: Sperrung atmet bei Hover/Fokus des Format-Blocks (nur Desktop). Die .beat-Transition
-       wuerde die letter-spacing-Transition sonst ueberschreiben — deshalb hier zusammengefuehrt. */
+    
     .js .beat.formatname{transition:opacity .7s ease,transform .7s ease,letter-spacing .55s cubic-bezier(.2,.7,.2,1)}
     @media (pointer:fine){
       .format:hover .formatname,.format:focus-within .formatname{letter-spacing:.2em}
     }
 
-    /* ============ Buttons (nie gelb gefuellt) ============
-       Ghost-Warmlauf: Fuellung laeuft bei Hover/Focus von links ein — IMMER Knochenweiss
-       (im hellen Block Schwarz), NIEMALS Gelb. Text wechselt mit kurzem Delay. */
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:12px;
       min-height:52px;padding:14px 30px;
@@ -342,7 +168,7 @@
     }
     .btn:hover,.btn:focus-visible{color:var(--schwarz);transition-delay:.28s}
     .btn:hover::before,.btn:focus-visible::before{transform:scaleX(1)}
-    /* M3: Touch-Warmlauf — am Handy feuert die Fuellung beim Antippen */
+    
     .btn:active{color:var(--schwarz);transition-delay:0s;transform:scale(.97)}
     .btn:active::before{transform:scaleX(1);transition-duration:.25s}
     .btn--gelb{border-color:var(--gelb);color:var(--gelb)}
@@ -352,12 +178,11 @@
     .hell .btn::before{background:var(--schwarz)}
     .hell .btn:hover,.hell .btn:focus-visible{color:var(--weiss);border-color:var(--schwarz)}
 
-    /* ============ Puls-System ============ */
     @keyframes atmen{
       0%,100%{transform:scale(1);opacity:1}
       50%{transform:scale(1.35);opacity:.55}
     }
-    /* Sanfter Atem fuer grosse Elemente — dominiert die Copy nicht */
+    
     @keyframes atmenSanft{
       0%,100%{transform:scale(1);opacity:1}
       50%{transform:scale(1.15);opacity:.68}
@@ -367,7 +192,7 @@
       70%{opacity:.12}
       100%{transform:scale(1);opacity:0}
     }
-    /* Gegenlaeufigkeit: jede Puls-Instanz bekommt via --pv eine eigene (negative) Phase */
+    
     .puls{
       position:relative;width:12px;height:12px;flex:none;
     }
@@ -385,7 +210,6 @@
     }
     .puls::after{animation-delay:calc(var(--pv,0s) + var(--puls-dauer) / 2)}
 
-    /* Sektions-Anker: Puls-Dot + Mono-Label + Hairline */
     .anker{
       display:flex;align-items:center;gap:22px;
       margin-bottom:clamp(40px,6vh,72px);
@@ -394,7 +218,6 @@
     .anker .mono{color:var(--text-dim)}
     .anker h2{font-weight:500;font-size:clamp(12px,.85vw,14px);letter-spacing:.14em;line-height:1.4}
 
-    /* ============ Header ============ */
     header{
       position:relative;z-index:20;
       display:flex;align-items:center;justify-content:space-between;
@@ -407,8 +230,7 @@
       display:inline-flex;align-items:center;min-height:44px;
     }
     .wortmarke .on{color:var(--gelb)}
-    /* v14: das ON der Wortmarke schaltet den Vibe neu ein (Easter Egg, nur mit JS + Motion).
-       Der Flicker laeuft ueber --gelb selbst: alle Gelb-Akzente der Seite gehen aus und zuenden neu. */
+    
     .js .wortmarke .on{transition:text-shadow .3s ease}
     .js .wortmarke:hover .on,.js .wortmarke:focus-visible .on{text-shadow:0 0 14px rgba(233,244,47,.55)}
     @keyframes neuZuenden{
@@ -425,11 +247,9 @@
     }
     .header-link:hover{color:var(--gelb)}
 
-    /* ============ Layout-Grundgeruest ============ */
     section{position:relative}
     .innen{padding:clamp(84px,13vh,160px) var(--rand)}
 
-    /* ============ Hero ============ */
     .hero{min-height:calc(96svh - 90px);display:flex;flex-direction:column;justify-content:center;overflow:hidden}
     .hero-feld{position:relative;padding:clamp(30px,6vh,60px) var(--rand) clamp(60px,9vh,110px)}
     .hero h1{
@@ -456,7 +276,7 @@
       margin-top:clamp(32px,5vh,56px);
       padding-left:clamp(8px,2.5vw,44px);
     }
-    /* v13: unter 480px stapeln die CTAs in voller Breite */
+    
     @media (max-width:480px){
       .hero-ctas{flex-direction:column;align-items:stretch}
       .hero-ctas .btn--gelb{order:-1}
@@ -467,8 +287,6 @@
       margin-bottom:clamp(28px,5vh,52px);color:var(--text-dim);
     }
 
-    /* Hero-Load-Sequenz: Zeilen kommen nacheinander an. CSS-only, laeuft einmal.
-       Basiszustand = sichtbar (Keyframes definieren nur den Weg dorthin). */
     @keyframes ankommen{
       from{opacity:0;transform:translateY(26px)}
     }
@@ -484,9 +302,6 @@
     .lade--6{animation-delay:.7s}
     .lade--7{animation-delay:.84s}
 
-    /* Einschalt-Klimax v11: die gelben Akzente zuenden koordiniert (der Switch-Moment).
-       Vor der Zuendung dim/kalt, ~1.3s Flicker auf Gelb. Ohne JS via CSS trotzdem korrekt;
-       reduced-motion faellt auf den fertigen "an"-Zustand zurueck (animation:none). */
     @keyframes zuenden{
       0%,30%{opacity:.28;filter:saturate(.2) brightness(.6)}
       38%{opacity:1;filter:none}
@@ -499,9 +314,6 @@
       animation-delay:.9s;
     }
 
-    /* Schaltmoment: die Logo-Story (ON schaltet sich ein) als Mikro-Detail.
-       Basiszustand im HTML = "an" (fertig, ohne JS korrekt). JS setzt beim Laden
-       auf "aus" und schaltet nach ~1.5s zurueck — CSS macht die Animation. */
     .hero-status{
       position:relative;z-index:2;
       margin-top:clamp(24px,4vh,40px);
@@ -526,7 +338,6 @@
     .schalt[data-mode="aus"] .lbl .l-an{opacity:0}
     .schalt[data-mode="aus"] .lbl .l-aus{opacity:1}
 
-    /* Das grosse atmende Licht im Hero — blendet in der Load-Sequenz weich auf */
     .hero-licht{
       position:absolute;z-index:1;
       right:calc(-1 * clamp(60px,9vw,140px));
@@ -546,7 +357,7 @@
       animation:atmen var(--puls-dauer) ease-in-out infinite;
       animation-delay:-2.3s;
     }
-    /* Sonar-Sequenz bleibt gestaffelt, laeuft aber ab Load schon mittendrin (negative Phasen) */
+    
     .hero-licht .r1,.hero-licht .r2,.hero-licht .r3{
       inset:0;border:1px solid var(--gelb);
       animation:sonar calc(var(--puls-dauer) * 1.5) ease-out infinite;
@@ -556,9 +367,6 @@
     .hero-licht .r3{animation-delay:calc(var(--puls-dauer) * -.5)}
     .hero-licht .halt{inset:12%;border:1px solid var(--hairline-gelb)}
 
-    /* ============ Ticker ============
-       Gegenlaeufigkeit: Primzahl-Dauern (47s/61s) + negative Delays — die zwei Spuren
-       laufen in leicht unterschiedlichem Tempo und nie synchron. */
     .ticker{
       border-top:1px solid var(--hairline);
       border-bottom:1px solid var(--hairline);
@@ -591,7 +399,6 @@
       to{transform:translateX(-50%)}
     }
 
-    /* ============ Was ist VIBEON ============ */
     .about{background:var(--schwarz-warm)}
     .about-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,4vw,80px);align-items:start}
     .about-text p{
@@ -609,7 +416,7 @@
     }
     .about-text .steht .marke{font-family:var(--archivo);font-weight:900;font-stretch:125%;text-transform:uppercase;font-size:.9em}
     .about-text .steht .marke .on{color:var(--gelb)}
-    /* Wortwiederholung als vertikale Deko-Spalte */
+    
     .about-spalte{
       writing-mode:vertical-rl;
       font-family:var(--mono);font-size:clamp(12px,.9vw,15px);
@@ -621,7 +428,6 @@
     }
     .about-spalte b{font-weight:400;color:var(--gelb)}
 
-    /* ============ Formate ============ */
     .formate-kopf{padding:clamp(84px,13vh,150px) var(--rand) clamp(40px,6vh,72px)}
     .format{overflow:hidden}
     .format .innen{position:relative}
@@ -648,11 +454,6 @@
     }
     .format-inhalt{position:relative;z-index:1;max-width:640px}
 
-    /* Coffee Club in v2 entfernt (Format noch nicht freigegeben) — Styles siehe v1-Datei.
-       .hell-Utility (Buttons/Focus auf hellen Blaechen) bleibt fuer die Wiederaufnahme erhalten. */
-
-    /* Ballhaus (v18) — "Samt-Nacht": warmes Schwarz mit Bordeaux-Stich, Spiegelkugel als Kontur.
-       Gelb nur als ein Glitzerpunkt + Mono-Werte auf Schwarz, nie als Flaeche. */
     .format--ballhaus{
       background:
         radial-gradient(ellipse 70% 55% at 82% 18%, rgba(122,28,46,.22), transparent 70%),
@@ -696,7 +497,7 @@
       margin-top:12px;font-family:var(--mono);font-size:clamp(12px,.8vw,13px);
       letter-spacing:.04em;color:var(--text-dim);
     }
-    /* Bruecke Nima -> Ballhaus */
+    
     .act-live{
       margin-top:clamp(12px,1.8vh,18px);
       font-family:var(--mono);font-weight:500;font-size:clamp(12px,.85vw,14px);
@@ -704,10 +505,9 @@
     }
     .act-live .g{color:var(--gelb)}
 
-    /* Beer & Beats — nachtschwarz, dicht, Mono prominent */
     .format--beer{background:var(--schwarz-glut)}
     .format--beer .innen{padding-top:clamp(90px,13vh,160px);padding-bottom:clamp(90px,13vh,160px)}
-    /* F-Fix: das grosse & atmet jetzt sanft (1.15 statt 1.35) und dominiert die Copy nicht mehr */
+    
     .format--beer .format-anker{
       right:calc(-1 * clamp(10px,2vw,40px));bottom:calc(-1 * clamp(30px,6vh,80px));
       font-size:clamp(200px,34vw,560px);
@@ -729,7 +529,6 @@
     }
     .format--beer .mono-zeilen .g{color:var(--gelb)}
 
-    /* Exodus — clubnah, dunkler als Beer & Beats (INTERIMS-COPY bis Instagram-Destillat) */
     .format--exodus{background:#0d0b0a}
     .format--exodus .innen{padding-top:clamp(90px,13vh,160px);padding-bottom:clamp(90px,13vh,160px)}
     .format--exodus .format-anker{
@@ -738,7 +537,6 @@
       color:transparent;-webkit-text-stroke:1.5px rgba(245,241,234,.22);
     }
 
-    /* Secret X — tiefstes Schwarz, minimal, nur Typo, Gelb zuendet dosiert */
     .format--secret{background:var(--schwarz-tief);text-align:center}
     .format--secret .innen{
       padding-top:clamp(130px,20vh,240px);padding-bottom:clamp(130px,20vh,240px);
@@ -763,8 +561,7 @@
     .format--secret h3{margin-top:0}
     .format--secret .format-copy{margin-left:auto;margin-right:auto}
     .format--secret .format-copy .gelb{color:var(--gelb)}
-    /* Redaction-Signal v11: die verschluesselte Location als Kernbild von Secret X.
-       Kein Gelb, keine echte Info — ein zensierter Balken. Desktop-Hover: kurzer "Fast-Reveal"-Scan. */
+    
     .geheim{
       margin-top:clamp(28px,4.5vh,48px);
       display:inline-flex;align-items:center;gap:.7em;flex-wrap:wrap;justify-content:center;
@@ -782,10 +579,10 @@
       background:linear-gradient(90deg,transparent,rgba(233,244,47,.16),transparent);
       transform:translateX(-130%);
     }
-    /* Decrypt-Shimmer v12: laeuft, sobald der Balken im Blick ist (alle Geraete, langsam/faint) */
+    
     .js .geheim.is-in .balken::after{animation:scan 4.6s ease-in-out infinite}
     @keyframes scan{0%,8%{transform:translateX(-130%)}55%,100%{transform:translateX(330%)}}
-    /* v14: der Balken ist antippbar — ein Decrypt-Versuch, die Antwort ist der Tag X (v15). */
+    
     .geheim-knopf{
       display:inline-flex;align-items:center;gap:.7em;min-height:44px;padding:0 6px;
       background:transparent;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;
@@ -803,14 +600,6 @@
     }
     .geheim.antwort .geheim-antwort{opacity:1;transform:none}
 
-    /* Mood/Gallery in v8 entfernt (Kuenstler-Bild-Block raus, Sascha 2026-07-04).
-       Wiederaufnahme mit ECHTEN Eventfotos nach Event 1 — Referenz: v7-Datei.
-       .lichtan + .format-bild bleiben (Beer-&-Beats-Fenster). */
-
-    /* ============ Live-Act (Nima Lovario, v10) ============
-       Eigener Kuenstler-Block — KEIN Format (keine Nummer, kein "A format by").
-       Name in Space Grotesk (nicht Archivo/Logo, nicht gesperrte Formatname-Schrift).
-       Foto markengerecht: entsaettigtes Portrait folgt (Bringschuld), aktuell Platzhalter-SVG. */
     .act{background:#12100E}
     .act .innen{padding-top:clamp(84px,13vh,150px);padding-bottom:clamp(84px,13vh,150px)}
     .act-grid{
@@ -823,16 +612,16 @@
       border:1px solid var(--hairline);background:#0a0908;
     }
     .act-foto svg{display:block;width:100%;height:100%}
-    /* v17: echter Loop statt Platzhalter — Poster steht sofort, Video nur im Blick */
+    
     .act-link{display:block;width:100%;height:100%}
     .act-loop{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 35%;background:#0a0908}
     .act-foto::after{
       content:"";position:absolute;inset:auto 0 0 0;height:34%;pointer-events:none;
       background:linear-gradient(to top,rgba(10,9,8,.85),transparent);
     }
-    /* v19: Bildband (Bento) — Desktop 1 gross + 4 klein, mobil Wisch-Band */
+    
     .act-band{
-      position:relative;z-index:1; /* v20: ueber dem Format-Anker (&) */
+      position:relative;z-index:1; 
       margin-top:clamp(40px,7vh,84px);
       display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,1vw,14px);
     }
@@ -860,11 +649,11 @@
       }
       .act-band::-webkit-scrollbar{display:none}
       .act-kachel,.act-kachel--gross{flex:0 0 min(66vw,300px);aspect-ratio:4/5;scroll-snap-align:start}
-      /* v24: rechts randlos — die naechste Kachel laeuft sichtbar aus dem Bild */
+      
       .act-band{margin-right:calc(var(--rand) * -1)}
       .act-band::after{content:"";flex:0 0 calc(var(--rand) - 8px)}
     }
-    /* v24: Steuerleiste unter dem Wischband (nur mobil, per JS erzeugt) */
+    
     .band-steuer{display:none}
     @media (max-width:820px){
       .band-steuer{display:flex;align-items:center;gap:14px;margin-top:14px;position:relative;z-index:1}
@@ -887,8 +676,7 @@
       position:absolute;left:14px;bottom:12px;z-index:1;margin:0;
       font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);
     }
-    /* v13: Kontur-Initiale in der Anker-Sprache der Formate (&, ->, X) — Platzhalter liest sich
-       als gestaltetes Element statt als leere Box; verschwindet mit dem echten Portrait. */
+    
     .act-kontur{
       position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);
       font-family:var(--archivo);font-weight:900;font-stretch:125%;
@@ -913,7 +701,7 @@
       letter-spacing:.14em;text-transform:uppercase;color:var(--gelb);
     }
     .act-cta{margin-top:clamp(26px,4vh,40px)}
-    /* v21: Mit dabei — Coffee Club (kein VIBEON-Format) */
+    
     .act--club{background:var(--schwarz-glut,#14110F);border-top:1px solid var(--hairline)}
     .club-text{max-width:62ch}
     .club-crew{
@@ -926,7 +714,6 @@
       .act-foto{max-width:320px}
     }
 
-    /* ============ Content-Elemente v6 (Konzept-Reflexion) ============ */
     .zwischen{padding:clamp(70px,11vh,140px) var(--rand)}
     .zwischen p{
       margin:0;font-weight:300;
@@ -952,7 +739,7 @@
       letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);
       text-align:center;
     }
-    /* v13: ausgewogener Umbruch (kein einzelnes "Leerstand" in Zeile 3), doppelte Naht zum Ticker weg */
+    
     .orte-band p{max-width:44ch;margin-inline:auto;text-wrap:balance}
     .orte-band + .ticker{border-top:0}
     .manifest{padding:clamp(80px,13vh,170px) var(--rand)}
@@ -968,9 +755,8 @@
       letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);
     }
 
-    /* ============ Bildwelt + Motion v7 (mobile-first) ============ */
     a,button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-    /* M1: Licht-an-Reveal — das Bild liegt im Dunkeln und schaltet sich ein (nur mit JS) */
+    
     .js .lichtan{position:relative}
     .js .lichtan::after{
       content:"";position:absolute;inset:0;background:var(--schwarz);
@@ -978,13 +764,13 @@
       transition:opacity 1.3s ease .15s;
     }
     .js .lichtan.is-in::after{opacity:0}
-    /* M4: Bild-Atmen — Format-Bild driftet nach dem Reveal im Puls-Rhythmus */
+    
     @keyframes bildAtmen{from{transform:scale(1)}to{transform:scale(1.035)}}
-    /* B2: Format-Bild (Beer & Beats — Blick in den Abend) */
+    
     .format-bild{margin:clamp(24px,4vh,36px) 0 0;max-width:min(380px,86%);overflow:hidden}
     .format-bild img{display:block;width:100%;height:auto}
     .js .format-bild.is-in img{animation:bildAtmen calc(var(--puls-dauer) * 4.3) ease-in-out infinite alternate;animation-delay:-3s;transform-origin:64% 36%}
-    /* M2: Scroll-Licht — die mobile Antwort auf den Cursor-Spotlight */
+    
     .scroll-licht{
       display:none;
       position:fixed;left:0;top:0;z-index:40;
@@ -999,9 +785,7 @@
     @media (pointer:coarse) and (prefers-reduced-motion:no-preference){
       .scroll-licht{display:block}
     }
-    /* Licht-Leitmotiv v11: duennes Filament links, laedt sich beim Scrollen mit Gelb auf
-       (der "Strom" durch die Seite). Fix, 1.5px, kein Layout-Einfluss, kein H-Scroll.
-       JS setzt --fill; ohne JS bleibt nur die dezente Spur (fill 0). */
+    
     .strom{
       position:fixed;left:max(6px,calc(var(--rand) * .22));top:0;bottom:0;z-index:16;
       width:1.5px;pointer-events:none;
@@ -1017,12 +801,11 @@
       margin-left:-3px;border-radius:50%;background:var(--gelb);
       box-shadow:0 0 10px 2px rgba(233,244,47,.55);
     }
-    /* B1 mobil: Format-Bild volle Inhaltsbreite */
+    
     @media (max-width:820px){
       .format-bild{max-width:100%}
     }
 
-    /* ============ B2B-Zeile ============ */
     .b2b{
       padding:clamp(28px,4vh,40px) var(--rand);
       border-top:1px solid var(--hairline);
@@ -1037,7 +820,6 @@
     }
     .b2b a:hover{color:var(--gelb);text-decoration-color:var(--gelb)}
 
-    /* ============ Footer ============ */
     footer{
       border-top:1px solid var(--hairline);
       padding:clamp(28px,5vh,48px) var(--rand) clamp(40px,6vh,60px);
@@ -1052,8 +834,6 @@
     }
     footer nav a:hover{color:var(--gelb)}
 
-    /* ============ Beat-System: Scroll-Reveals in ruhigen Stufen (nur mit JS aktiv) ============
-       .d1-.d4 staffeln die Stufen; will-change nur solange das Element noch nicht sichtbar ist. */
     .js .beat{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
     .js .beat:not(.is-in){will-change:opacity,transform}
     .js .beat.is-in{opacity:1;transform:none}
@@ -1062,9 +842,6 @@
     .js .beat.d3{transition-delay:.34s}
     .js .beat.d4{transition-delay:.48s}
 
-    /* ============ Cursor-Spotlight (nur Desktop, pointer:fine) ============
-       Die Marke als Licht, das auf den Besucher reagiert. Sehr schwach, screen-blend —
-       auf hellen Blöcken dadurch neutral (aktuell keine hellen Blöcke; Absicherung siehe v1). */
     .spot{
       display:none;
       position:fixed;left:0;top:0;z-index:40;
@@ -1081,8 +858,6 @@
       .spot{display:block}
     }
 
-
-    /* ============ Responsive ============ */
     @media (max-width:820px){
       .about-grid{grid-template-columns:1fr}
       .about-spalte{display:none}
@@ -1095,8 +870,6 @@
       .format--ballhaus .format-anker{width:min(78vw,340px);right:-22vw;top:2vh}
     }
 
-    /* ============ v23: Naechster Abend (Hero) ============
-       Ticket-Streifen unter dem CTA. Gelb nur als Schrift/Hairline auf Schwarz. */
     .naechster{
       position:relative;z-index:2;
       display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 18px;
@@ -1117,7 +890,6 @@
       .naechster .n-pfeil{margin-left:auto}
     }
 
-    /* ============ v23: Format-Index ============ */
     .format-index{margin-top:clamp(22px,3.5vh,36px)}
     .format-index ol{list-style:none;display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--hairline)}
     .format-index li{flex:1 1 0;min-width:max-content;border-bottom:1px solid var(--hairline)}
@@ -1135,7 +907,6 @@
       .format-index li{min-width:0}
     }
 
-    /* ============ v23: Mobiler Ticket-Sticky (nur <=820px, nur mit JS) ============ */
     .ticket-sticky{display:none}
     @media (max-width:820px){
       .js .ticket-sticky{
@@ -1155,11 +926,8 @@
     }
     [data-bis][hidden]{display:none !important}
 
-    /* ============ v25: Motion mobil ============ */
-    /* Loops ausserhalb des Viewports pausieren (JS setzt .ruht) — fluessiger Scroll, Akku */
     .ruht,.ruht *,.ruht *::before,.ruht *::after{animation-play-state:paused !important}
 
-    /* (1) Touch-Feedback: Druck gibt nach, Loslassen federt schnell zurueck */
     .format-index a,.naechster,.band-pfeil,.ticket-sticky .ts-cta,.header-link{
       transition-property:color,border-color,opacity,transform;
       transition-duration:.25s,.25s,.25s,.12s;
@@ -1172,7 +940,6 @@
       .act-kachel:active{transform:scale(.98)}
     }
 
-    /* (2) Formatname zuendet mobil einmal (nur opacity; transform kommt weiter vom Beat) */
     @keyframes roehre{
       0%{opacity:.12}
       12%{opacity:1}
@@ -1185,7 +952,6 @@
       .js .beat.formatname.is-in{animation:roehre .9s steps(1,end) .25s both}
     }
 
-    /* (3) Wischband-Fokus: JS setzt --f (0 = aktiv, 1 = eine Kachel daneben) */
     @media (max-width:820px) and (prefers-reduced-motion:no-preference){
       .js .act-band .act-kachel{
         transform:scale(calc(1 - var(--f,0) * .04));
@@ -1195,7 +961,6 @@
       .js .act-band .act-kachel:active{transform:scale(calc(.98 - var(--f,0) * .04))}
     }
 
-    /* (4) Reveals mobil straffer: kuerzer, kuerzerer Weg, ease-out-quint */
     @media (max-width:820px){
       .js .beat,.js .beat.formatname{
         transform:translateY(16px);
@@ -1209,25 +974,24 @@
       .js .beat.d4{transition-delay:.28s}
     }
 
-    /* ============ prefers-reduced-motion: alles steht ============ */
     @media (prefers-reduced-motion: reduce){
       html{scroll-behavior:auto}
       *,*::before,*::after{animation:none !important;transition:none !important}
       .js .beat{opacity:1;transform:none}
-      /* Load-Sequenz aus: Basiszustand ist der fertige Zustand */
+      
       .lade,.hero-licht{opacity:1;transform:none}
       .hero-licht{transform:translateY(-50%)}
-      /* Ticker: statisch eine Zeile, kein Lauf */
+      
       .ticker-spur{animation:none;transform:none}
-      /* Puls-Ringe ohne Animation ausblenden, Kerne bleiben als ruhiges Licht */
+      
       .puls::before,.puls::after,
       .hero-licht .r1,.hero-licht .r2,.hero-licht .r3{display:none}
-      /* Spotlight + Scroll-Licht aus */
+      
       .spot{display:none !important}
       .scroll-licht{display:none !important}
-      /* Licht-an-Overlays sofort offen (Blanket-transition:none wuerde sie sonst festhalten) */
+      
       .js .lichtan::after{opacity:0}
-      /* v14: Sperrung springt nicht (ohne Transition waere der Hover-Wechsel ein Ruck) */
+      
       .format:hover .formatname,.format:focus-within .formatname{letter-spacing:.14em}
     }
     @media (prefers-reduced-motion: reduce) and (max-width:820px){
@@ -1240,14 +1004,13 @@
   <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 
   <header>
-    <!-- Wortmarke als Live-Typografie (Logo-SVGs defekt, siehe tech-notizen.md) -->
+    
     <a class="wortmarke" href="#inhalt" aria-label="VIBEON – zum Seitenanfang">VIBE<span class="on">ON</span></a>
     <a class="header-link" href="mailto:hallo@vibe-on.at"><span class="puls" style="--pv:-.7s" aria-hidden="true"><i></i></span>Kontakt</a>
   </header>
 
   <main id="inhalt">
 
-    <!-- ============ 1 · Hero ============ -->
     <section class="hero" aria-labelledby="hero-h">
       <div class="hero-feld">
         <div class="hero-licht" aria-hidden="true">
@@ -1260,13 +1023,13 @@
         <div class="hero-ctas lade lade--6">
           <a class="btn" href="#formate">Formate entdecken</a>
         </div>
-        <!-- v23: Naechster Abend — verschwindet nach dem Datum (data-bis, JS) -->
+        
         <a class="naechster lade lade--6" href="#ballhaus" data-bis="2026-11-22">
           <span class="n-label mono">Nächster Abend</span>
           <span class="n-was">Ballhaus · <span class="g">Sa 21.11.</span> · Gösser Bregenz</span>
           <span class="n-pfeil" aria-hidden="true">→</span>
         </a>
-        <!-- Schaltmoment: startet aus, zuendet nach ~1.5s — ohne JS steht er fertig auf "an" -->
+        
         <p class="hero-status mono lade lade--7">
           <span class="sr-only">Der Vibe ist an.</span>
           <span class="schalt" id="schalt" data-mode="an" aria-hidden="true">
@@ -1280,7 +1043,6 @@
       </div>
     </section>
 
-    <!-- ============ Ticker 1 ============ -->
     <section class="ticker ticker--gelb" aria-label="Laufzeile" tabindex="0">
       <p class="sr-only">Der Vibe ist an. Bregenz. Ballhaus. Beer &amp; Beats. Exodus. Secret X.</p>
       <div class="ticker-spur" aria-hidden="true">
@@ -1289,7 +1051,6 @@
       </div>
     </section>
 
-    <!-- ============ 2 · Was ist VIBEON ============ -->
     <section class="about" aria-labelledby="about-h">
       <div class="innen">
         <div class="anker">
@@ -1299,11 +1060,11 @@
         </div>
         <div class="about-grid">
           <div class="about-text">
-            <!-- Copy-Update v2 (Sascha, 2026-07-03): Eroeffnungssatz ersetzt -->
+            
             <p class="beat d1">Es gibt Abende, die <span class="gelb">bleiben</span>.<br>
             Nicht wie eine Veranstaltung – wie ein Moment, der genau so <span class="gelb">passieren musste.</span></p>
             <p class="steht beat d2">Dafür steht <span class="marke">VIBE<span class="on">ON</span></span>: Eventformate rund um Musik, Menschen und Orte, die man sonst nicht erlebt.</p>
-            <!-- Content-Element v6: Gastgeber-Signal (Konzept Abschnitt 11, ohne Namen) -->
+            
             <p class="steht beat d3">Hinter VIBEON stehen Gastgeber, keine Veranstalter.</p>
           </div>
           <div class="about-spalte" aria-hidden="true">VIBE<b>ON</b> VIBE<b>ON</b> VIBE<b>ON</b> VIBE<b>ON</b> VIBE<b>ON</b></div>
@@ -1311,14 +1072,12 @@
       </div>
     </section>
 
-    <!-- ============ Content-Element v6: Zwischen-Band (Konzept Abschnitt 2, woertlich) ============ -->
     <section class="zwischen" aria-label="Wofür VIBEON steht">
       <p class="beat d1"><span class="u">Zwischen</span> Wohnzimmer <span class="u">und</span> Club.</p>
       <p class="beat d2"><span class="u">Zwischen</span> Galerie <span class="u">und</span> Gastronomie.</p>
       <p class="beat d3"><span class="u">Zwischen</span> Kultur <span class="u">und</span> Lifestyle.</p>
     </section>
 
-    <!-- ============ 3 · Formate ============ -->
     <section id="formate" aria-labelledby="formate-h">
       <div class="formate-kopf">
         <div class="anker" style="margin-bottom:0">
@@ -1326,7 +1085,7 @@
           <h2 class="mono" id="formate-h">Formate</h2>
           <span class="linie" aria-hidden="true"></span>
         </div>
-        <!-- v23: Format-Index — Sprungleiste fuer den langen Formate-Bereich -->
+        
         <nav class="format-index" aria-label="Formate">
           <ol>
             <li><a href="#ballhaus"><span class="fi-nr">01</span>Ballhaus</a></li>
@@ -1337,11 +1096,6 @@
         </nav>
       </div>
 
-      <!-- Coffee Club in v2 entfernt: Format noch nicht freigegeben (Sascha, 2026-07-03).
-           TODO: nach Freigabe wieder aufnehmen — Markup/Styles als Referenz in der v1-Datei. -->
-
-      <!-- Ballhaus (v18): Revival Night Vol. 01 — Fakten von ballhaus-bregenz.at (2026-10-19).
-           Samt-Nacht: warmes Schwarz mit Bordeaux-Stich, Spiegelkugel als Kontur-Anker. -->
       <article id="ballhaus" class="format format--ballhaus" aria-labelledby="f-ballhaus">
         <div class="innen">
           <div class="format-anker" aria-hidden="true">
@@ -1383,10 +1137,6 @@
         </div>
       </article>
 
-      <!-- ============ Live-Act: Nima Lovario (v10) ============
-           Eigener Act-Block (KEIN Format, keine Nummer). v18: hochgezogen direkt unter Ballhaus. DJ Live-Act & Violinist aus Bregenz.
-           Copy faktenbasiert aus verifizierter Instagram-Bio (@nima_lovario, 2026-07-04).
-           Foto = Platzhalter-SVG; entsaettigtes Portrait folgt (Bringschuld Sascha). -->
       <section class="act" aria-labelledby="act-h">
         <div class="innen">
           <div class="anker">
@@ -1395,7 +1145,7 @@
             <span class="linie" aria-hidden="true"></span>
           </div>
           <div class="act-grid">
-            <!-- v17: selbst gehosteter Loop aus Nimas eigenem Reel DavSsfOMv18 (Freigabe Nima 2026-10-19) -->
+            
             <figure class="act-foto lichtan beat d1">
               <a class="act-link" href="https://www.instagram.com/reel/DavSsfOMv18/" target="_blank" rel="noopener" aria-label="Video von Nima Lovario auf Instagram ansehen">
                 <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/nima-poster.jpg" data-src="assets/media/nima-loop.mp4" aria-hidden="true"></video>
@@ -1411,25 +1161,25 @@
               <p class="act-cta beat d4"><a class="btn" href="https://www.instagram.com/nima_lovario/" target="_blank" rel="noopener">@nima_lovario auf Instagram</a></p>
             </div>
           </div>
-          <!-- v26: Eigenband — nur eigene Posts von @nima_lovario (Freigabe Nima), darf live -->
-          <div class="act-band beat d2" role="list" aria-label="Nima Lovario – eigene Bilder und Videos">
-          <a class="act-kachel act-kachel--gross" role="listitem" href="https://www.instagram.com/p/DJhhp2piuvo/" target="_blank" rel="noopener" aria-label="Nima Lovario mit Violine am DJ-Pult im Club – Beitrag auf Instagram">
+          
+          <div class="act-band beat d2" aria-label="Nima Lovario – eigene Bilder und Videos">
+          <a class="act-kachel act-kachel--gross" href="https://www.instagram.com/p/DJhhp2piuvo/" target="_blank" rel="noopener" aria-label="Nima Lovario mit Violine am DJ-Pult im Club – Beitrag auf Instagram">
             <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/nima-eigen-club.jpg" data-src="assets/media/nima-eigen-club.mp4" aria-hidden="true"></video>
             <span class="act-credit mono">@nima_lovario</span>
           </a>
-          <a class="act-kachel" role="listitem" href="https://www.instagram.com/p/DHwhg6miRiX/" target="_blank" rel="noopener" aria-label="Nima Lovario spielt Violine auf einer Schneebühne – Beitrag auf Instagram">
+          <a class="act-kachel" href="https://www.instagram.com/p/DHwhg6miRiX/" target="_blank" rel="noopener" aria-label="Nima Lovario spielt Violine auf einer Schneebühne – Beitrag auf Instagram">
             <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/nima-eigen-buehne.jpg" data-src="assets/media/nima-eigen-buehne.mp4" aria-hidden="true"></video>
             <span class="act-credit mono">@nima_lovario</span>
           </a>
-          <a class="act-kachel" role="listitem" href="https://www.instagram.com/p/DLk7j7MCKai/" target="_blank" rel="noopener" aria-label="Nima Lovario spielt Violine im Al Porto – Beitrag auf Instagram">
+          <a class="act-kachel" href="https://www.instagram.com/p/DLk7j7MCKai/" target="_blank" rel="noopener" aria-label="Nima Lovario spielt Violine im Al Porto – Beitrag auf Instagram">
             <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/nima-eigen-porto.jpg" data-src="assets/media/nima-eigen-porto.mp4" aria-hidden="true"></video>
             <span class="act-credit mono">@nima_lovario</span>
           </a>
-          <a class="act-kachel" role="listitem" href="https://www.instagram.com/p/DHikkKTCWKW/" target="_blank" rel="noopener" aria-label="Nima Lovario legt im Schnee auf – Beitrag auf Instagram">
+          <a class="act-kachel" href="https://www.instagram.com/p/DHikkKTCWKW/" target="_blank" rel="noopener" aria-label="Nima Lovario legt im Schnee auf – Beitrag auf Instagram">
             <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/nima-eigen-dj.jpg" data-src="assets/media/nima-eigen-dj.mp4" aria-hidden="true"></video>
             <span class="act-credit mono">@nima_lovario</span>
           </a>
-          <a class="act-kachel" role="listitem" href="https://www.instagram.com/p/DKjaNuvibIm/" target="_blank" rel="noopener" aria-label="Porträt von Nima Lovario mit E-Violine – Beitrag auf Instagram">
+          <a class="act-kachel" href="https://www.instagram.com/p/DKjaNuvibIm/" target="_blank" rel="noopener" aria-label="Porträt von Nima Lovario mit E-Violine – Beitrag auf Instagram">
             <img src="assets/media/nima-eigen-portrait.jpg" alt="" width="600" height="750" loading="lazy" decoding="async">
             <span class="act-credit mono">@nima_lovario</span>
           </a>
@@ -1437,14 +1187,13 @@
         </div>
       </section>
 
-      <!-- Beer & Beats: nachtschwarz, dicht, Mono prominent -->
       <article id="beer-beats" class="format format--beer" aria-labelledby="f-beer">
         <div class="innen">
           <div class="format-anker" aria-hidden="true">&amp;</div>
           <div class="format-inhalt">
             <p class="format-nr mono">Format 02</p>
             <h3 class="formatname beat d1" id="f-beer" style="font-size:clamp(28px,4vw,58px)">Beer &amp; Beats</h3>
-            <!-- Fakten von der Live-Seite beerbeats.at (v4) -->
+            
             <p class="format-meta beat d2">Donnerstags · 18:00 bis offen · Bregenz</p>
             <p class="format-copy beat d2"><span class="laut">Afterwork ohne Programm.</span> Gute Musik, kaltes Bier, feine Leute. Fühlt sich an wie eine House-Party im erweiterten Freundeskreis – weil es genau das ist.</p>
             <div class="mono-zeilen beat d3" aria-hidden="true">
@@ -1458,25 +1207,25 @@
             <p class="format-cta beat d4"><a class="btn" href="https://beerbeats.at" target="_blank" rel="noopener">Mehr erfahren</a></p>
             <p class="format-by beat d4">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
           </div>
-          <!-- v20: Bildband Beer & Beats — eigenes Material (@beer.n.beats, beerbeats.at), selbst gehostet -->
-          <div class="act-band beat d2" role="list" aria-label="Beer &amp; Beats – Bilder und Videos">
-            <a class="act-kachel act-kachel--gross" role="listitem" href="https://www.instagram.com/reel/DeJZoLosAde/" target="_blank" rel="noopener" aria-label="Volles Zelt beim Beer &amp; Beats Afterwork – Video von @beer.n.beats auf Instagram">
+          
+          <div class="act-band beat d2" aria-label="Beer &amp; Beats – Bilder und Videos">
+            <a class="act-kachel act-kachel--gross" href="https://www.instagram.com/reel/DeJZoLosAde/" target="_blank" rel="noopener" aria-label="Volles Zelt beim Beer &amp; Beats Afterwork – Video von @beer.n.beats auf Instagram">
               <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/bb-crowd.jpg" data-src="assets/media/bb-crowd.mp4" aria-hidden="true"></video>
               <span class="act-credit mono">@beer.n.beats</span>
             </a>
-            <a class="act-kachel" role="listitem" href="https://www.instagram.com/reel/DeJZoLosAde/" target="_blank" rel="noopener" aria-label="Gäste stoßen mit Bier an – Video von @beer.n.beats auf Instagram">
+            <a class="act-kachel" href="https://www.instagram.com/reel/DeJZoLosAde/" target="_blank" rel="noopener" aria-label="Gäste stoßen mit Bier an – Video von @beer.n.beats auf Instagram">
               <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/bb-prost.jpg" data-src="assets/media/bb-prost.mp4" aria-hidden="true"></video>
               <span class="act-credit mono">@beer.n.beats</span>
             </a>
-            <a class="act-kachel" role="listitem" href="https://www.instagram.com/reel/DeMh_ois4ng/" target="_blank" rel="noopener" aria-label="Abendstimmung im Gastgarten beim Beer &amp; Beats – Video von @beer.n.beats auf Instagram">
+            <a class="act-kachel" href="https://www.instagram.com/reel/DeMh_ois4ng/" target="_blank" rel="noopener" aria-label="Abendstimmung im Gastgarten beim Beer &amp; Beats – Video von @beer.n.beats auf Instagram">
               <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/bb-abend.jpg" data-src="assets/media/bb-abend.mp4" aria-hidden="true"></video>
               <span class="act-credit mono">@beer.n.beats</span>
             </a>
-            <a class="act-kachel" role="listitem" href="https://beerbeats.at" target="_blank" rel="noopener" aria-label="Lachende Gäste beim Gruppen-Selfie – beerbeats.at">
+            <a class="act-kachel" href="https://beerbeats.at" target="_blank" rel="noopener" aria-label="Lachende Gäste beim Gruppen-Selfie – beerbeats.at">
               <img src="assets/media/bb-selfie.jpg" alt="" width="600" height="750" loading="lazy" decoding="async">
               <span class="act-credit mono">Foto: beerbeats.at</span>
             </a>
-            <a class="act-kachel" role="listitem" href="https://beerbeats.at" target="_blank" rel="noopener" aria-label="Gäste beim Beer &amp; Beats im Club – beerbeats.at">
+            <a class="act-kachel" href="https://beerbeats.at" target="_blank" rel="noopener" aria-label="Gäste beim Beer &amp; Beats im Club – beerbeats.at">
               <img src="assets/media/bb-club.jpg" alt="" width="600" height="750" loading="lazy" decoding="async">
               <span class="act-credit mono">Foto: beerbeats.at</span>
             </a>
@@ -1484,17 +1233,15 @@
         </div>
       </article>
 
-      <!-- Exodus: clubnah, dunkel — INTERIMS-COPY bis Instagram-Destillat (Screenshots Sascha) -->
       <article id="exodus" class="format format--exodus" aria-labelledby="f-exodus">
         <div class="innen">
           <div class="format-anker" aria-hidden="true">&#8594;</div>
           <div class="format-inhalt">
             <p class="format-nr mono">Format 03</p>
             <h3 class="formatname beat d1" id="f-exodus" style="font-size:clamp(28px,4vw,58px)">Exodus</h3>
-            <!-- TODO: Meta-Zeile (Rhythmus · Zeit) nach Instagram-Destillat ergaenzen -->
+            
             <p class="format-meta beat d2">@exodus.aiff · Bregenz</p>
-            <!-- TODO INTERIMS-COPY (nicht freigegeben): ersetzen, sobald das Destillat aus dem
-                 Instagram-Account vorliegt — Sascha liefert Screenshots (Bio + 2-3 Posts) -->
+            
             <p class="format-copy beat d2"><span class="laut">Die Nacht, konzentriert.</span> Elektronische Musik, dunkle Räume, keine Ablenkung.</p>
             <p class="format-cta beat d4"><a class="btn" href="https://www.instagram.com/exodus.aiff" target="_blank" rel="noopener">Mehr erfahren</a></p>
             <p class="format-by beat d4">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
@@ -1502,7 +1249,6 @@
         </div>
       </article>
 
-      <!-- Secret X: tiefstes Schwarz, nur Typo, Gelb zuendet dosiert -->
       <article id="secret-x" class="format format--secret" aria-labelledby="f-secret">
         <div class="innen">
           <div class="format-inhalt">
@@ -1510,7 +1256,7 @@
             <p class="format-nr mono">Format 04</p>
             <h3 class="formatname beat d1" id="f-secret" style="font-size:clamp(28px,4vw,58px)">Secret X</h3>
             <p class="format-copy beat d2"><span class="laut">Datum steht. <span class="gelb">Location nicht.</span></span> Wo es stattfindet, erfährst du am <span class="gelb">Tag X</span>.</p>
-            <!-- Redaction-Signal v11: verschluesselte Location als Kernbild -->
+            
             <p class="geheim beat d3"><button class="geheim-knopf" type="button" id="geheim-knopf" aria-label="Wo? Location aufdecken"><span aria-hidden="true">Wo?</span><span class="balken" aria-hidden="true"></span></button><span class="geheim-antwort" id="geheim-antwort" role="status" aria-live="polite"></span></p>
             <p class="format-by beat d4">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
           </div>
@@ -1518,9 +1264,6 @@
       </article>
     </section>
 
-    <!-- ============ v21: Mit dabei — Coffee Club ============
-         KEIN VIBEON-Format (gehoert sechs Personen). Bewusst ausserhalb von #formate, ohne Nummer,
-         ohne "A format by VIBEON". Fakten von coffee-club.at (2026-10-19). -->
     <section class="act act--club" aria-labelledby="club-h">
       <div class="innen">
         <div class="anker">
@@ -1536,24 +1279,24 @@
           <p class="club-crew beat d3">Coffee Club ist kein VIBEON-Format. Er gehört sechs Leuten: Katja, Stefan, Emil, Ramona, Sascha und Nima. Zwei davon kennst du von hier.</p>
           <p class="act-cta beat d4"><a class="btn" href="https://coffee-club.at/" target="_blank" rel="noopener">coffee-club.at</a> <a class="btn" href="https://www.instagram.com/coffeeclub.bregenz/" target="_blank" rel="noopener">@coffeeclub.bregenz</a></p>
         </div>
-        <div class="act-band beat d2" role="list" aria-label="Coffee Club – Bilder und Videos">
-            <a class="act-kachel act-kachel--gross" role="listitem" href="https://coffee-club.at/" target="_blank" rel="noopener" aria-label="Volle Tanzfläche unter Lampions – Archiv auf coffee-club.at">
+        <div class="act-band beat d2" aria-label="Coffee Club – Bilder und Videos">
+            <a class="act-kachel act-kachel--gross" href="https://coffee-club.at/" target="_blank" rel="noopener" aria-label="Volle Tanzfläche unter Lampions – Archiv auf coffee-club.at">
               <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/cc-floor.jpg" data-src="assets/media/cc-floor.mp4" aria-hidden="true"></video>
               <span class="act-credit mono">Film: coffee-club.at</span>
             </a>
-            <a class="act-kachel" role="listitem" href="https://coffee-club.at/" target="_blank" rel="noopener" aria-label="DJ am Pult beim Coffee Club – Archiv auf coffee-club.at">
+            <a class="act-kachel" href="https://coffee-club.at/" target="_blank" rel="noopener" aria-label="DJ am Pult beim Coffee Club – Archiv auf coffee-club.at">
               <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/cc-dj.jpg" data-src="assets/media/cc-dj.mp4" aria-hidden="true"></video>
               <span class="act-credit mono">Film: coffee-club.at</span>
             </a>
-            <a class="act-kachel" role="listitem" href="https://coffee-club.at/" target="_blank" rel="noopener" aria-label="Tanzende Menge am Hafen – Archiv auf coffee-club.at">
+            <a class="act-kachel" href="https://coffee-club.at/" target="_blank" rel="noopener" aria-label="Tanzende Menge am Hafen – Archiv auf coffee-club.at">
               <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/cc-boot.jpg" data-src="assets/media/cc-boot.mp4" aria-hidden="true"></video>
               <span class="act-credit mono">Film: coffee-club.at</span>
             </a>
-            <a class="act-kachel" role="listitem" href="https://coffee-club.at/" target="_blank" rel="noopener" aria-label="Tanzende Gäste am Sonntagvormittag – Archiv auf coffee-club.at">
+            <a class="act-kachel" href="https://coffee-club.at/" target="_blank" rel="noopener" aria-label="Tanzende Gäste am Sonntagvormittag – Archiv auf coffee-club.at">
               <img src="assets/media/cc-tanz.jpg" alt="" width="600" height="750" loading="lazy" decoding="async">
               <span class="act-credit mono">Foto: coffee-club.at</span>
             </a>
-            <a class="act-kachel" role="listitem" href="https://coffee-club.at/" target="_blank" rel="noopener" aria-label="Jubelnde Menge vor dem DJ-Pult – Archiv auf coffee-club.at">
+            <a class="act-kachel" href="https://coffee-club.at/" target="_blank" rel="noopener" aria-label="Jubelnde Menge vor dem DJ-Pult – Archiv auf coffee-club.at">
               <img src="assets/media/cc-crowd.jpg" alt="" width="600" height="750" loading="lazy" decoding="async">
               <span class="act-credit mono">Foto: coffee-club.at</span>
             </a>
@@ -1561,16 +1304,10 @@
       </div>
     </section>
 
-
-    <!-- Mood/Gallery in v8 entfernt (Sascha 2026-07-04): Kuenstler-Bild-Block raus.
-         Copy-Sektion 5 wartet auf ECHTE Eventfotos nach Event 1 — Referenz-Markup: v7-Datei. -->
-
-    <!-- ============ Content-Element v6: Orte-Typen (Konzept Abschnitt 12) ============ -->
     <section class="orte-band beat d1" aria-label="Orte">
       <p style="margin:0">Galerie · Dachterrasse · Hafen · Industriefläche · Historisches Haus · Leerstand</p>
     </section>
 
-    <!-- ============ Ticker 2 ============ -->
     <section class="ticker ticker--langsam" aria-label="Laufzeile" tabindex="0">
       <p class="sr-only">Datum steht. Location nicht. Der Vibe ist an.</p>
       <div class="ticker-spur" aria-hidden="true">
@@ -1579,7 +1316,6 @@
       </div>
     </section>
 
-    <!-- ============ Content-Element v6: Manifest (Variante V1, von Sascha freigegeben) ============ -->
     <section class="manifest" aria-label="Haltung">
       <p class="beat d1">Menschen <span class="vor">vor</span> Programm.</p>
       <p class="beat d2">Atmosphäre <span class="vor">vor</span> Show.</p>
@@ -1587,36 +1323,32 @@
       <p class="beat d4">Momente <span class="vor">vor</span> Terminen.</p>
     </section>
 
-    <!-- ============ 6 · Kontakt (B2B-Minimal, eine Zeile) ============ -->
     <p class="b2b beat d1">Für Locations, Partner &amp; Kooperationen: <a href="mailto:hallo@vibe-on.at">hallo@vibe-on.at</a></p>
 
   </main>
 
-  <!-- ============ 7 · Footer ============ -->
   <footer>
-    <!-- Content-Element v6: Herkunft (Konzept Abschnitte 4/22) -->
+    
     <p class="herkunft">Aus Bregenz. Für den Bodenseeraum.</p>
     <span class="wortmarke footer-marke" aria-hidden="true">VIBE<span class="on">ON</span></span>
     <nav aria-label="Footer">
       <ul>
-        <!-- v22: Rechtsseiten (Basis ady.at, VIBEON GmbH i. G.); Instagram-Link raus, bis VIBEON-Account steht -->
+        
         <li><a href="impressum.html">Impressum</a></li>
         <li><a href="datenschutz.html">Datenschutz</a></li>
       </ul>
     </nav>
   </footer>
 
-  <!-- v23: Mobiler Ticket-Sticky (nur <=820px, per JS ein-/ausgeblendet, verschwindet nach dem Datum) -->
   <a class="ticket-sticky" href="https://ballhaus-bregenz.at" target="_blank" rel="noopener" data-bis="2026-11-22" aria-label="Ballhaus am Samstag, 21. November – Tickets und Infos auf ballhaus-bregenz.at">
     <span class="ts-was">Ballhaus<span class="g">Sa 21.11.</span></span>
     <span class="ts-cta" aria-hidden="true">Tickets →</span>
   </a>
 
-  <!-- Licht-Leitmotiv v11: der "Strom" laedt sich beim Scrollen auf (JS setzt --fill) -->
   <div class="strom" aria-hidden="true"><span class="ladung"></span></div>
-  <!-- Cursor-Spotlight (nur Desktop, per CSS auf pointer:fine begrenzt) -->
+  
   <div class="spot" aria-hidden="true"></div>
-  <!-- M2: Scroll-Licht (nur pointer:coarse, per CSS begrenzt) -->
+  
   <div class="scroll-licht" aria-hidden="true"></div>
 
   <script>
