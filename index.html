@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  VIBEON One-Pager Mockup — Richtung G (Welle 3) = F-Puls veredelt mit Beer_Beats.at-Raffinessen, Version 23, 2026-10-19
+  VIBEON One-Pager Mockup — Richtung G (Welle 3) = F-Puls veredelt mit Beer_Beats.at-Raffinessen, Version 24, 2026-10-19
   Basis: Kopie von welle2-richtung-f-puls.html (Version 1). F's Substanz unveraendert:
   atmender Puls-Kern, Sonar-Ringe, zwei Mono-Ticker, warme Schwarz-Abstufungen mit Grain,
   gestaffelte Setzung, Lichtfeld-Gallery, Kontur-Anker je Format.
@@ -175,6 +175,11 @@
        (data-bis, JS). (3) Format-Index 01-04 unter "Formate" (Sprungleiste, Artikel-IDs).
        (4) Schluss entdoppelt: Mail nur noch in der B2B-Zeile (+ Header), B2B-Zeile in
        Grotesk statt Mini-Mono.
+  v24 — WISCHBAND MOBIL (Sascha 2026-10-19: "man sieht nicht, dass es mehr gibt"): Bildbaender
+       (<=820px) laufen rechts randlos aus, Kachel 66vw statt 72vw (naechste Kachel ~40% sichtbar),
+       Steuerleiste unter jedem Band: Pfeile zurueck/weiter (44px), Fortschrittslinie mit gelbem
+       Laeufer, Zaehler "1 / 5". Einmaliger Anstups beim ersten Sichtkontakt (nicht bei
+       reduced-motion). Steuerleiste per JS erzeugt (ohne JS bleibt das native Wischen).
 -->
 <html lang="de">
 <head>
@@ -843,7 +848,29 @@
         scrollbar-width:none;-webkit-overflow-scrolling:touch;
       }
       .act-band::-webkit-scrollbar{display:none}
-      .act-kachel,.act-kachel--gross{flex:0 0 min(72vw,300px);aspect-ratio:4/5;scroll-snap-align:start}
+      .act-kachel,.act-kachel--gross{flex:0 0 min(66vw,300px);aspect-ratio:4/5;scroll-snap-align:start}
+      /* v24: rechts randlos — die naechste Kachel laeuft sichtbar aus dem Bild */
+      .act-band{margin-right:calc(var(--rand) * -1)}
+      .act-band::after{content:"";flex:0 0 calc(var(--rand) - 8px)}
+    }
+    /* v24: Steuerleiste unter dem Wischband (nur mobil, per JS erzeugt) */
+    .band-steuer{display:none}
+    @media (max-width:820px){
+      .band-steuer{display:flex;align-items:center;gap:14px;margin-top:14px;position:relative;z-index:1}
+      .band-spur{flex:1;height:1px;background:var(--hairline);position:relative;overflow:hidden}
+      .band-lauf{position:absolute;left:0;top:-1px;height:3px;background:var(--gelb);
+        width:var(--bw,30%);transform:translateX(var(--bx,0%));transition:transform .15s linear}
+      .band-zahl{font-size:12px;letter-spacing:.1em;color:var(--text-dim);min-width:4.2ch;text-align:right}
+      .band-zahl b{font-weight:500;color:var(--weiss)}
+      .band-pfeil{
+        width:44px;height:44px;flex:none;display:grid;place-items:center;
+        background:transparent;border:1px solid var(--hairline);color:var(--weiss);
+        font-family:var(--mono);font-size:16px;cursor:pointer;touch-action:manipulation;
+        transition:border-color .25s ease,color .25s ease,opacity .25s ease;
+      }
+      .band-pfeil:active{border-color:var(--weiss)}
+      .band-pfeil:focus-visible{outline:1px solid var(--gelb);outline-offset:3px}
+      .band-pfeil:disabled{opacity:.3;cursor:default}
     }
     .act-credit{
       position:absolute;left:14px;bottom:12px;z-index:1;margin:0;
@@ -1646,6 +1673,62 @@
       });
       sticky.setAttribute('tabindex', '-1');
     }
+
+    // v24: Wischband mobil — Steuerleiste (Pfeile, Fortschritt, Zaehler) + einmaliger Anstups.
+    var mobil = window.matchMedia('(max-width: 820px)');
+    document.querySelectorAll('.act-band').forEach(function (band) {
+      var kacheln = band.querySelectorAll('.act-kachel');
+      if (kacheln.length < 2) return;
+      var steuer = document.createElement('div');
+      steuer.className = 'band-steuer';
+      steuer.innerHTML = '<button class="band-pfeil" type="button" aria-label="Vorheriges Bild">←</button>' +
+        '<div class="band-spur" aria-hidden="true"><span class="band-lauf"></span></div>' +
+        '<span class="band-zahl mono" aria-live="polite"><b>1</b> / ' + kacheln.length + '</span>' +
+        '<button class="band-pfeil" type="button" aria-label="Nächstes Bild">→</button>';
+      band.after(steuer);
+      var zurueck = steuer.children[0], lauf = steuer.querySelector('.band-lauf'),
+          zahl = steuer.querySelector('.band-zahl b'), weiter = steuer.children[3];
+      var schritt = function () { return kacheln[1].offsetLeft - kacheln[0].offsetLeft; };
+      function aktualisieren() {
+        var max = band.scrollWidth - band.clientWidth;
+        if (max <= 0) return;
+        var p = band.scrollLeft / max, bw = band.clientWidth / band.scrollWidth * 100;
+        lauf.style.setProperty('--bw', bw + '%');
+        lauf.style.setProperty('--bx', (p * (100 / bw - 1) * 100) + '%');
+        var i = band.scrollLeft >= max - 4 ? kacheln.length : Math.round(band.scrollLeft / schritt()) + 1;
+        zahl.textContent = i;
+        zurueck.disabled = band.scrollLeft <= 4;
+        weiter.disabled = band.scrollLeft >= max - 4;
+      }
+      // direkt im scroll-Event (billig: 2 Custom Properties + Text), kein rAF noetig
+      band.addEventListener('scroll', aktualisieren, { passive: true });
+      window.addEventListener('resize', aktualisieren, { passive: true });
+      zurueck.addEventListener('click', function () { band.scrollBy({ left: -schritt(), behavior: reduziert ? 'auto' : 'smooth' }); });
+      weiter.addEventListener('click', function () { band.scrollBy({ left: schritt(), behavior: reduziert ? 'auto' : 'smooth' }); });
+      aktualisieren();
+      // Anstups: einmal, wenn das Band zum ersten Mal gut sichtbar ist und noch niemand gewischt hat.
+      if (!reduziert && 'IntersectionObserver' in window) {
+        var angefasst = false;
+        band.addEventListener('touchstart', function () { angefasst = true; }, { passive: true, once: true });
+        var stups = new IntersectionObserver(function (es) {
+          es.forEach(function (e) {
+            if (!e.isIntersecting) return;
+            stups.disconnect();
+            if (!mobil.matches || angefasst || band.scrollLeft > 0) return;
+            window.setTimeout(function () {
+              if (angefasst || band.scrollLeft > 0) return;
+              band.style.scrollSnapType = 'none';
+              band.scrollTo({ left: 64, behavior: 'smooth' });
+              window.setTimeout(function () {
+                band.scrollTo({ left: 0, behavior: 'smooth' });
+                window.setTimeout(function () { band.style.scrollSnapType = ''; }, 500);
+              }, 520);
+            }, 450);
+          });
+        }, { threshold: 0.6 });
+        stups.observe(band);
+      }
+    });
 
   </script>
 </body>
