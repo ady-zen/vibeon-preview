@@ -164,6 +164,10 @@
        NACH den Formaten, ohne Nummer, ohne "A format by VIBEON", Anker "Mit dabei".
        Crew-Zeile nennt alle sechs gleichrangig, die VIBEON-Leute zuletzt.
        Bildband: 3 Loops (Filme coffee-club.at Vol. 08/09) + 2 Fotos (Vol. 09/11), Nachtpur.
+  v22 — LAUNCH-VORBEREITUNG (Sascha 2026-10-19, Go-Live auf vibe-on.at via Plesk-Git):
+       Footer verlinkt impressum.html + datenschutz.html (Basis ady.at, absoluteDYNAMICS als
+       Medieninhaber, VIBEON GmbH in Gruendung). Instagram-Platzhalter raus. Kein Cookie-Banner
+       noetig: keine Cookies/Storage/Tracking/Fremd-Requests.
 -->
 <html lang="de">
 <head>
@@ -178,8 +182,6 @@
   <meta property="og:locale" content="de_AT">
   <meta property="og:title" content="VIBEON – Eventformate mit eigener Identität | Bregenz &amp; Bodenseeraum">
   <meta property="og:description" content="VIBEON entwickelt Eventformate rund um Musik, Menschen und besondere Orte: Ballhaus, Beer &amp; Beats, Exodus und Secret X. Der Vibe ist an.">
-  <!-- TODO: og-image-v1.jpg erstellen (staerkstes Mood-Bild, Logo dezent) -->
-  <meta property="og:image" content="/assets/og-image-v1.jpg">
   <link rel="icon" type="image/svg+xml" href="assets/vibeon-icon-gelb.svg">
 
   <style>
@@ -1398,12 +1400,9 @@
     <span class="wortmarke footer-marke" aria-hidden="true">VIBE<span class="on">ON</span></span>
     <nav aria-label="Footer">
       <ul>
-        <!-- TODO: Impressum (ECG) vor Launch verlinken -->
-        <li><a href="#">Impressum</a></li>
-        <!-- TODO: Datenschutzerklaerung (DSGVO) vor Launch verlinken -->
-        <li><a href="#">Datenschutz</a></li>
-        <!-- TODO: echtes Instagram-Profil eintragen -->
-        <li><a href="https://instagram.com/PLATZHALTER">Instagram</a></li>
+        <!-- v22: Rechtsseiten (Basis ady.at, VIBEON GmbH i. G.); Instagram-Link raus, bis VIBEON-Account steht -->
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
         <li><a href="mailto:hallo@vibe-on.at">hallo@vibe-on.at</a></li>
       </ul>
     </nav>
