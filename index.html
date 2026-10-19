@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  VIBEON One-Pager Mockup — Richtung G (Welle 3) = F-Puls veredelt mit Beer_Beats.at-Raffinessen, Version 17, 2026-10-19
+  VIBEON One-Pager Mockup — Richtung G (Welle 3) = F-Puls veredelt mit Beer_Beats.at-Raffinessen, Version 18, 2026-10-19
   Basis: Kopie von welle2-richtung-f-puls.html (Version 1). F's Substanz unveraendert:
   atmender Puls-Kern, Sonar-Ringe, zwei Mono-Ticker, warme Schwarz-Abstufungen mit Grain,
   gestaffelte Setzung, Lichtfeld-Gallery, Kontur-Anker je Format.
@@ -138,7 +138,12 @@
   v16 — NIMA-INSTAGRAM INTEGRIERT (Sascha 2026-10-19): 2-Klick-Reel-Band im Live-Act-Block
        (3 Reels von instagram.com/nima_lovario, gleiche Datenschutz-Mechanik wie Exodus),
        CTA "Mehr erfahren" -> "@nima_lovario auf Instagram", iframe-Titel je Band statt fix "Exodus".
-  v17 — Neues Format BALLHAUS (Sascha 2026-10-19, Fakten von ballhaus-bregenz.at): Ballhaus Revival
+  v17 — BILDER SOFORT STATT INSTAGRAM-WIDGET (Sascha 2026-10-19, Nima-Freigabe liegt vor):
+       Nima-Platzhalter-SVG -> eigener, selbst gehosteter Video-Loop (7s, stumm, Nachtpur-Grading:
+       entsaettigt/dunkel/Grain) mit Poster, spielt nur im Blick, reduced-motion = Standbild;
+       Klick oeffnet das Reel auf Instagram. Alle Instagram-Embeds (Nima + Exodus) + 2-Klick-JS raus,
+       kein Request an Meta mehr. Credit "Video: @nima_lovario".
+  v18 — Neues Format BALLHAUS (Sascha 2026-10-19, Fakten von ballhaus-bregenz.at): Ballhaus Revival
        Night Vol. 01 als Format 01 ganz oben. Anmutung "Samt-Nacht": warmes Schwarz mit Bordeaux-
        Stich, Anker = Spiegelkugel als Konturgrafik (pendelt sanft, Glitzerpunkte funkeln in
        Knochenweiss, ein einziger gelber). Mono-Zeilen wie Beer & Beats, CTA -> ballhaus-bregenz.at.
@@ -605,7 +610,7 @@
     /* Coffee Club in v2 entfernt (Format noch nicht freigegeben) — Styles siehe v1-Datei.
        .hell-Utility (Buttons/Focus auf hellen Blaechen) bleibt fuer die Wiederaufnahme erhalten. */
 
-    /* Ballhaus (v17) — "Samt-Nacht": warmes Schwarz mit Bordeaux-Stich, Spiegelkugel als Kontur.
+    /* Ballhaus (v18) — "Samt-Nacht": warmes Schwarz mit Bordeaux-Stich, Spiegelkugel als Kontur.
        Gelb nur als ein Glitzerpunkt + Mono-Werte auf Schwarz, nie als Flaeche. */
     .format--ballhaus{
       background:
@@ -691,41 +696,6 @@
       font-size:clamp(180px,30vw,480px);
       color:transparent;-webkit-text-stroke:1.5px rgba(245,241,234,.22);
     }
-    /* 2-Klick-Instagram (Entscheidung 2026-07-04): VOR dem Klick kein Request an Meta */
-    .ig-band{
-      margin-top:clamp(24px,4vh,40px);
-      display:grid;grid-auto-flow:column;grid-auto-columns:clamp(200px,24vw,260px);
-      gap:14px;overflow-x:auto;overscroll-behavior-x:contain;padding-bottom:8px;
-      scroll-snap-type:x mandatory;touch-action:pan-x pan-y;
-      scrollbar-width:none;
-    }
-    .ig-band::-webkit-scrollbar{display:none}
-    .ig-video{
-      aspect-ratio:9/16;scroll-snap-align:start;
-      background:#0a0908;border:1px solid var(--hairline);
-      position:relative;overflow:hidden;
-    }
-    .ig-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-    .ig-laden{
-      position:absolute;inset:0;width:100%;height:100%;
-      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
-      background:transparent;border:0;cursor:pointer;color:var(--weiss);
-      font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
-      padding:16px;
-    }
-    .ig-play{width:44px;height:44px;border:1px solid var(--gelb);border-radius:50%;position:relative;flex:none}
-    .ig-play::after{
-      content:"";position:absolute;left:55%;top:50%;transform:translate(-50%,-50%);
-      border-left:12px solid var(--gelb);border-top:8px solid transparent;border-bottom:8px solid transparent;
-    }
-    .ig-laden:hover .ig-play,.ig-laden:focus-visible .ig-play,.ig-laden:active .ig-play{background:rgba(233,244,47,.12)}
-    /* v13: Datenschutz-Hinweis EINMAL unter dem Band (12px) statt 3x in 10px auf jeder Kachel */
-    .ig-datenschutz{
-      margin-top:12px;max-width:52ch;
-      font-family:var(--mono);font-size:clamp(12px,.8vw,13px);letter-spacing:.04em;
-      line-height:1.55;color:var(--text-dim);
-    }
-    @media (max-width:820px){.ig-band{grid-auto-columns:min(48vw,190px)}}
 
     /* Secret X — tiefstes Schwarz, minimal, nur Typo, Gelb zuendet dosiert */
     .format--secret{background:var(--schwarz-tief);text-align:center}
@@ -812,6 +782,17 @@
       border:1px solid var(--hairline);background:#0a0908;
     }
     .act-foto svg{display:block;width:100%;height:100%}
+    /* v17: echter Loop statt Platzhalter — Poster steht sofort, Video nur im Blick */
+    .act-link{display:block;width:100%;height:100%}
+    .act-loop{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 35%;background:#0a0908}
+    .act-foto::after{
+      content:"";position:absolute;inset:auto 0 0 0;height:34%;pointer-events:none;
+      background:linear-gradient(to top,rgba(10,9,8,.85),transparent);
+    }
+    .act-credit{
+      position:absolute;left:14px;bottom:12px;z-index:1;margin:0;
+      font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);
+    }
     /* v13: Kontur-Initiale in der Anker-Sprache der Formate (&, ->, X) — Platzhalter liest sich
        als gestaltetes Element statt als leere Box; verschwindet mit dem echten Portrait. */
     .act-kontur{
@@ -1037,7 +1018,7 @@
       .hero-licht{transform:translateX(-50%)}
     }
   </style>
-  <noscript><style>.beat{opacity:1 !important;transform:none !important}.ig-band{display:none}</style></noscript>
+  <noscript><style>.beat{opacity:1 !important;transform:none !important}</style></noscript>
 </head>
 <body>
   <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
@@ -1128,7 +1109,7 @@
       <!-- Coffee Club in v2 entfernt: Format noch nicht freigegeben (Sascha, 2026-07-03).
            TODO: nach Freigabe wieder aufnehmen — Markup/Styles als Referenz in der v1-Datei. -->
 
-      <!-- Ballhaus (v17): Revival Night Vol. 01 — Fakten von ballhaus-bregenz.at (2026-10-19).
+      <!-- Ballhaus (v18): Revival Night Vol. 01 — Fakten von ballhaus-bregenz.at (2026-10-19).
            Samt-Nacht: warmes Schwarz mit Bordeaux-Stich, Spiegelkugel als Kontur-Anker. -->
       <article class="format format--ballhaus" aria-labelledby="f-ballhaus">
         <div class="innen">
@@ -1172,7 +1153,7 @@
       </article>
 
       <!-- ============ Live-Act: Nima Lovario (v10) ============
-           Eigener Act-Block (KEIN Format, keine Nummer). v17: hochgezogen direkt unter Ballhaus. DJ Live-Act & Violinist aus Bregenz.
+           Eigener Act-Block (KEIN Format, keine Nummer). v18: hochgezogen direkt unter Ballhaus. DJ Live-Act & Violinist aus Bregenz.
            Copy faktenbasiert aus verifizierter Instagram-Bio (@nima_lovario, 2026-07-04).
            Foto = Platzhalter-SVG; entsaettigtes Portrait folgt (Bringschuld Sascha). -->
       <section class="act" aria-labelledby="act-h">
@@ -1183,26 +1164,12 @@
             <span class="linie" aria-hidden="true"></span>
           </div>
           <div class="act-grid">
-            <figure class="act-foto lichtan beat d1" aria-hidden="true">
-              <!-- TODO: entsaettigtes Nima-Portrait (Bringschuld Sascha) ersetzt dieses Platzhalter-SVG -->
-              <svg viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice">
-                <defs>
-                  <radialGradient id="act-licht" cx="50%" cy="30%" r="66%">
-                    <stop offset="0%" stop-color="#2b241c"/>
-                    <stop offset="52%" stop-color="#151110"/>
-                    <stop offset="100%" stop-color="#090807"/>
-                  </radialGradient>
-                  <linearGradient id="act-boden" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="66%" stop-color="#090807" stop-opacity="0"/>
-                    <stop offset="100%" stop-color="#000000" stop-opacity=".55"/>
-                  </linearGradient>
-                  <filter id="act-grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
-                </defs>
-                <rect width="800" height="1000" fill="url(#act-licht)"/>
-                <rect width="800" height="1000" fill="url(#act-boden)"/>
-                <rect width="800" height="1000" filter="url(#act-grain)" opacity=".07"/>
-              </svg>
-              <span class="act-kontur" aria-hidden="true">N</span>
+            <!-- v17: selbst gehosteter Loop aus Nimas eigenem Reel DavSsfOMv18 (Freigabe Nima 2026-10-19) -->
+            <figure class="act-foto lichtan beat d1">
+              <a class="act-link" href="https://www.instagram.com/reel/DavSsfOMv18/" target="_blank" rel="noopener" aria-label="Video von Nima Lovario auf Instagram ansehen">
+                <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/nima-poster.jpg" data-src="assets/media/nima-loop.mp4" aria-hidden="true"></video>
+              </a>
+              <figcaption class="act-credit mono">Video: @nima_lovario</figcaption>
             </figure>
             <div class="act-text">
               <h3 class="act-name beat d1">Nima Lovario</h3>
@@ -1210,28 +1177,6 @@
               <p class="act-live beat d2">Live beim Ballhaus · <span class="g">Sa 21.11.</span></p>
               <p class="act-copy beat d2"><span class="laut">Elektronische Musik trifft Live-Violine.</span> Nima Lovario legt auf – und zieht die E-Violine live über den Beat.</p>
               <p class="act-sound beat d3">House · Afro House · Melodic Techno</p>
-              <!-- v16: 2-Klick-Instagram-Videos von @nima_lovario — vor dem Klick kein Request an Meta -->
-              <div class="ig-band beat d3" role="group" aria-label="Instagram-Videos von Nima Lovario">
-                <div class="ig-video">
-                  <button class="ig-laden" type="button" data-reel="DavSsfOMv18" aria-label="Video 1 von Nima Lovario auf Instagram laden">
-                    <span class="ig-play" aria-hidden="true"></span>
-                    <span>Video laden</span>
-                  </button>
-                </div>
-                <div class="ig-video">
-                  <button class="ig-laden" type="button" data-reel="DavHErcML3C" aria-label="Video 2 von Nima Lovario auf Instagram laden">
-                    <span class="ig-play" aria-hidden="true"></span>
-                    <span>Video laden</span>
-                  </button>
-                </div>
-                <div class="ig-video">
-                  <button class="ig-laden" type="button" data-reel="DQAVf-vjIdi" aria-label="Video 3 von Nima Lovario auf Instagram laden">
-                    <span class="ig-play" aria-hidden="true"></span>
-                    <span>Video laden</span>
-                  </button>
-                </div>
-              </div>
-              <p class="ig-datenschutz beat d3">Videos laden erst auf Klick von Instagram — dabei werden Daten an Meta übertragen.</p>
               <p class="act-cta beat d4"><a class="btn" href="https://www.instagram.com/nima_lovario/" target="_blank" rel="noopener">@nima_lovario auf Instagram</a></p>
             </div>
           </div>
@@ -1276,29 +1221,6 @@
             <!-- TODO INTERIMS-COPY (nicht freigegeben): ersetzen, sobald das Destillat aus dem
                  Instagram-Account vorliegt — Sascha liefert Screenshots (Bio + 2-3 Posts) -->
             <p class="format-copy beat d2"><span class="laut">Die Nacht, konzentriert.</span> Elektronische Musik, dunkle Räume, keine Ablenkung.</p>
-            <!-- 2-Klick-Instagram-Videos: vor dem Klick kein Request an Meta -->
-            <div class="ig-band beat d3" role="group" aria-label="Instagram-Videos von Exodus">
-              <!-- TODO: echte Reel-IDs eintragen (instagram.com/reel/<ID>/) -->
-              <div class="ig-video">
-                <button class="ig-laden" type="button" data-reel="PLATZHALTER_REEL_1" aria-label="Video 1 von Instagram laden">
-                  <span class="ig-play" aria-hidden="true"></span>
-                  <span>Video laden</span>
-                </button>
-              </div>
-              <div class="ig-video">
-                <button class="ig-laden" type="button" data-reel="PLATZHALTER_REEL_2" aria-label="Video 2 von Instagram laden">
-                  <span class="ig-play" aria-hidden="true"></span>
-                  <span>Video laden</span>
-                </button>
-              </div>
-              <div class="ig-video">
-                <button class="ig-laden" type="button" data-reel="PLATZHALTER_REEL_3" aria-label="Video 3 von Instagram laden">
-                  <span class="ig-play" aria-hidden="true"></span>
-                  <span>Video laden</span>
-                </button>
-              </div>
-            </div>
-            <p class="ig-datenschutz beat d3">Videos laden erst auf Klick von Instagram — dabei werden Daten an Meta übertragen.</p>
             <p class="format-cta beat d4"><a class="btn" href="https://www.instagram.com/exodus.aiff" target="_blank" rel="noopener">Mehr erfahren</a></p>
             <p class="format-by beat d4">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
           </div>
@@ -1467,6 +1389,19 @@
       });
     }
 
+    // 11) Nima-Loop: laedt + spielt erst im Blick, pausiert ausserhalb; reduced-motion/ohne JS = Poster.
+    var loop = document.querySelector('.act-loop');
+    if (loop && !reduziert && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) {
+            if (!loop.getAttribute('src')) { loop.src = loop.getAttribute('data-src'); }
+            loop.play().catch(function () {});
+          } else { loop.pause(); }
+        });
+      }, { threshold: 0.25 }).observe(loop);
+    }
+
     // 10) Easter Egg: Klick auf das ON der Wortmarke wiederholt den Schaltmoment (Logo-Story anfassbar).
     var marke = document.querySelector('header .wortmarke');
     if (marke && !reduziert) {
@@ -1482,19 +1417,6 @@
       });
     }
 
-    // 5) 2-Klick-Instagram: VOR dem Klick geht kein Request an Meta (Entscheidung, tech-notizen).
-    document.querySelectorAll('.ig-laden').forEach(function (knopf) {
-      knopf.addEventListener('click', function () {
-        var halter = knopf.parentElement;
-        var frame = document.createElement('iframe');
-        frame.src = 'https://www.instagram.com/reel/' + knopf.getAttribute('data-reel') + '/embed/';
-        frame.loading = 'lazy';
-        frame.setAttribute('allowfullscreen', '');
-        var band = knopf.closest('.ig-band');
-        frame.title = band ? band.getAttribute('aria-label') : 'Instagram-Video';
-        halter.replaceChild(frame, knopf);
-      });
-    });
   </script>
 </body>
 </html>
