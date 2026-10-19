@@ -150,6 +150,15 @@
        Reihenfolge NEU: Ballhaus 01 -> Live-Act Nima (hochgezogen, spielt beim Ballhaus; Bruecke
        "Live beim Ballhaus · Sa 21.11.") -> Beer & Beats 02 -> Exodus 03 -> Secret X 04.
        Ticker, sr-Text, Meta-/OG-Description um Ballhaus ergaenzt.
+  v19 — NIMA-BILDBAND (auf Ballhaus-v18) (Sascha 2026-10-19: "mehr Bilder und Videos zeigen"): unter dem Act-Block
+       ein Bento-Raster (Desktop 1 grosse + 4 kleine Kacheln, mobil Wisch-Band mit Snap):
+       3 Loops + 2 Fotos aus Collab-Posts, die Nima zeigen, alle selbst gehostet + Nachtpur-Grading,
+       Credit je Kachel, Klick -> Original-Post. Loop-JS gilt jetzt fuer alle .act-loop.
+       KONZEPT-STAND: Collab-Material nur lokal, vor Pages-Deploy OK der Partner-Accounts einholen.
+  v20 — BEER-&-BEATS-BILDBAND (Sascha 2026-10-19: "Konzept passt, auf Beer & Beats uebertragen"):
+       gleiches Bento/Wischband wie Nima (v19) im Beer-&-Beats-Block, ersetzt den Mood-Platzhalter
+       (mood-02-fenster.svg). 3 Loops aus Reels von @beer.n.beats + 2 Fotos von beerbeats.at,
+       selbst gehostet + Nachtpur-Grading. Rechte: eigene VIBEON-Inhalte (Sascha), Deploy ok.
 -->
 <html lang="de">
 <head>
@@ -789,6 +798,37 @@
       content:"";position:absolute;inset:auto 0 0 0;height:34%;pointer-events:none;
       background:linear-gradient(to top,rgba(10,9,8,.85),transparent);
     }
+    /* v19: Bildband (Bento) — Desktop 1 gross + 4 klein, mobil Wisch-Band */
+    .act-band{
+      position:relative;z-index:1; /* v20: ueber dem Format-Anker (&) */
+      margin-top:clamp(40px,7vh,84px);
+      display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,1vw,14px);
+    }
+    .act-kachel{
+      position:relative;display:block;overflow:hidden;aspect-ratio:4/5;
+      border:1px solid var(--hairline);background:#0a0908;
+    }
+    .act-kachel--gross{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
+    .act-kachel video,.act-kachel img{
+      position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+      transition:transform .9s cubic-bezier(.2,.7,.2,1),filter .6s ease;filter:brightness(.9);
+    }
+    .act-kachel::after{
+      content:"";position:absolute;inset:auto 0 0 0;height:38%;pointer-events:none;
+      background:linear-gradient(to top,rgba(10,9,8,.85),transparent);
+    }
+    .act-kachel:focus-visible{outline:1px solid var(--gelb);outline-offset:3px}
+    @media (pointer:fine) and (prefers-reduced-motion:no-preference){
+      .act-kachel:hover video,.act-kachel:hover img{transform:scale(1.035);filter:brightness(1)}
+    }
+    @media (max-width:820px){
+      .act-band{
+        display:flex;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;
+        scrollbar-width:none;-webkit-overflow-scrolling:touch;
+      }
+      .act-band::-webkit-scrollbar{display:none}
+      .act-kachel,.act-kachel--gross{flex:0 0 min(72vw,300px);aspect-ratio:4/5;scroll-snap-align:start}
+    }
     .act-credit{
       position:absolute;left:14px;bottom:12px;z-index:1;margin:0;
       font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);
@@ -1201,10 +1241,31 @@
               <div><span>Orte</span><span class="g">Galerie · Werkstatt · Dachboden</span></div>
               <div><span>Drinks</span><span class="g">aufs Haus</span></div>
             </div>
-            <!-- B2 (v7): Blick in den Abend — Secret X bleibt bewusst bildlos -->
-            <figure class="format-bild beat d3 lichtan"><img src="assets/mood/mood-02-fenster.svg" alt="" width="800" height="640" loading="lazy" decoding="async"></figure>
             <p class="format-cta beat d4"><a class="btn" href="https://beerbeats.at" target="_blank" rel="noopener">Mehr erfahren</a></p>
             <p class="format-by beat d4">A format by <span class="marke">VIBE<span class="on">ON</span></span></p>
+          </div>
+          <!-- v20: Bildband Beer & Beats — eigenes Material (@beer.n.beats, beerbeats.at), selbst gehostet -->
+          <div class="act-band beat d2" role="list" aria-label="Beer &amp; Beats – Bilder und Videos">
+            <a class="act-kachel act-kachel--gross" role="listitem" href="https://www.instagram.com/reel/DeJZoLosAde/" target="_blank" rel="noopener" aria-label="Volles Zelt beim Beer &amp; Beats Afterwork – Video von @beer.n.beats auf Instagram">
+              <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/bb-crowd.jpg" data-src="assets/media/bb-crowd.mp4" aria-hidden="true"></video>
+              <span class="act-credit mono">@beer.n.beats</span>
+            </a>
+            <a class="act-kachel" role="listitem" href="https://www.instagram.com/reel/DeJZoLosAde/" target="_blank" rel="noopener" aria-label="Gäste stoßen mit Bier an – Video von @beer.n.beats auf Instagram">
+              <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/bb-prost.jpg" data-src="assets/media/bb-prost.mp4" aria-hidden="true"></video>
+              <span class="act-credit mono">@beer.n.beats</span>
+            </a>
+            <a class="act-kachel" role="listitem" href="https://www.instagram.com/reel/DeMh_ois4ng/" target="_blank" rel="noopener" aria-label="Abendstimmung im Gastgarten beim Beer &amp; Beats – Video von @beer.n.beats auf Instagram">
+              <video class="act-loop" muted loop playsinline preload="none" poster="assets/media/bb-abend.jpg" data-src="assets/media/bb-abend.mp4" aria-hidden="true"></video>
+              <span class="act-credit mono">@beer.n.beats</span>
+            </a>
+            <a class="act-kachel" role="listitem" href="https://beerbeats.at" target="_blank" rel="noopener" aria-label="Lachende Gäste beim Gruppen-Selfie – beerbeats.at">
+              <img src="assets/media/bb-selfie.jpg" alt="" width="600" height="750" loading="lazy" decoding="async">
+              <span class="act-credit mono">Foto: beerbeats.at</span>
+            </a>
+            <a class="act-kachel" role="listitem" href="https://beerbeats.at" target="_blank" rel="noopener" aria-label="Gäste beim Beer &amp; Beats im Club – beerbeats.at">
+              <img src="assets/media/bb-club.jpg" alt="" width="600" height="750" loading="lazy" decoding="async">
+              <span class="act-credit mono">Foto: beerbeats.at</span>
+            </a>
           </div>
         </div>
       </article>
@@ -1389,17 +1450,20 @@
       });
     }
 
-    // 11) Nima-Loop: laedt + spielt erst im Blick, pausiert ausserhalb; reduced-motion/ohne JS = Poster.
-    var loop = document.querySelector('.act-loop');
-    if (loop && !reduziert && 'IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) {
+    // 11) Nima-Loops (Act-Foto + Bildband): laden + spielen erst im Blick, pausieren ausserhalb;
+    //     reduced-motion / ohne JS = Poster.
+    var loops = document.querySelectorAll('.act-loop');
+    if (loops.length && !reduziert && 'IntersectionObserver' in window) {
+      var loopIO = new IntersectionObserver(function (es) {
         es.forEach(function (e) {
+          var v = e.target;
           if (e.isIntersecting) {
-            if (!loop.getAttribute('src')) { loop.src = loop.getAttribute('data-src'); }
-            loop.play().catch(function () {});
-          } else { loop.pause(); }
+            if (!v.getAttribute('src')) { v.src = v.getAttribute('data-src'); }
+            v.play().catch(function () {});
+          } else { v.pause(); }
         });
-      }, { threshold: 0.25 }).observe(loop);
+      }, { threshold: 0.25 });
+      loops.forEach(function (v) { loopIO.observe(v); });
     }
 
     // 10) Easter Egg: Klick auf das ON der Wortmarke wiederholt den Schaltmoment (Logo-Story anfassbar).
